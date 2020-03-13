@@ -56,3 +56,5 @@ CentOS based Konvoy cluster on bare metal
 ## worker5 machine details:
 
 - IP: 10.43.10.16
+
+For information on deploying k8s on bare metal with konvoy, refer to this [blog](https://medium.com/@fromprasath/fordeploy-k8s-on-bare-metal-with-d2iq-konvoy-and-use-openebs-for-storage-af4a2551d8ca)
