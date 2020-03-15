@@ -1,0 +1,70 @@
+#!/bin/bash
+
+pod() {
+
+echo "*************Deploying Director On-Prem*************"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-deploy/dop-deploy node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$DOCKER_USERNAME'"' '"'$DOCKER_PASSWORD'"''
+}
+
+node() {
+
+GITHUB_USERNAME=$1
+GITHUB_PASSWORD=$2
+DOCKER_USERNAME=$3
+DOCKER_PASSWORD=$4
+
+#####################################
+##          Prerequisites          ##
+#####################################
+
+echo "[ Running Prerequisites ]-------------------------------------\n";
+
+DOP_URL=$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | head -n 1)
+
+#####################################
+##           Deploy DOP            ##
+#####################################
+
+echo "\n[ Cloning director-charts-internal repo ]\n"
+
+git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/director-charts-internal.git
+
+cd director-charts-internal
+
+# Checkout to dop-e2e branch
+git checkout dop-e2e
+
+# Get latest directory of helm chart
+REPO=$(cat baseline | awk -F',' 'NR==1{print $3}' | awk -F'=' '{print $2}')
+TAG=$(cat baseline | awk -F',' 'NR==1{print $NF}' | awk -F'=' '{print $2}')
+
+echo "Latest directory of helm chart: $REPO-$TAG"
+
+cd $REPO-$TAG
+
+# Create secret having maya-init repo access
+kubectl create secret docker-registry dop-secret --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD
+
+# Create clusterrolebinding
+kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
+
+# Replace mayadataurl with DOP URL used to access DOP in values.yaml
+sed 's|url: mayadataurl|url: '$DOP_URL'|' -i ./values.yaml
+
+# Replace storageClass to be used to openebs-hostpath in values.yaml
+sed 's/storageClass: standard/storageClass: openebs-hostpath/' -i ./values.yaml
+cat values.yaml
+
+# Apply helm chart
+helm install --name dop .
+
+# Dump Director On-Prem pods
+echo "\n[ Dumping Director On-Prem components ]\n"
+kubectl get pod
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3 $4 $5 $6
+else
+  pod
+fi
