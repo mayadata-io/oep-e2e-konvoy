@@ -20,17 +20,6 @@ worker5_name=$(echo $6)
 git clone https://github.com/mayadata-io/litmus.git
 cd litmus
 
-echo $master_name
-# Replace the VM IP In CSV file
-sed -i -e 's/10.12.22.10/10.43.10.11/g' \
--e 's/10.12.22.11/10.43.10.12/g' \
--e 's/10.12.22.12/10.43.10.13/g' \
--e 's/10.12.22.13/10.43.10.14/g' k8s/on-prem/openshift-installer/ip.csv
-
-sed -i '/10.43.10.14/a \
-10.43.10.15 \
-10.43.10.16' k8s/on-prem/openshift-installer/ip.csv
-
 # Replace the VM names in CSV file
 sed -i -e "s/auto1/$master_name/g" \
 -e "s/auto2/$worker1_name/g" \
