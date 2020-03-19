@@ -1,33 +1,33 @@
 ## Define the stages & order of execution
 stages:
-  #- CLUSTER-SETUP
-  #- DOP-SETUP
+  - CLUSTER-SETUP
+  - DOP-SETUP
   - CLUSTER-CLEANUP
 
 ## Setup kubernetes cluster using Konvoy
-# cluster-create:
-#   image: harshshekhar15/gitlab-job:v2
-#   stage: CLUSTER-SETUP
-#   script:
-#     - chmod 755 ./stages/cluster-setup/cluster-setup
-#     - ./stages/cluster-setup/cluster-setup
+cluster-create:
+  image: harshshekhar15/gitlab-job:v2
+  stage: CLUSTER-SETUP
+  script:
+    - chmod 755 ./stages/cluster-setup/cluster-setup
+    - ./stages/cluster-setup/cluster-setup
 
-# ## Deploy Director On-Prem
-# director-deploy:
-#   image: harshshekhar15/gitlab-job:v2
-#   stage: DOP-SETUP
-#   dependencies:
-#     - cluster-create
-#   script:
-#     - chmod 755 ./stages/director-deploy/dop-deploy
-#     - ./stages/director-deploy/dop-deploy
+## Deploy Director On-Prem
+director-deploy:
+  image: harshshekhar15/gitlab-job:v2
+  stage: DOP-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/director-deploy/dop-deploy
+    - ./stages/director-deploy/dop-deploy
 
 ## Revert the cluster to previous snapshot
 cluster-cleanup:
   when: always
-  #   image: harshshekhar15/gitlab-job:v2
-  #   dependencies:
-  #     - cluster-create
+  image: harshshekhar15/gitlab-job:v2
+  dependencies:
+    - cluster-create
   stage: CLUSTER-CLEANUP
   script:
     - chmod 755 ./stages/cluster-cleanup/cluster-cleanup
