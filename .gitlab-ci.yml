@@ -1,7 +1,7 @@
 ## Define the stages & order of execution
 stages:
-  - CLUSTER-SETUP
-  - DOP-SETUP
+        #- CLUSTER-SETUP
+        #- DOP-SETUP
   - CLUSTER-CLEANUP
 
 ## Setup kubernetes cluster using Konvoy
