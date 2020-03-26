@@ -1,0 +1,49 @@
+#!/bin/bash
+pod() {
+
+echo "*************Litmus and Heapster Setup*************"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/deps-setup/litmus-setup node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"''
+}
+
+node() {
+
+GITHUB_USERNAME=$1
+GITHUB_PASSWORD=$2
+
+# Cloning oep repository which contains all the test scripts
+git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/oep.git
+
+# Setup litmus on the cluster
+kubectl apply -f oep/litmus/prerequisite/rbac.yaml
+kubectl apply -f oep/litmus/prerequisite/crds.yaml
+
+# creating docker secret
+kubectl apply -f oep/litmus/prerequisite/docker-secret.yml -n litmus
+
+## Installing heapster components on the cluster for node monitoring
+git clone https://github.com/kubernetes-sigs/metrics-server.git
+sed -i -e '/args:/ a\          - --kubelet-insecure-tls' metrics-server/deploy/kubernetes/metrics-server-deployment.yaml
+kubectl apply -f  metrics-server/deploy/kubernetes/
+sleep 120
+
+# The below line turns off case sensitive comparison of strings
+shopt -s nocasematch
+
+# Check if heapster is returning output
+node_stats=$(kubectl top nodes 2>&1)
+while [[ $node_stats == *error* ]]
+do
+    node_stats=$(kubectl top nodes 2>&1)
+    echo "Waiting for heapster to return top node details"
+    sleep 20
+done
+
+echo $node_stats
+
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3
+else
+  pod
+fi

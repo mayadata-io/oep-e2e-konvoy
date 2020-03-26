@@ -2,6 +2,7 @@
 stages:
   - CLUSTER-SETUP
   - DOP-SETUP
+  - DEPS-SETUP
   - DIRECTOR-HEALTH-CHECK
   - E2E-METRICS ## This stage is fixed and should not be changed
   - CLUSTER-CLEANUP
@@ -23,6 +24,16 @@ director-deploy:
   script:
     - chmod 755 ./stages/director-deploy/dop-deploy
     - ./stages/director-deploy/dop-deploy
+
+## Dependencies Setup
+deps-setup:
+  image: harshshekhar15/gitlab-job:v3
+  stage: DEPS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/deps-setup/litmus-setup
+    - ./stages/deps-setup/litmus-setup
 
 # director health check jobs
 maya-io-server-check:

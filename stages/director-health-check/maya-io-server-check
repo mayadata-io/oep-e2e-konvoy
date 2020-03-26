@@ -2,17 +2,13 @@
 pod() {
 
 echo "*************Deploying Director On-Prem*************"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-health-check/maya-io-server-check node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$DOCKER_USERNAME'"' '"'$DOCKER_PASSWORD'"''
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-health-check/maya-io-server-check node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"''
 }
 
 node() {
 
 GITHUB_USERNAME=$1
 GITHUB_PASSWORD=$2
-DOCKER_USERNAME=$3
-DOCKER_PASSWORD=$4
-
-litmus_namespace="litmus"
 
 URL=https://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | head -n 1):30380
 echo $URL
@@ -26,12 +22,14 @@ cd oep-e2e
 ##   Running test  ##
 ######################
 kubectl get po
-kubectl create ns $litmus_namespace
 kubectl create -f litmus/director/maya-io-server/run_litmus_test.yml
+
 test_name=maya-io-server-check
 echo $test_name
+
 litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
 echo $litmus_pod
+
 job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
 
 # Check completed status for job
@@ -40,10 +38,13 @@ do
     job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
     sleep 6
 done
+
 kubectl logs -f $litmus_pod -n litmus
 kubectl get po
+
 testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
 echo $testResult
+
 if [ "$testResult" != Pass ]; then 
 exit 1; 
 fi
@@ -51,7 +52,7 @@ fi
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5
+  node $2 $3
 else
   pod
 fi
