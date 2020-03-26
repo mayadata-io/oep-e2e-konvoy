@@ -12,6 +12,8 @@ GITHUB_PASSWORD=$2
 DOCKER_USERNAME=$3
 DOCKER_PASSWORD=$4
 
+litmus_namespace="litmus"
+
 URL=https://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | head -n 1):30380
 echo $URL
 
@@ -24,6 +26,7 @@ cd oep-e2e
 ##   Running test  ##
 ######################
 kubectl get po
+kubectl create ns $litmus_namespace
 kubectl create -f litmus/director/maya-io-server/run_litmus_test.yml
 test_name=maya-io-server-check
 echo $test_name
