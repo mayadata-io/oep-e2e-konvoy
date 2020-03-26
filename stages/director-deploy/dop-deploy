@@ -64,7 +64,7 @@ kubectl get pod
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5 $6
+  node $2 $3 $4 $5
 else
   pod
 fi

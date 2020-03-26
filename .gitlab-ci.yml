@@ -26,7 +26,7 @@ director-deploy:
 ## E2E metrics stage
 e2e-metrics:
   when: always
-  image: harshshekhar15/gitlab-job:v1
+  image: harshshekhar15/gitlab-job:v2
   stage: E2E-METRICS
   dependencies:
     - cluster-create
