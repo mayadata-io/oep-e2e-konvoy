@@ -2,6 +2,7 @@
 stages:
   - CLUSTER-SETUP
   - DOP-SETUP
+  - DIRECTOR-HEALTH-CHECK
   - E2E-METRICS ## This stage is fixed and should not be changed
   - CLUSTER-CLEANUP
 
@@ -22,6 +23,260 @@ director-deploy:
   script:
     - chmod 755 ./stages/director-deploy/dop-deploy
     - ./stages/director-deploy/dop-deploy
+
+# director health check jobs
+maya-io-server-check:
+  image: harshshekhar15/gitlab-job:v3
+  stage: DIRECTOR-HEALTH-CHECK
+  dependencies:
+    - director-deploy
+  script:
+    - chmod 755 ./stages/director-health-check/maya-io-server-check
+    - ./stages/director-health-check/maya-io-server-check
+  artifacts:
+    paths:
+      - .kube/
+
+# maya-ui-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/maya-ui-check
+#     - ./stages/director-health-check/maya-ui-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# od-elasticsearch-logging-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/od-elasticsearch-logging-check
+#     - ./stages/director-health-check/od-elasticsearch-logging-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# od-kibana-logging-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/od-kibana-logging-check
+#     - ./stages/director-health-check/od-kibana-logging-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# table-manager-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/table-manager-check
+#     - ./stages/director-health-check/table-manager-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# chat-server-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/chat-server-check
+#     - ./stages/director-health-check/chat-server-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# cloud-agent-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/cloud-agent-check
+#     - ./stages/director-health-check/cloud-agent-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# mysql-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/mysql-check
+#     - ./stages/director-health-check/mysql-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# maya-grafana-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/maya-grafana-check
+#     - ./stages/director-health-check/maya-grafana-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# memcached-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/memcached-check
+#     - ./stages/director-health-check/memcached-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# ## cortex infrastructure components jobs
+# alertstore-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/alertstore-check
+#     - ./stages/director-health-check/alertstore-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# alertstore-tablemanager-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/alertstore-tablemanager-check
+#     - ./stages/director-health-check/alertstore-tablemanager-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# alertmanager-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/alertmanager-check
+#     - ./stages/director-health-check/alertmanager-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# cassandra-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/cassandra-check
+#     - ./stages/director-health-check/cassandra-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# distributor-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/distributor-check
+#     - ./stages/director-health-check/distributor-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# ingestor-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/ingestor-check
+#     - ./stages/director-health-check/ingestor-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# querier-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/querier-check
+#     - ./stages/director-health-check/querier-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# ruler-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/ruler-check
+#     - ./stages/director-health-check/ruler-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# configs-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/configs-check
+#     - ./stages/director-health-check/configs-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# configs-db-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/configs-db-check
+#     - ./stages/director-health-check/configs-db-check
+#   artifacts:
+#     paths:
+#       - .kube/
+
+# ingress-nginx-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-HEALTH-CHECK
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-health-check/ingress-nginx-check
+#     - ./stages/director-health-check/ingress-nginx-check
+#   artifacts:
+#     paths:
+#       - .kube/
 
 ## E2E metrics stage
 e2e-metrics:
