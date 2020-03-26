@@ -36,13 +36,16 @@ kubectl set env sts/e2e-metrics E2E_METRICS_PIPELINE_ID=$E2E_METRICS_PIPELINE_ID
 kubectl set env sts/e2e-metrics E2E_METRICS_COVERAGE_NAME=$E2E_METRICS_COVERAGE_NAME -n $COVERAGE_NAMESPACE
 kubectl set env sts/e2e-metrics E2E_METRICS_RUN_ID=$E2E_METRICS_RUN_ID -n $COVERAGE_NAMESPACE
 
-pcover_cr=$(kubectl get pcover -n $COVERAGE_NAMESPACE)
+pcover_cr=$(kubectl get pcover -n $COVERAGE_NAMESPACE 2>&1)  # 2>&1 redirects stderr to stdout
+
+# The below line does case insensitive comparison of strings
+shopt -s nocasematch
 
 # Check if pcover CR has been created or not
-while [[ "$pcover_cr" == "*error*" ]]
+while [[ $pcover_cr == *error* ]]
 do
-    pcover_cr=$(kubectl get pcover -n $COVERAGE_NAMESPACE)
-    echo "Waiting for CR 'pcover' to be created"
+    pcover_cr=$(kubectl get pcover -n $COVERAGE_NAMESPACE 2>&1)
+    echo "Waiting for the CR 'pcover' to be created"
     sleep 10
 done
 
