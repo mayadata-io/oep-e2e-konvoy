@@ -49,7 +49,14 @@ do
     sleep 10
 done
 
-echo $pcover_cr
+# Check if the e2e-metrics pod is in Running state or not
+e2e_metrics_pod_state=$(kubectl get po -n $COVERAGE_NAMESPACE --no-headers  | awk '{print $3}')
+while [[ $e2e_metrics_pod_state != "Running" ]]
+do
+    e2e_metrics_pod_state=$(kubectl get po -n $COVERAGE_NAMESPACE --no-headers  | awk '{print $3}')
+    echo "Waiting for the pods 'e2e-metrics' to be Running"
+    sleep 10
+done
 
 # Fetch coverage percentage from custom resource
 e2e_coverage_cr=$(kubectl get pcover -n $COVERAGE_NAMESPACE --no-headers | awk '{print $1}')
