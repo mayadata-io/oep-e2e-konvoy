@@ -22,9 +22,11 @@ kubectl apply -f oep/litmus/prerequisite/docker-secret.yml -n litmus
 
 ## Installing heapster components on the cluster for node monitoring
 git clone https://github.com/kubernetes-sigs/metrics-server.git
-sed -i -e '/args:/ a\          - --kubelet-insecure-tls' metrics-server/deploy/kubernetes/metrics-server-deployment.yaml
+
+# Fix "no metrics known for node" error by adding - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname
+sed -i -e '/args:/ a\          - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname \n          - --kubelet-insecure-tls' metrics-server/deploy/kubernetes/metrics-server-deployment.yaml
 kubectl apply -f  metrics-server/deploy/kubernetes/
-sleep 120
+sleep 60
 
 # The below line turns off case sensitive comparison of strings
 shopt -s nocasematch
@@ -35,7 +37,7 @@ while [[ $node_stats == *error* ]]
 do
     node_stats=$(kubectl top nodes 2>&1)
     echo "Waiting for heapster to return top node details"
-    sleep 20
+    sleep 30
 done
 
 echo $node_stats
