@@ -11,7 +11,7 @@ GITHUB_USERNAME=$1
 GITHUB_PASSWORD=$2
 
 # Cloning oep repository which contains all the test scripts
-git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/oep.git
+git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/oep-e2e.git
 
 # Setup litmus on the cluster
 kubectl apply -f oep/litmus/prerequisite/rbac.yaml
@@ -40,7 +40,8 @@ do
     sleep 30
 done
 
-echo $node_stats
+echo "*************Top Node Output*************"
+kubectl top node
 
 }
 

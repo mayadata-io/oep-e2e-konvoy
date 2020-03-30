@@ -54,7 +54,7 @@ e2e_metrics_pod_state=$(kubectl get po -n $COVERAGE_NAMESPACE --no-headers  | aw
 while [[ $e2e_metrics_pod_state != "Running" ]]
 do
     e2e_metrics_pod_state=$(kubectl get po -n $COVERAGE_NAMESPACE --no-headers  | awk '{print $3}')
-    echo "Waiting for the pods 'e2e-metrics' to be Running"
+    echo "Waiting for the pod 'e2e-metrics' to be Running"
     sleep 10
 done
 
