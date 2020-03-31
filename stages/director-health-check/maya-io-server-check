@@ -22,6 +22,9 @@ cd oep-e2e
 ##   Running test  ##
 ######################
 kubectl get po
+
+sed "s/print \$7/print \$6/" -i ./litmus/director/maya-io-server/test.yaml
+
 kubectl create -f litmus/director/maya-io-server/run_litmus_test.yml
 
 test_name=maya-io-server-check
