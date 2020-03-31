@@ -21,9 +21,12 @@ cd oep-e2e
 ######################
 ##   Running test  ##
 ######################
-kubectl get po
 
-sed "s/print \$7/print \$6/" -i ./litmus/director/maya-io-server/test.yaml
+# Add sed command to fetch internal IP of the node 
+sed "s/print \$7/print \$6/" -i litmus/director/maya-io-server/test.yaml
+
+# debug-check to get the nodeIP
+cat litmus/director/maya-io-server/test.yaml
 
 kubectl create -f litmus/director/maya-io-server/run_litmus_test.yml
 
@@ -39,6 +42,7 @@ job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 
 while [[ "$job_status" != "Completed" ]]
 do 
     job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
+    echo "Waiting for job status to be Completed"
     sleep 6
 done
 
