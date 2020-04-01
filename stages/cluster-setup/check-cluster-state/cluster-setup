@@ -14,7 +14,6 @@ cd oep-e2e-konvoy
 echo "***Applying e2e-crd***********"
 kubectl apply -f utils/e2e-crd.yml
 
-bash utils/e2e-cr jobname:cluster-create jobphase:Waiting
 bash utils/e2e-cr jobname:cluster-create jobphase:Running 
 bash utils/e2e-cr jobname:litmus-deps-setup jobphase:Waiting
 
@@ -48,10 +47,10 @@ echo "*************Dumping cluster state*************"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get nodes
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get pod --all-namespaces
 
-bash utils/e2e-cr jobname:create-apikey-check jobphase:Completed
+bash utils/e2e-cr jobname:cluster-create jobphase:Completed
 else
 echo "All nodes are not ready"
 echo "*******Cluster is in Unhealthy state*******"
-    bash utils/e2e-cr jobname:create-apikey-check jobphase:Completed
+    bash utils/e2e-cr jobname:cluster-create jobphase:Completed
 exit;
 fi
