@@ -4,6 +4,20 @@ time="$(TZ=IST date)"
 current_time=$time
 echo $current_time
 
+
+
+## Job Sequencing
+echo "*************Cloning oep-e2e-konvoy repo*************"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
+
+cd oep-e2e-konvoy
+echo "***Applying e2e-crd***********"
+kubectl apply -f utils/e2e-crd.yml
+
+bash utils/e2e-cr jobname:cluster-create jobphase:Waiting
+bash utils/e2e-cr jobname:cluster-create jobphase:Running 
+bash utils/e2e-cr jobname:litmus-deps-setup jobphase:Waiting
+
 echo "***Checking the cluster is Engaged or not***"
 
 state="sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'ls | grep oep-e2e-konvoy'"
@@ -34,12 +48,10 @@ echo "*************Dumping cluster state*************"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get nodes
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get pod --all-namespaces
 
-echo "*************Cloning oep-e2e-konvoy repo*************"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
+bash utils/e2e-cr jobname:create-apikey-check jobphase:Completed
 else
 echo "All nodes are not ready"
 echo "*******Cluster is in Unhealthy state*******"
-echo "*************Cloning oep-e2e-konvoy repo*************"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
+    bash utils/e2e-cr jobname:create-apikey-check jobphase:Completed
 exit;
 fi

@@ -17,4 +17,4 @@ The test cases are divided as per the Stages that run in GitLab pipeline. Follow
 | OPENEBS-INSTALL-CHECK |             |
 | OPENEBS-UPGRADE-CHECK |             |
 | E2E-METRICS           |             |
-| CLUSTER-CLEANUP       |             |
+| CLUSTER-TEAR-DOWN     |             |
