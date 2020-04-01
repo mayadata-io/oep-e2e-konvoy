@@ -9,7 +9,7 @@ echo $current_time
 ## Job Sequencing
 echo "*************Cloning oep-e2e-konvoy repo*************"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
-
+ls
 cd oep-e2e-konvoy
 echo "***Applying e2e-crd***********"
 kubectl apply -f utils/e2e-crd.yml
