@@ -20,8 +20,8 @@ litmus-deps-setup:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/cluster-setup/litmus-dependencies/litmus-deps-setup
-    - ./stages/cluster-setup/litmus-dependencies/litmus-deps-setup
+    - chmod 755 ./stages/director-install-and-upgrade/litmus-dependencies/litmus-deps-setup
+    - ./stages/director-install-and-upgrade/litmus-dependencies/litmus-deps-setup
 
 # ## Deploy Director On-Prem
 # director-deploy:
