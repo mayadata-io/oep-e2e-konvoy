@@ -17,8 +17,6 @@ cluster-create:
 litmus-deps-setup:
   image: harshshekhar15/gitlab-job:v3
   stage: CLUSTER-SETUP
-  dependencies:
-    - cluster-create
   script:
     - chmod 755 ./stages/cluster-setup/litmus-dependencies/litmus-deps-setup
     - ./stages/cluster-setup/litmus-dependencies/litmus-deps-setup
