@@ -17,7 +17,7 @@ while [ "${cluster_state}" == "oep-e2e-konvoy" ]; do
 done
 
 if [ "$wait" == "1" ]; then
-sleep 120
+  sleep 120
 fi
 
 echo "*************************Checking the Cluster's Health********************"

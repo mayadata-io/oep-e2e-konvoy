@@ -1,14 +1,15 @@
 #!/bin/bash
 
 pod() {
-  bash utils/e2e-cr jobname:e2e-metrics jobphase:Waiting
-  bash utils/e2e-cr jobname:e2e-metrics jobphase:Running 
-  bash utils/e2e-cr jobname:cluster-cleanup jobphase:Waiting
   echo "************* Setting up the cluster for e2e metrics *************"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/e2e-metrics node '"'$CI_PIPELINE_ID'"' '"'$CI_JOB_ID'"''
 }
 
 node() {
+  
+  bash utils/e2e-cr jobname:e2e-metrics jobphase:Waiting
+  bash utils/e2e-cr jobname:e2e-metrics jobphase:Running 
+  bash utils/e2e-cr jobname:cluster-cleanup jobphase:Waiting
   
   # Set environment variables
   COVERAGE_NAMESPACE="e2e-metrics"
