@@ -2,14 +2,14 @@
 set -x
 
 pod() {
-  bash utils/pooling jobname:e2e-metrics
-  bash utils/e2e-cr jobname:cluster-cleanup jobphase:Running
   echo "*************Cleaning up the cluster*************"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/cluster-cleanup node '"'$master_name'"' '"'$worker1_name'"' '"'$worker2_name'"' '"'$worker3_name'"'' '"'$worker4_name'"' '"'$worker5_name'"'
 }
 
 node() {
-
+  bash utils/pooling jobname:e2e-metrics
+  bash utils/e2e-cr jobname:cluster-cleanup jobphase:Running
+  
   master_name=$(echo $1)
   worker1_name=$(echo $2)
   worker2_name=$(echo $3)
