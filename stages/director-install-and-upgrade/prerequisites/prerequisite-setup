@@ -46,6 +46,8 @@ done
 echo "*************Top Node Output*************"
 kubectl top node
 
+echo -e "\n*************Finished Prerequisites*************"
+
 }
 
 if [ "$1" == "node" ];then

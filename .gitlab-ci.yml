@@ -14,14 +14,14 @@ cluster-create:
     - ./stages/cluster-setup/check-cluster-state/cluster-setup
 
 ## Dependencies/Prerequisite Setup
-prerequisite-setup:
-  image: harshshekhar15/gitlab-job:v3
-  stage: DIRECTOR-INSTALL-AND-UPGRADE
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup
-    - ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup
+# prerequisite-setup:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-INSTALL-AND-UPGRADE
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup
+#     - ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup
 
 ## Deploy Director On-Prem
 director-deploy:
@@ -33,18 +33,18 @@ director-deploy:
     - chmod 755 ./stages/director-install-and-upgrade/dop-deploy
     - ./stages/director-install-and-upgrade/dop-deploy
 
-## Director components health check jobs
-director-health-check:
-  image: harshshekhar15/gitlab-job:v3
-  stage: DIRECTOR-INSTALL-AND-UPGRADE
-  dependencies:
-    - director-deploy
-  script:
-    - chmod 755 ./stages/director-install-and-upgrade/director-health-check/components-health-check
-    - ./stages/director-install-and-upgrade/director-health-check/components-health-check
-  artifacts:
-    paths:
-      - .kube/
+# ## Director components health check jobs
+# director-health-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: DIRECTOR-INSTALL-AND-UPGRADE
+#   dependencies:
+#     - director-deploy
+#   script:
+#     - chmod 755 ./stages/director-install-and-upgrade/director-health-check/components-health-check
+#     - ./stages/director-install-and-upgrade/director-health-check/components-health-check
+#   artifacts:
+#     paths:
+#       - .kube/
 
 # maya-ui-check:
 #   image: harshshekhar15/gitlab-job:v3
