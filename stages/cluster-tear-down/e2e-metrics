@@ -71,11 +71,10 @@ node() {
   do
     e2e_coverage_cr=$(kubectl get pcover -n $COVERAGE_NAMESPACE --no-headers | awk '{print $1}' 2>&1)
     echo "Waiting for the e2e-coverage-cr to be created"
-    echo "** $e2e_coverage_cr **"
-    sleep 10
+    sleep 5
   done
   
-  echo $e2e_coverage_cr
+  echo "e2e-coverage CR: $e2e_coverage_cr"
 
   # Fetch coverage percentage from custom resource
   kubectl get pcover $e2e_coverage_cr -n $COVERAGE_NAMESPACE -oyaml

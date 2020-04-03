@@ -13,15 +13,15 @@ cluster-create:
     - chmod 755 ./stages/cluster-setup/check-cluster-state/cluster-setup
     - ./stages/cluster-setup/check-cluster-state/cluster-setup
 
-## Dependencies Setup
-litmus-deps-setup:
+## Dependencies/Prerequisite Setup
+prerequisite-setup:
   image: harshshekhar15/gitlab-job:v3
   stage: DIRECTOR-INSTALL-AND-UPGRADE
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/director-install-and-upgrade/litmus-dependencies/litmus-deps-setup
-    - ./stages/director-install-and-upgrade/litmus-dependencies/litmus-deps-setup
+    - chmod 755 ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup
+    - ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup
 
 ## Deploy Director On-Prem
 director-deploy:
