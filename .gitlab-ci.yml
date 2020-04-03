@@ -7,7 +7,7 @@ stages:
 
 ## Setup kubernetes cluster using Konvoy
 cluster-create:
-  image: harshshekhar15/gitlab-job:v2
+  image: harshshekhar15/gitlab-job:v3
   stage: CLUSTER-SETUP
   script:
     - chmod 755 ./stages/cluster-setup/check-cluster-state/cluster-setup
@@ -25,7 +25,7 @@ prerequisite-setup:
 
 ## Deploy Director On-Prem
 director-deploy:
-  image: harshshekhar15/gitlab-job:v2
+  image: harshshekhar15/gitlab-job:v3
   stage: DIRECTOR-INSTALL-AND-UPGRADE
   dependencies:
     - cluster-create
@@ -33,18 +33,18 @@ director-deploy:
     - chmod 755 ./stages/director-install-and-upgrade/dop-deploy
     - ./stages/director-install-and-upgrade/dop-deploy
 
-# # director health check jobs
-# maya-io-server-check:
-#   image: harshshekhar15/gitlab-job:v3
-#   stage: DIRECTOR-INSTALL-AND-UPGRADE
-#   dependencies:
-#     - director-deploy
-#   script:
-#     - chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check
-#     - ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check
-#   artifacts:
-#     paths:
-#       - .kube/
+## Director components health check jobs
+director-health-check:
+  image: harshshekhar15/gitlab-job:v3
+  stage: DIRECTOR-INSTALL-AND-UPGRADE
+  dependencies:
+    - director-deploy
+  script:
+    - chmod 755 ./stages/director-install-and-upgrade/director-health-check/components-health-check
+    - ./stages/director-install-and-upgrade/director-health-check/components-health-check
+  artifacts:
+    paths:
+      - .kube/
 
 # maya-ui-check:
 #   image: harshshekhar15/gitlab-job:v3

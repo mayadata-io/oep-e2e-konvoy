@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sh ./maya-io-server-check
+sh ./maya-ui-check
