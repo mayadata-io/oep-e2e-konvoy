@@ -7,6 +7,7 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-
 
 node() {
 echo "************* Calling Prerequisites *************"
+chmod 755 ./stages/director-install-and-upgrade/dop-deploy
 ./stages/director-install-and-upgrade/dop-deploy
 
 
