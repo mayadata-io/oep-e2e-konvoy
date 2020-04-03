@@ -23,15 +23,15 @@ litmus-deps-setup:
     - chmod 755 ./stages/director-install-and-upgrade/litmus-dependencies/litmus-deps-setup
     - ./stages/director-install-and-upgrade/litmus-dependencies/litmus-deps-setup
 
-# ## Deploy Director On-Prem
-# director-deploy:
-#   image: harshshekhar15/gitlab-job:v2
-#   stage: DIRECTOR-INSTALL-AND-UPGRADE
-#   dependencies:
-#     - cluster-create
-#   script:
-#     - chmod 755 ./stages/director-install-and-upgrade/dop-deploy
-#     - ./stages/director-install-and-upgrade/dop-deploy
+## Deploy Director On-Prem
+director-deploy:
+  image: harshshekhar15/gitlab-job:v2
+  stage: DIRECTOR-INSTALL-AND-UPGRADE
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/director-install-and-upgrade/dop-deploy
+    - ./stages/director-install-and-upgrade/dop-deploy
 
 # # director health check jobs
 # maya-io-server-check:

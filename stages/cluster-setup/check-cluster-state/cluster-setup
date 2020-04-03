@@ -11,14 +11,9 @@ cluster_state=$(eval $state)
 
 while [ "${cluster_state}" == "oep-e2e-konvoy" ]; do
   echo "***Cluster is Engaged***"
-  wait=1
   cluster_state=$(eval $state)
   sleep 30
 done
-
-if [ "$wait" == "1" ]; then
-  sleep 120
-fi
 
 echo "*************************Checking the Cluster's Health********************"
 
