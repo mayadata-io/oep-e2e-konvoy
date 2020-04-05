@@ -36,8 +36,7 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone h
 #####################################
 
 echo "************* Calling Prerequisites *************"
-chmod 755 ./oep-e2e-konvoy/stages/director-install-and-upgrade/prerequisites/prerequisite-setup
-./oep-e2e-konvoy/stages/director-install-and-upgrade/prerequisites/prerequisite-setup "$GITHUB_USERNAME" "$GITHUB_PASSWORD"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'chmod 755 ./oep-e2e-konvoy/stages/director-install-and-upgrade/prerequisites/prerequisite-setup && ./oep-e2e-konvoy/stages/director-install-and-upgrade/prerequisites/prerequisite-setup "$GITHUB_USERNAME" "$GITHUB_PASSWORD"'
 
 else
 echo "All nodes are not ready"
