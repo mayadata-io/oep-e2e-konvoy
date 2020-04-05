@@ -1,11 +1,11 @@
 #!/bin/bash
-pod() {
+# pod() {
 
-echo "*************Litmus and Heapster Setup*************"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/prerequisites/prerequisite-setup node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"''
-}
+# echo "*************Litmus and Heapster Setup*************"
+# cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/prerequisites/prerequisite-setup node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"'
+# }
 
-node() {
+# node() {
 
 echo "***Applying e2e-crd***********"
 kubectl apply -f utils/e2e-crd.yml
@@ -48,10 +48,10 @@ kubectl top node
 
 echo -e "\n*************Finished Prerequisites*************"
 
-}
+# }
 
-if [ "$1" == "node" ];then
-  node $2 $3
-else
-  pod
-fi
+# if [ "$1" == "node" ];then
+#   node $2 $3
+# else
+#   pod
+# fi
