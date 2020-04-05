@@ -6,21 +6,20 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-
 }
 
 node() {
-echo "************* Calling Prerequisites *************"
-chmod 755 ./stages/director-install-and-upgrade/dop-deploy
-./stages/director-install-and-upgrade/dop-deploy
+#####################################
+##          Prerequisites          ##
+#####################################
 
+echo "************* Calling Prerequisites *************"
+chmod 755 ./stages/director-install-and-upgrade/prerequisite-setup
+./stages/director-install-and-upgrade/prerequisite-setup
 
 GITHUB_USERNAME=$1
 GITHUB_PASSWORD=$2
 DOCKER_USERNAME=$3
 DOCKER_PASSWORD=$4
 
-#####################################
-##          Prerequisites          ##
-#####################################
-
-echo "[ Running Prerequisites ]-------------------------------------\n";
+# Setting up DOP_URL variable
 
 DOP_URL=$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | head -n 1)
 
