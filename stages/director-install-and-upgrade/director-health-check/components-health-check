@@ -1,11 +1,30 @@
 #!/bin/bash
+pod() {
+
+echo "*************maya-io-server check*************"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/director-health-check/components-health-check node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"''
+}
+
+node() {
+
+GITHUB_USERNAME=$1
+GITHUB_PASSWORD=$2
 
 echo "Calling maya-io-server check"
 chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check
 # Running job in background
-sh ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check &
+
+sh ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD" &
 
 echo "Calling maya-ui check"
 chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-ui-check
-sh ./stages/director-install-and-upgrade/director-health-check/maya-ui-check &
+sh ./stages/director-install-and-upgrade/director-health-check/maya-ui-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD" &
 # wait
+
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3
+else
+  pod
+fi

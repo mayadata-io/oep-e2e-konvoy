@@ -38,7 +38,7 @@ director-health-check:
   image: harshshekhar15/gitlab-job:v3
   stage: DIRECTOR-INSTALL-AND-UPGRADE
   dependencies:
-    - director-deploy
+    - cluster-create
   script:
     - chmod 755 ./stages/director-install-and-upgrade/director-health-check/components-health-check
     - ./stages/director-install-and-upgrade/director-health-check/components-health-check

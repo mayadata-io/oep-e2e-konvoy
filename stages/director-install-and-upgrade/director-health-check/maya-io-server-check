@@ -1,11 +1,4 @@
 #!/bin/bash
-pod() {
-
-echo "*************maya-io-server check*************"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-health-check/maya-io-server-check node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"''
-}
-
-node() {
 
 GITHUB_USERNAME=$1
 GITHUB_PASSWORD=$2
@@ -16,7 +9,6 @@ echo $URL
 # Cloning oep-e2e repository which contains all the test scripts
 git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/oep-e2e.git
 cd oep-e2e
-
 
 ######################
 ##   Running test  ##
@@ -54,12 +46,4 @@ echo $testResult
 
 if [ "$testResult" != Pass ]; then 
 exit 1; 
-fi
-
-}
-
-if [ "$1" == "node" ];then
-  node $2 $3
-else
-  pod
 fi
