@@ -31,11 +31,6 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get 
 
 echo "*************Cloning oep-e2e-konvoy repo*************"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
-else
-echo "All nodes are not ready"
-echo "*******Cluster is in Unhealthy state*******"
-echo "*************Cloning oep-e2e-konvoy repo*************"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
 #####################################
 ##          Prerequisites          ##
 #####################################
@@ -43,5 +38,11 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone h
 echo "************* Calling Prerequisites *************"
 chmod 755 ./oep-e2e-konvoy/stages/director-install-and-upgrade/prerequisites/prerequisite-setup
 ./oep-e2e-konvoy/stages/director-install-and-upgrade/prerequisites/prerequisite-setup "$GITHUB_USERNAME" "$GITHUB_PASSWORD"
+
+else
+echo "All nodes are not ready"
+echo "*******Cluster is in Unhealthy state*******"
+echo "*************Cloning oep-e2e-konvoy repo*************"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
 exit;
 fi
