@@ -6,13 +6,6 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-
 }
 
 node() {
-#####################################
-##          Prerequisites          ##
-#####################################
-
-echo "************* Calling Prerequisites *************"
-chmod 755 ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup
-./stages/director-install-and-upgrade/prerequisites/prerequisite-setup "$GITHUB_USERNAME" "$GITHUB_PASSWORD"
 
 GITHUB_USERNAME=$1
 GITHUB_PASSWORD=$2
