@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "***Applying e2e-crd***********"
-kubectl apply -f utils/e2e-crd.yml
+kubectl apply -f oep-e2e-konvoy/utils/e2e-crd.yml
 
 GITHUB_USERNAME=$1
 GITHUB_PASSWORD=$2
