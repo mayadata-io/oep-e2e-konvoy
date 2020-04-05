@@ -19,7 +19,7 @@ sh ./stages/director-install-and-upgrade/director-health-check/maya-io-server-ch
 echo "Calling maya-ui check"
 chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-ui-check
 sh ./stages/director-install-and-upgrade/director-health-check/maya-ui-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD" &
-# wait
+wait
 
 }
 
