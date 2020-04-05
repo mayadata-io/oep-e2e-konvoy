@@ -1,4 +1,11 @@
 #!/bin/bash
 
-sh ./maya-io-server-check
-sh ./maya-ui-check
+echo "Calling maya-io-server check"
+chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check
+# Running job in background
+sh ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check &
+
+echo "Calling maya-ui check"
+chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-ui-check
+sh ./stages/director-install-and-upgrade/director-health-check/maya-ui-check &
+# wait

@@ -34,17 +34,17 @@ director-deploy:
     - ./stages/director-install-and-upgrade/dop-deploy
 
 # ## Director components health check jobs
-# director-health-check:
-#   image: harshshekhar15/gitlab-job:v3
-#   stage: DIRECTOR-INSTALL-AND-UPGRADE
-#   dependencies:
-#     - director-deploy
-#   script:
-#     - chmod 755 ./stages/director-install-and-upgrade/director-health-check/components-health-check
-#     - ./stages/director-install-and-upgrade/director-health-check/components-health-check
-#   artifacts:
-#     paths:
-#       - .kube/
+director-health-check:
+  image: harshshekhar15/gitlab-job:v3
+  stage: DIRECTOR-INSTALL-AND-UPGRADE
+  dependencies:
+    - director-deploy
+  script:
+    - chmod 755 ./stages/director-install-and-upgrade/director-health-check/components-health-check
+    - ./stages/director-install-and-upgrade/director-health-check/components-health-check
+  artifacts:
+    paths:
+      - .kube/
 
 # maya-ui-check:
 #   image: harshshekhar15/gitlab-job:v3
