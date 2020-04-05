@@ -12,13 +12,11 @@ GITHUB_PASSWORD=$2
 
 echo "Calling maya-io-server check"
 chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check
-# Running job in background
-
-sh ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD" &
+sh ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD"
 
 echo "Calling maya-ui check"
 chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-ui-check
-sh ./stages/director-install-and-upgrade/director-health-check/maya-ui-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD" &
+sh ./stages/director-install-and-upgrade/director-health-check/maya-ui-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD"
 wait
 
 }
