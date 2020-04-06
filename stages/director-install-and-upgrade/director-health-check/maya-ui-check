@@ -42,7 +42,7 @@ kubectl logs -f $litmus_pod -n litmus
 kubectl get po
 
 testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
-echo "Test resullt: $testResult"
+echo "********** maya-ui check completed! **********"
 
 if [ "$testResult" != Pass ]; then 
 exit 1; 

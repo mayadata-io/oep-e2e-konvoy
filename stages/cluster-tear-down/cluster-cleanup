@@ -37,7 +37,6 @@ node() {
   ansible-playbook k8s/on-prem/openshift-installer/revert_cluster_state.yml -v
   
   # Removing oep-e2e-konvoy repo
-  bash utils/e2e-cr jobname:cluster-cleanup jobphase:Completed
   cd && rm -rf oep-e2e-konvoy
 }
 

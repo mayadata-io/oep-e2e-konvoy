@@ -20,7 +20,7 @@ node() {
   bash ./stages/director-install-and-upgrade/director-health-check/maya-ui-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD"
   wait
 
-  bash utils/e2e-cr jobname:components-health-check jobphase:Completed
+  echo "Components health check finished!"
 
 }
 
