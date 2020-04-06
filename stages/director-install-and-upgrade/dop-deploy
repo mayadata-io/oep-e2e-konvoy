@@ -59,7 +59,7 @@ node() {
   # Dump Director On-Prem pods
   echo "\n[ Dumping Director On-Prem components ]\n"
   kubectl get pod
-  cd ..
+  cd ~/oep-e2e-konvoy/
   bash utils/e2e-cr jobname:dop-deploy jobphase:Completed 
 }
 

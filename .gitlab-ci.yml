@@ -289,7 +289,7 @@ director-health-check:
 
 ## E2E metrics stage
 e2e-metrics:
-  # when: always
+  when: always
   image: harshshekhar15/gitlab-job:v2
   stage: CLUSTER-TEAR-DOWN
   dependencies:
@@ -300,7 +300,7 @@ e2e-metrics:
 
 ## Revert the cluster to previous snapshot
 cluster-cleanup:
-  # when: always
+  when: always
   image: harshshekhar15/gitlab-job:v2
   stage: CLUSTER-TEAR-DOWN
   dependencies:
