@@ -2,7 +2,7 @@
 pod() {
 
 echo "*************Litmus and Heapster Setup*************"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/prerequisites/prerequisite-setup node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"''
+./stages/director-install-and-upgrade/prerequisites/prerequisite-setup node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"'
 }
 
 node() {
