@@ -2,6 +2,9 @@
 
 GITHUB_USERNAME=$1
 GITHUB_PASSWORD=$2
+echo "Testing location"
+ls
+kubectl get pods
 
 URL=https://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | head -n 1):30380
 echo $URL
