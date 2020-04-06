@@ -15,12 +15,12 @@ echo $URL
 ######################
 
 # Add sed command to fetch internal IP of the node 
-sed "s/print \$7/print \$6/" -i litmus/director/maya-io-server/test.yaml
+sed "s/print \$7/print \$6/" -i oep-e2e/litmus/director/maya-io-server/test.yaml
 
 # debug-check to get the nodeIP
-cat litmus/director/maya-io-server/test.yaml
+cat oep-e2e/litmus/director/maya-io-server/test.yaml
 
-kubectl create -f litmus/director/maya-io-server/run_litmus_test.yml
+kubectl create -f oep-e2e/litmus/director/maya-io-server/run_litmus_test.yml
 
 test_name=maya-io-server-check
 echo "Test name: $test_name"
