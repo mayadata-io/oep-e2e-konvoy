@@ -32,8 +32,10 @@ echo "Litmus pod name: $litmus_pod"
 
 job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1 2>&1)
 
+echo "Job status: $job_status"
+
 # Check completed status for job
-while [ "$job_status" != "Completed" || "$job_status" == *BadRequest*]
+while [[ "$job_status" != "Completed" || "$job_status" == *BadRequest* ]]
 do 
   job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
   echo "Waiting for job status to be Completed"
