@@ -7,8 +7,8 @@ URL=https://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | head -
 echo $URL
 
 # Cloning oep-e2e repository which contains all the test scripts
-git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/oep-e2e.git
-cd oep-e2e
+# git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/oep-e2e.git
+# cd oep-e2e
 
 ######################
 ##   Running test  ##
@@ -23,10 +23,10 @@ cat litmus/director/maya-io-server/test.yaml
 kubectl create -f litmus/director/maya-io-server/run_litmus_test.yml
 
 test_name=maya-io-server-check
-echo $test_name
+echo "Test name: $test_name"
 
 litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
-echo $litmus_pod
+echo "Litmus pod name: $litmus_pod"
 
 job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
 
