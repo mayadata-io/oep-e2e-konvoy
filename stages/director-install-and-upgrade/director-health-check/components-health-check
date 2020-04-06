@@ -11,16 +11,20 @@ node() {
   GITHUB_USERNAME=$1
   GITHUB_PASSWORD=$2
   
-  echo "Calling maya-io-server check"
+  echo -e "********** Calling maya-io-server check **********"
   chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check
-  bash ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD"
-  
-  echo "Calling maya-ui check"
-  chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-ui-check
-  bash ./stages/director-install-and-upgrade/director-health-check/maya-ui-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD"
-  # wait
+  bash ./stages/director-install-and-upgrade/director-health-check/maya-io-server-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD"  >maya-io-server-check.out 2>&1 &
 
-  echo "Components health check finished!"
+  echo -e "\n********** Calling maya-ui check **********"
+  chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-ui-check
+  bash ./stages/director-install-and-upgrade/director-health-check/maya-ui-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD" >maya-ui-check.out 2>&1 &
+  
+  wait
+  tail -q -f maya-io-server-check.out -f maya-ui-check.out --pid $!
+
+  rm -v maya-io-server-check.out maya-ui-check.out
+
+  echo -e "\n********** Components health check finished **********!"
 
 }
 
