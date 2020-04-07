@@ -19,9 +19,9 @@ node() {
   chmod 755 ./stages/director-install-and-upgrade/director-health-check/maya-ui-check
   bash ./stages/director-install-and-upgrade/director-health-check/maya-ui-check "$GITHUB_USERNAME" "$GITHUB_PASSWORD" >maya-ui-check.out 2>&1 &
   
-  wait
   tail -q -f maya-io-server-check.out -f maya-ui-check.out --pid $!
 
+  wait
   rm -v maya-io-server-check.out maya-ui-check.out
 
   echo -e "\n********** Components health check finished **********!"
