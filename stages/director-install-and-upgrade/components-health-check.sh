@@ -1,32 +1,30 @@
 #!/bin/bash
-set -ex
-pod() {
-  echo "*************maya-io-server check*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/director-health-check/components-health-check.sh node'
-}
 
-node() {
-  bash utils/pooling jobname:dop-deploy
-  bash utils/e2e-cr jobname:components-health-check jobphase:Running
+path=pwd
+echo "Path: $path"
+cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/components-health-check.sh
 
-  ## Run Prerequisites
-  echo -e "\n********* [ Making logs directory ] **********\n";
-  mkdir -pv logs/basic-sanity-tests
+# Sequencing Jobs
+bash utils/pooling jobname:dop-deploy
+bash utils/e2e-cr jobname:components-health-check jobphase:Running
 
-  ## Run OEP basic sanity checks
-  echo -e "\n Running OEP Basic Sanity Checks ************************************************************\n";
+## Run Prerequisites
+echo -e "\n********* [ Making logs directory ] **********\n";
+mkdir -pv logs/basic-sanity-tests
 
-  echo -e "------------------------------------------\n" >> result.txt
+## Run OEP basic sanity checks
+echo -e "\n Starting OEP Basic Sanity Checks ************************************************************\n";
+echo -e "------------------------------------------\n" >> result.txt
 
-  # Run maya-io-server check
-  echo -e "\n********** [ Running maya-io-server check ] **********\n";
-  chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/maya-io-server-check.sh
-  ./stages/director-install-and-upgrade/basic-sanity-tests/maya-io-server-check.sh > ./logs/basic-sanity-tests/maya-io-server-check.log &
+# Run maya-io-server check
+echo -e "\n********** [ Running maya-io-server check ] **********\n";
+chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/maya-io-server-check.sh
+./stages/director-install-and-upgrade/basic-sanity-tests/maya-io-server-check.sh > ./logs/basic-sanity-tests/maya-io-server-check.log &
 
-  # Run maya-ui check
-  echo -e "\n************* [ Running maya-ui check ] **************\n";
-  chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/maya-ui-check.sh
-  ./stages/director-install-and-upgrade/basic-sanity-tests/maya-ui-check.sh > ./logs/basic-sanity-tests/maya-ui-check.log &
+# Run maya-ui check
+echo -e "\n************* [ Running maya-ui check ] **************\n";
+chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/maya-ui-check.sh
+./stages/director-install-and-upgrade/basic-sanity-tests/maya-ui-check.sh > ./logs/basic-sanity-tests/maya-ui-check.log &
 
 # # Run od-elasticsearch check
 # echo -e "\n********* [ Running od-elasticsearch check ] *********\n";
@@ -123,18 +121,9 @@ node() {
 # chmod 755 ./basic-sanity-tests/ruler-check.sh
 # ./basic-sanity-tests/ruler-check.sh > ./logs/basic-sanity-tests/ruler-check.log &
 
-  wait
-
-  echo -e "\n------------------------------------------" >> result.txt
-
-  ## Show results
-  echo -e "\n Results ***********************************************************************************";
-  cat result.txt;
-  echo -e "\n********** Components health check finished **********!"
-}
-
-if [ "$1" == "node" ];then
-  node
-else
-  pod
-fi
+wait
+echo -e "\n------------------------------------------" >> result.txt
+## Show results
+echo -e "\n Results ***********************************************************************************";
+cat result.txt;
+echo -e "\n********** Basics Sanity Checks finished **********!"
