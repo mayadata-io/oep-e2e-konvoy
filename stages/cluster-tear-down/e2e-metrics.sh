@@ -23,10 +23,6 @@ node() {
   # Create namespace for e2e-metric components
   kubectl create ns $COVERAGE_NAMESPACE
   
-  # Clone oep-e2e repo and copy master-plan to oep-e2e-konvoy repo
-  git clone https://github.com/mayadata-io/oep-e2e.git
-  cp oep-e2e/.master-plan.yml .master-plan.yml
-  
   # Create configmap from master test plan file
   kubectl create configmap metrics-config-test -n $COVERAGE_NAMESPACE --from-file=.master-plan.yml --from-file=.gitlab-ci.yml
   
