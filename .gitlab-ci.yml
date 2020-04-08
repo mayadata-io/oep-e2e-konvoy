@@ -10,8 +10,8 @@ cluster-create:
   image: harshshekhar15/gitlab-job:v3
   stage: CLUSTER-SETUP
   script:
-    - chmod 755 ./stages/cluster-setup/check-cluster-state/cluster-setup
-    - ./stages/cluster-setup/check-cluster-state/cluster-setup
+    - chmod 755 ./stages/cluster-setup/check-cluster-state/cluster-setup.sh
+    - ./stages/cluster-setup/check-cluster-state/cluster-setup.sh
 
 ## Dependencies/Prerequisite Setup
 # prerequisite-setup:
@@ -30,8 +30,8 @@ director-deploy:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/director-install-and-upgrade/dop-deploy
-    - ./stages/director-install-and-upgrade/dop-deploy
+    - chmod 755 ./stages/director-install-and-upgrade/dop-deploy.sh
+    - ./stages/director-install-and-upgrade/dop-deploy.sh
 
 # ## Director components health check jobs
 director-health-check:
@@ -40,11 +40,8 @@ director-health-check:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/director-install-and-upgrade/director-health-check/components-health-check
-    - ./stages/director-install-and-upgrade/director-health-check/components-health-check
-  # artifacts:
-  #   paths:
-  #     - .kube/
+    - chmod 755 ./stages/director-install-and-upgrade/components-health-check.sh
+    - ./stages/director-install-and-upgrade/components-health-check.sh
 
 # maya-ui-check:
 #   image: harshshekhar15/gitlab-job:v3
@@ -295,8 +292,8 @@ e2e-metrics:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/cluster-tear-down/e2e-metrics
-    - ./stages/cluster-tear-down/e2e-metrics
+    - chmod 755 ./stages/cluster-tear-down/e2e-metrics.sh
+    - ./stages/cluster-tear-down/e2e-metrics.sh
 
 ## Revert the cluster to previous snapshot
 cluster-cleanup:
@@ -306,5 +303,5 @@ cluster-cleanup:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/cluster-tear-down/cluster-cleanup
-    - ./stages/cluster-tear-down/cluster-cleanup
+    - chmod 755 ./stages/cluster-tear-down/cluster-cleanup.sh
+    - ./stages/cluster-tear-down/cluster-cleanup.sh

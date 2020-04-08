@@ -2,7 +2,7 @@
 
 pod() {
   echo "*************Deploying Director On-Prem*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/dop-deploy node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$DOCKER_USERNAME'"' '"'$DOCKER_PASSWORD'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/dop-deploy.sh node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$DOCKER_USERNAME'"' '"'$DOCKER_PASSWORD'"''
 }
 
 node() {

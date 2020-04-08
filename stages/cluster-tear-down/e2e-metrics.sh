@@ -2,7 +2,7 @@
 
 pod() {
   echo "************* Setting up the cluster for e2e metrics *************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/e2e-metrics node '"'$CI_PIPELINE_ID'"' '"'$CI_JOB_ID'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/e2e-metrics.sh node '"'$CI_PIPELINE_ID'"' '"'$CI_JOB_ID'"''
 }
 
 node() {

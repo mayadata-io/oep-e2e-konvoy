@@ -1,18 +1,10 @@
 #!/bin/bash
-pod() {
-./stages/director-install-and-upgrade/prerequisites/prerequisite-setup node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"'
-}
-
-node() {
 
 echo "************* Applying e2e-crd *************"
 kubectl apply -f utils/e2e-crd.yml
 
-GITHUB_USERNAME=$1
-GITHUB_PASSWORD=$2
-
 # Cloning oep-e2e repository which contains all the test scripts
-git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/oep-e2e.git
+git clone https://github.com/mayadata-io/oep-e2e.git
 
 # Setup litmus on the cluster
 kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
@@ -31,7 +23,7 @@ sed -i -e '/args:/ a\          - --kubelet-preferred-address-types=InternalDNS,I
 kubectl apply -f  metrics-server/deploy/kubernetes/
 sleep 60
 
-The below line turns off case sensitive comparison of strings
+# The below line turns off case sensitive comparison of strings
 shopt -s nocasematch
 
 # Check if metrics server is returning output
@@ -54,13 +46,4 @@ echo $director_url
 # Note: Do not change the configmap name config, otherwise update the name in all other playbooks
 kubectl create cm config --from-literal=url=$director_url -n litmus
 
-
 echo -e "\n************* Finished Prerequisites *************"
-
-}
-
-if [ "$1" == "node" ];then
-  node $2 $3
-else
-  pod
-fi

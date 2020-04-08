@@ -36,7 +36,7 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone h
 #####################################
 
 echo "************* Running Prerequisites *************"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && chmod 755 ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup && ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && chmod 755 ./stages/cluster-setup/prerequisites/prerequisite-setup.sh && ./stages/cluster-setup/prerequisites/prerequisite-setup.sh'
 
 else
 echo "All nodes are not ready"
