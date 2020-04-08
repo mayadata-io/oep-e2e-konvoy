@@ -35,7 +35,7 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone h
 ##          Prerequisites          ##
 #####################################
 
-echo "************* Calling Prerequisites *************"
+echo "************* Running Prerequisites *************"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && chmod 755 ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup && ./stages/director-install-and-upgrade/prerequisites/prerequisite-setup'
 
 else
