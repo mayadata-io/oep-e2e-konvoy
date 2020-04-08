@@ -1,12 +1,10 @@
 #!/bin/bash
 
-path=pwd
-echo "Path: $path"
-cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/components-health-check.sh
-
 # Sequencing Jobs
 bash utils/pooling jobname:dop-deploy
 bash utils/e2e-cr jobname:components-health-check jobphase:Running
+
+echo pwd
 
 ## Run Prerequisites
 echo -e "\n********* [ Making logs directory ] **********\n";
