@@ -8,7 +8,7 @@ sed -i -e 's/generateName: app-check/generateName: maya-ui-health-check/g' \
 -e 's/app: app-litmus/app: maya-ui-health-check-litmus/g' \
 -e 's/value: test-name/value: maya-ui-health-check/g' \
 -e 's/value: default /value: default/g' \
--e 's/value: pod-name/value: maya-ui/g' oep/litmus/director/common-checks/run_litmus_test.yml \
+-e 's/value: pod-name/value: maya-ui-health-check/g' oep/litmus/director/common-checks/run_litmus_test.yml \
 > oep/litmus/director/common-checks/maya_ui_run_litmus_test.yml
 
 cat oep/litmus/director/common-checks/maya_ui_run_litmus_test.yml
