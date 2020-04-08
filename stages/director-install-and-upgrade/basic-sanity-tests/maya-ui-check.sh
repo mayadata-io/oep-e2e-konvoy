@@ -1,7 +1,7 @@
 #!/bin/bash
-
+ 
 # Specify test name
-test_name=maya-ui-check
+test_name=maya-ui-health-check
 echo "Test name: $test_name"
 
 sed -i -e 's/generateName: app-check/generateName: maya-ui-health-check/g' \
