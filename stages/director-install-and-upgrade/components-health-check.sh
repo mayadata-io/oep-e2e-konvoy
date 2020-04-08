@@ -1,10 +1,14 @@
 #!/bin/bash
 
+pod() {
+  echo "*************Deploying Director On-Prem*************"
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/dop-deploy.sh node'
+}
+
+node() {
 # Sequencing Jobs
 bash utils/pooling jobname:dop-deploy
 bash utils/e2e-cr jobname:components-health-check jobphase:Running
-
-echo pwd
 
 ## Run Prerequisites
 echo -e "\n********* [ Making logs directory ] **********\n";
@@ -125,3 +129,11 @@ echo -e "\n------------------------------------------" >> result.txt
 echo -e "\n Results ***********************************************************************************";
 cat result.txt;
 echo -e "\n********** Basics Sanity Checks finished **********!"
+
+}
+
+if [ "$1" == "node" ];then
+  node
+else
+  pod
+fi
