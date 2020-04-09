@@ -36,7 +36,7 @@ echo -e "\n\nJob logs:"
 kubectl logs -f $litmus_pod -n litmus
 
 # Check alertstore-check job result
-testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
+testResult=$(kubectl get litmusresult $test_name --no-headers -o custom-columns=:spec.testStatus.result)
 echo -e "\n\n"
 echo "%%%%%%%%%%%%%%%%%%%%%%%"
 echo "%% Test result: $testResult %%"

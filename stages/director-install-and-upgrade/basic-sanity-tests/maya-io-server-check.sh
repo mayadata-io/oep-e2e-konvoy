@@ -22,11 +22,11 @@ do
 done
 
 # Print maya-io-server-check job logs
-echo "\n\nJob logs:"
+echo -e "\n\nJob logs:"
 kubectl logs -f $litmus_pod -n litmus
 
 # Check maya-io-server-check job results
-testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
+testResult=$(kubectl get litmusresult $test_name --no-headers -o custom-columns=:spec.testStatus.result)
 # Print test result
 echo -e "\n\n"
 echo "%%%%%%%%%%%%%%%%%%%%%%%"
