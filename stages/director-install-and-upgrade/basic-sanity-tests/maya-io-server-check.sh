@@ -11,7 +11,7 @@ echo "Test name: $test_name"
 litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
 echo "Litmus pod name: $litmus_pod"
 
-job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
+job_status=$(kubectl get po $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
 
 # Check completed status for job
 while [[ "$job_status" != "Completed" ]]
