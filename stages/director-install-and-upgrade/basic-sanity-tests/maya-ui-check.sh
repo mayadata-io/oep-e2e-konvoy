@@ -13,6 +13,7 @@ sed -e 's/generateName: app-check/generateName: maya-ui-health-check/g' \
 
 cat oep/litmus/director/common-checks/maya_ui_run_litmus_test.yml
 
+echo -e "\n"
 # Run common health check litmus job
 kubectl create -f oep/litmus/director/common-checks/maya_ui_run_litmus_test.yml
 
@@ -31,12 +32,16 @@ do
 done
 
 # Print common health check job logs
-echo "Job logs:"
+echo -e "\n\nJob logs:"
 kubectl logs -f $litmus_pod -n litmus
 
 # Check common health check job result
 testResult=$(kubectl get litmusresult $test_name --no-headers -o custom-columns=:spec.testStatus.result)
-echo "Test result: $testResult" 
+# Print test result
+echo -e "\n\n"
+echo "%%%%%%%%%%%%%%%%%%%%%%%"
+echo "%% Test result: $testResult %%"
+echo "%%%%%%%%%%%%%%%%%%%%%%%"
 
 # Flush test result in result.txt
 echo "$test_name: $testResult" >> result.txt;

@@ -37,10 +37,10 @@ echo -e "\n************ [ Running od-kibana-logging check ] *************\n";
 chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/od-kibana-logging-check.sh
 ./stages/director-install-and-upgrade/basic-sanity-tests/od-kibana-logging-check.sh > ./logs/basic-sanity-tests/od-kibana-logging-check.log &
 
-# # Run alertmanager check
-# echo -e "\n*********** [ Running alertmanager check ] ***********\n";
-# chmod 755 ./basic-sanity-tests/alertmanager-check.sh
-# ./basic-sanity-tests/alertmanager-check.sh > ./logs/basic-sanity-tests/alertmanager-check.log &
+# Run alertmanager check
+echo -e "\n*********** [ Running alertmanager check ] ***********\n";
+chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/alertmanager-check.sh
+./stages/director-install-and-upgrade/basic-sanity-tests/alertmanager-check.sh > ./logs/basic-sanity-tests/alertmanager-check.log &
 
 # # Run alertstore check
 # echo -e "\n************ [ Running alertstore check ] ************\n";
