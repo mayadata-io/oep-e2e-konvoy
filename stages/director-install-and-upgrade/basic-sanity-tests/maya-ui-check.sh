@@ -4,7 +4,7 @@ set -ex
 test_name=maya-ui-health-check
 echo "Test name: $test_name"
 
-sed -i -e 's/generateName: app-check/generateName: maya-ui-health-check/g' \
+sed -e 's/generateName: app-check/generateName: maya-ui-health-check/g' \
 -e 's/app: app-litmus/app: maya-ui-health-check-litmus/g' \
 -e 's/value: test-name/value: $test_name/g' \
 -e 's/value: default /value: default/g' \
