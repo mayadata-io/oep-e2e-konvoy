@@ -4,9 +4,9 @@
 test_name=od-elasticsearch-logging-health-check
 echo "Test name: $test_name"
 
-sed -e 's/generateName: app-check/generateName: od-elasticsearch-logging-health-check/g' \
+sed -e 's/generateName: app-check/generateName: '"$test_name"'/g' \
 -e 's/app: app-litmus/app: od-elasticsearch-logging-health-check-litmus/g' \
--e 's/value: test-name/value: od-elasticsearch-logging-health-check/g' \
+-e 's/value: test-name/value: '"$test_name"'/g' \
 -e 's/value: default /value: default/g' \
 -e 's/value: pod-name/value: od-elasticsearch-logging/g' oep/litmus/director/common-checks/run_litmus_test.yml \
 > oep/litmus/director/common-checks/es_run_litmus_test.yml
