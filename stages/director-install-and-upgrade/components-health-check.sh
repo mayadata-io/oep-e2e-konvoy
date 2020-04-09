@@ -42,10 +42,10 @@ echo -e "\n*********** [ Running alertmanager check ] ***********\n";
 chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/alertmanager-check.sh
 ./stages/director-install-and-upgrade/basic-sanity-tests/alertmanager-check.sh > ./logs/basic-sanity-tests/alertmanager-check.log &
 
-# # Run alertstore check
-# echo -e "\n************ [ Running alertstore check ] ************\n";
-# chmod 755 ./basic-sanity-tests/alertstore-check.sh
-# ./basic-sanity-tests/alertstore-check.sh > ./logs/basic-sanity-tests/alertstore-check.log &
+# Run alertstore check
+echo -e "\n************ [ Running alertstore check ] ************\n";
+chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/alertstore-check.sh
+./stages/director-install-and-upgrade/basic-sanity-tests/alertstore-check.sh > ./logs/basic-sanity-tests/alertstore-check.log &
 
 # # Run alertstore-tablemanager check
 # echo -e "\n****** [ Running alertstore-tablemanager check ] *****\n";
@@ -127,7 +127,13 @@ echo -e "\n------------------------------------------" >> result.txt
 ## Show results
 echo -e "\n Results ***********************************************************************************";
 cat result.txt;
+
 echo -e "\n********** Basic Sanity Checks finished **********!"
+
+# If any of the above check fails, then fail this job
+if [ $(cat result.txt | grep -ic fail) != 0 ];then
+  exit 1
+fi
 
 }
 
