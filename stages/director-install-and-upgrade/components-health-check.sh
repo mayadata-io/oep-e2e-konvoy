@@ -27,15 +27,15 @@ echo -e "\n************* [ Running maya-ui check ] **************\n";
 chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/maya-ui-check.sh
 ./stages/director-install-and-upgrade/basic-sanity-tests/maya-ui-check.sh > ./logs/basic-sanity-tests/maya-ui-check.log &
 
-# Run od-elasticsearch check
-echo -e "\n********* [ Running od-elasticsearch check ] *********\n";
+# Run od-elasticsearch-logging check
+echo -e "\n********* [ Running od-elasticsearch-logging check ] *********\n";
 chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/od-elasticsearch-logging-check.sh
 ./stages/director-install-and-upgrade/basic-sanity-tests/od-elasticsearch-logging-check.sh > ./logs/basic-sanity-tests/od-elasticsearch-logging-check.log &
 
-# # Run od-kibana check
-# echo -e "\n************ [ Running od-kibana check ] *************\n";
-# chmod 755 ./basic-sanity-tests/od-kibana-check.sh
-# ./basic-sanity-tests/od-kibana-check.sh > ./logs/basic-sanity-tests/od-kibana-check.log &
+# Run od-kibana-logging check
+echo -e "\n************ [ Running od-kibana-logging check ] *************\n";
+chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/od-kibana-logging-check.sh
+./stages/director-install-and-upgrade/basic-sanity-tests/od-kibana-logging-check.sh > ./logs/basic-sanity-tests/od-kibana-logging-check.log &
 
 # # Run alertmanager check
 # echo -e "\n*********** [ Running alertmanager check ] ***********\n";
@@ -127,7 +127,7 @@ echo -e "\n------------------------------------------" >> result.txt
 ## Show results
 echo -e "\n Results ***********************************************************************************";
 cat result.txt;
-echo -e "\n********** Basics Sanity Checks finished **********!"
+echo -e "\n********** Basic Sanity Checks finished **********!"
 
 }
 
