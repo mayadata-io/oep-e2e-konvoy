@@ -27,10 +27,10 @@ echo -e "\n************* [ Running maya-ui check ] **************\n";
 chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/maya-ui-check.sh
 ./stages/director-install-and-upgrade/basic-sanity-tests/maya-ui-check.sh > ./logs/basic-sanity-tests/maya-ui-check.log &
 
-# # Run od-elasticsearch check
-# echo -e "\n********* [ Running od-elasticsearch check ] *********\n";
-# chmod 755 ./basic-sanity-tests/od-elasticsearch-check.sh
-# ./basic-sanity-tests/od-elasticsearch-check.sh > ./logs/basic-sanity-tests/od-elasticsearch-check.log &
+# Run od-elasticsearch check
+echo -e "\n********* [ Running od-elasticsearch check ] *********\n";
+chmod 755 ./stages/director-install-and-upgrade/basic-sanity-tests/od-elasticsearch-logging-check.sh
+./stages/director-install-and-upgrade/basic-sanity-tests/od-elasticsearch-logging-check.sh > ./logs/basic-sanity-tests/od-elasticsearch-logging-check.log &
 
 # # Run od-kibana check
 # echo -e "\n************ [ Running od-kibana check ] *************\n";
