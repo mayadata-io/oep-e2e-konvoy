@@ -27,7 +27,9 @@ node() {
   -e "s/auto4/$worker3_name/g" k8s/on-prem/openshift-installer/vm_name.csv
   
   sed -i "/$worker3_name/a \
-  $worker4_name \
+  $worker4_name" k8s/on-prem/openshift-installer/vm_name.csv
+
+  sed -i "/$worker4_name/a \
   $worker5_name" k8s/on-prem/openshift-installer/vm_name.csv
   
   # Replace the snapshot name and esx ip in vars
