@@ -4,17 +4,10 @@ This directory covers the test case development status for E2E certification of 
 
 The test cases are divided as per the Stages that run in GitLab pipeline. Following are the stages.
 
-| Stage                 | Description |
-| --------------------- | ----------- |
-| CLUSTER-SETUP         |             |
-| PROVIDER-INFRA-SETUP  |             |
-| DIRECTOR-HEALTH-CHECK |             |
-| USER-CLUSTER-SETUP    |             |
-| USER-CLUSTER-CONNECT  |             |
-| METRICS-CHECK         |             |
-| TEAMING-CHECK         |             |
-| TOPOLOGY-CHECK        |             |
-| OPENEBS-INSTALL-CHECK |             |
-| OPENEBS-UPGRADE-CHECK |             |
-| E2E-METRICS           |             |
-| CLUSTER-TEAR-DOWN     |             |
+| Stage                            | Description |
+| -------------------------------- | ----------- |
+| CLUSTER-SETUP                    |             |
+| DIRECTOR-INSTALL-AND-UPGRADE     |             |
+| FUNCTIONAL-TESTING-WITH-REST     |             |
+| FUNCTIONAL-TESTING-WITH-SELENIUM |             |
+| CLUSTER-TEAR-DOWN                |             |
