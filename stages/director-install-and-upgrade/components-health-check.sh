@@ -14,9 +14,6 @@ bash utils/e2e-cr jobname:components-health-check jobphase:Running
 echo -e "\n********* [ Making logs directory ] **********\n";
 mkdir -pv logs/basic-sanity-tests
 
-echo -e "Curent path: pwd"
-
-
 echo -e "\n************************ Running basic-sanity tests ***********************************\n"
 bash oep/scripts/director-health-check.sh
 

@@ -5,6 +5,7 @@ kubectl apply -f utils/e2e-crd.yml
 
 # Cloning oep repository which contains all the test scripts
 git clone https://github.com/mayadata-io/oep.git
+git checkout script-test
 
 # Setup litmus on the cluster
 kubectl apply -f oep/litmus/prerequisite/rbac.yaml
