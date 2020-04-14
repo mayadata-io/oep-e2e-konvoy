@@ -21,16 +21,13 @@ node() {
   no_resources_found=No\ resources\ found
 
   # Copy master-plan
-  cp oep/.master-plan.yml .master-plan.yml
+  cp oep-e2e/.master-plan.yml .master-plan.yml
 
   # Create namespace for e2e-metric components
   kubectl create ns $COVERAGE_NAMESPACE
 
   # Create configmap from master test plan file
   kubectl create configmap metrics-config-test -n $COVERAGE_NAMESPACE --from-file=.master-plan.yml --from-file=.gitlab-ci.yml
-
-  # Clone e2e-metrics repo
-  git clone https://github.com/mayadata-io/e2e-metrics.git
 
   # Create kubernetes resources
   kubectl apply -f e2e-metrics/deploy/rbac.yaml

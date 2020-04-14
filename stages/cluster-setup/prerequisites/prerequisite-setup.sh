@@ -3,17 +3,21 @@
 echo "************* Applying e2e-crd *************"
 kubectl apply -f utils/e2e-crd.yml
 
-# Cloning oep repository which contains all the test scripts
+# Clone e2e-metrics repo for e2e-metrics stage
+git clone https://github.com/mayadata-io/e2e-metrics.git
+
+# Cloning oep-e2e repository which contains all the test scripts
 git clone https://github.com/mayadata-io/oep-e2e.git
-mv oep-e2e oep
-git -C oep checkout script-test
+
+# Test branch: script-test -- Will be removed
+git -C oep-e2e checkout script-test
 
 # Setup litmus on the cluster
-kubectl apply -f oep/litmus/prerequisite/rbac.yaml
-kubectl apply -f oep/litmus/prerequisite/crds.yaml
+kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
+kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
 
 # creating docker secret
-kubectl apply -f oep/litmus/prerequisite/docker-secret.yml -n litmus
+kubectl apply -f oep-e2e/litmus/prerequisite/docker-secret.yml -n litmus
 
 echo -e "\n************* Setting up metrics server *************"
 
