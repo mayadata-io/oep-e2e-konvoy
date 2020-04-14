@@ -20,7 +20,7 @@ echo -e "\n************************ Running basic-sanity tests *****************
 bash oep/scripts/director-health-check.sh
 
 # If any of the above check fails, then fail this job
-if [ $(cat oep/scripts/result.txt | grep -ic fail) != 0 ];then
+if [ $(cat result.txt | grep -ic fail) != 0 ];then
   exit 1
 fi
 
