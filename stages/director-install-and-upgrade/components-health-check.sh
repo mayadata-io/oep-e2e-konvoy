@@ -10,6 +10,7 @@ node() {
 bash utils/pooling jobname:dop-deploy
 bash utils/e2e-cr jobname:components-health-check jobphase:Running
 
+git checkout script-test
 ## Run Prerequisites
 echo -e "\n********* [ Making logs directory ] **********\n";
 mkdir -pv logs/basic-sanity-tests
