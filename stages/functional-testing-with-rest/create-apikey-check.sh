@@ -1,12 +1,11 @@
 #!/bin/bash
-set -e
 
 pod() {
   echo "*************Create api-key check*************"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/create-apikey-check.sh node'
 }
 
-node(){
+node() {
   # Copy user's cluster kube-config
   cp -v ~/.kube/config_user ~/.kube/config 
   

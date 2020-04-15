@@ -37,6 +37,8 @@ director-health-check:
 create-api-key-check:
   image: harshshekhar15/gitlab-job:v3
   stage: FUNCTIONAL-TESTING-WITH-REST
+  dependencies:
+    - cluster-create
   script:
     - chmod 755 ./stages/functional-testing-with-rest/create-apikey-check.sh
     - ./stages/functional-testing-with-rest/create-apikey-check.sh
