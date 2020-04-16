@@ -33,15 +33,25 @@ director-health-check:
     - chmod 755 ./stages/director-install-and-upgrade/components-health-check.sh
     - ./stages/director-install-and-upgrade/components-health-check.sh
 
-## User cluster connect
-create-api-key-check:
+## Create user's apikey
+create-apikey-check:
   image: harshshekhar15/gitlab-job:v3
   stage: FUNCTIONAL-TESTING-WITH-REST
   dependencies:
-    - cluster-create
+    - director-deploy
   script:
-    - chmod 755 ./stages/functional-testing-with-rest/create-apikey-check.sh
-    - ./stages/functional-testing-with-rest/create-apikey-check.sh
+    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
+    - ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
+
+## Cluster connect check
+trrc01-cluster-connect-check:
+  image: harshshekhar15/gitlab-job:v3
+  stage: FUNCTIONAL-TESTING-WITH-REST
+  dependencies:
+    - director-deploy
+  script:
+    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
+    - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
 
 ## E2E metrics stage
 e2e-metrics:
