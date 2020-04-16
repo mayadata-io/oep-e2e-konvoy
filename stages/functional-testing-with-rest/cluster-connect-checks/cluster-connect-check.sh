@@ -1,13 +1,13 @@
 #!/bin/bash
 
-set -e
+set -x
 pod() {
   echo "*************Create api-key check*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/cluster-connect-check.sh node'
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh node'
 }
 
 node() {
-  
+
 bash utils/pooling jobname:create-apikey-check
 bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Running 
 

@@ -2,7 +2,7 @@
 
 pod() {
   echo "*************Create api-key check*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/create-apikey-check.sh node'
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh node'
 }
 
 node() {
