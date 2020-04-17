@@ -10,9 +10,6 @@ node() {
 bash utils/pooling jobname:dop-deploy
 bash utils/e2e-cr jobname:components-health-check jobphase:Running
 
-# Add manual sleep of 5min
-sleep 300
-
 echo -e "\n************************ Running basic-sanity tests ***********************************\n"
 bash oep-e2e/scripts/director-health-check.sh
 

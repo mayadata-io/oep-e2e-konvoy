@@ -61,6 +61,13 @@ node() {
   kubectl get pod
   cd ~/oep-e2e-konvoy/
 
+  # Add manual sleep of 12min
+  sleep 720
+  echo -e "\n Manual wait for director components to get deployed"
+
+  #List pods
+  kubectl get pods
+
   bash utils/e2e-cr jobname:dop-deploy jobphase:Completed 
 }
 
