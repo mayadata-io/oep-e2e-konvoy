@@ -9,9 +9,6 @@ git clone https://github.com/mayadata-io/e2e-metrics.git
 # Cloning oep-e2e repository which contains all the test scripts
 git clone https://github.com/mayadata-io/oep-e2e.git
 
-# Test branch: script-test -- Will be removed
-git -C oep-e2e checkout script-test
-
 # Setup litmus on the cluster
 kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
 kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
@@ -21,12 +18,15 @@ kubectl apply -f oep-e2e/litmus/prerequisite/docker-secret.yml -n litmus
 
 echo -e "\n************* Setting up metrics server *************"
 
-# Installing heapster components on the cluster for node monitoring
-git clone https://github.com/kubernetes-sigs/metrics-server.git
+# Download file
+wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+
 
 # Fix "no metrics known for node" error by adding - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname
-sed -i -e '/args:/ a\          - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname \n          - --kubelet-insecure-tls' metrics-server/deploy/kubernetes/metrics-server-deployment.yaml
-kubectl apply -f  metrics-server/deploy/kubernetes/
+sed -i -e '/args:/ a\          - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname \n          - --kubelet-insecure-tls' components.yaml
+
+# Apply metrics-server
+kubectl apply -f components.yaml
 sleep 60
 
 # The below line turns off case sensitive comparison of strings
@@ -36,9 +36,9 @@ shopt -s nocasematch
 node_stats=$(kubectl top nodes 2>&1)
 while [[ $node_stats == *error* ]]
 do
-    node_stats=$(kubectl top nodes 2>&1)
-    echo "Waiting for metrics server to return top node details"
-    sleep 30
+  node_stats=$(kubectl top nodes 2>&1)
+  echo "Waiting for metrics server to return top node details"
+  sleep 30
 done
 
 echo -e "\n************* Top Node Output *************"

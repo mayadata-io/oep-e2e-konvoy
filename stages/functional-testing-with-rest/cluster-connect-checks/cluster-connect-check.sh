@@ -2,7 +2,7 @@
 
 set -x
 pod() {
-  echo "*************Create api-key check*************"
+  echo "*************Cluster connect check*************"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh node'
 }
 
@@ -24,8 +24,9 @@ echo $litmus_pod
 job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
 while [[ "$job_status" != "Completed" ]]
 do 
-    job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
-    sleep 6
+  job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
+  echo "Waiting for job status to be Completed..."
+  sleep 6
 done
 
 kubectl logs -f $litmus_pod -n litmus
@@ -38,6 +39,7 @@ then
     exit 1; 
 else
     bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Completed
+
 fi
 }
 
