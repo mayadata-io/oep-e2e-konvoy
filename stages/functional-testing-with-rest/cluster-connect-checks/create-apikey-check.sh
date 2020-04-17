@@ -12,6 +12,10 @@ node() {
   # Check current context
   kubectl config current-context
 
+  # Setup litmus on the cluster
+  kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
+  kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
+
   # Applying e2e-CRD
   echo "***Applying e2e-crd***********"
   kubectl apply -f utils/e2e-crd.yml

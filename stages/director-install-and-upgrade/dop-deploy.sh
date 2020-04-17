@@ -62,8 +62,8 @@ node() {
   cd ~/oep-e2e-konvoy/
 
   # Add manual sleep of 12min
-  sleep 720
   echo -e "\n Manual wait for director components to get deployed"
+  sleep 720
 
   #List pods
   kubectl get pods
