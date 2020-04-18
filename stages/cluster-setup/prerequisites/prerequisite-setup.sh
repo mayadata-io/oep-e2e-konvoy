@@ -21,7 +21,6 @@ echo -e "\n************* Setting up metrics server *************"
 # Download file
 wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
 
-
 # Fix "no metrics known for node" error by adding - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname
 sed -i -e '/args:/ a\          - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname \n          - --kubelet-insecure-tls' components.yaml
 

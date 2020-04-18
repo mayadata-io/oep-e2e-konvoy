@@ -7,10 +7,12 @@ pod() {
 
 node() {
   # Copy user's cluster kube-config
-  cp -v ~/.kube/config_user ~/.kube/config 
+  cp -v ~/.kube/config_user ~/.kube/config
 
   # Check current context
   kubectl config current-context
+
+  ls
 
   # Setup litmus on the cluster
   kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
@@ -25,7 +27,7 @@ node() {
   bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Waiting
   bash utils/e2e-cr jobname:client-components-check jobphase:Waiting
 
-  echo "Create new api key for new user account in director onprem -------------------------------------------------"
+  echo "Create new api key for new user account in director onprem ------------------------"
   kubectl create -f oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
 
   test_name=create-apikey-check

@@ -3,7 +3,7 @@ set -x
 
 pod() {
   echo "*************Cleaning up the cluster*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/cluster-cleanup.sh node '"'$master_name'"' '"'$worker1_name'"' '"'$worker2_name'"' '"'$worker3_name'"'' '"'$worker4_name'"' '"'$worker5_name'"'
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/cluster-cleanup.sh node '"'$master_name'"' '"'$worker1_name'"' '"'$worker2_name'"' '"'$worker3_name'"'' '"'$worker4_name'"' '"'$worker5_name'"' '"'$user_master1_name'"' '"'$user_worker1_name'"'
 }
 
 node() {
@@ -16,6 +16,8 @@ node() {
   worker3_name=$(echo $4)
   worker4_name=$(echo $5)
   worker5_name=$(echo $6)
+  user_master1_name=$(echo $7)
+  user_worker2_name=$(echo $8)
   
   git clone https://github.com/mayadata-io/litmus.git
   cd litmus
@@ -26,11 +28,8 @@ node() {
   -e "s/auto3/$worker2_name/g" \
   -e "s/auto4/$worker3_name/g" k8s/on-prem/openshift-installer/vm_name.csv
   
-  sed -i "/$worker3_name/a \
-  $worker4_name" k8s/on-prem/openshift-installer/vm_name.csv
-
-  sed -i "/$worker4_name/a \
-  $worker5_name" k8s/on-prem/openshift-installer/vm_name.csv
+  sed -i -e "/$worker3_name/a \
+  $worker4_name\n$worker5_name\n$user_master1_name\n$user_worker2_name" k8s/on-prem/openshift-installer/vm_name.csv
   
   # Replace the snapshot name and esx ip in vars
   sed -i -e 's/snapshot_name: "oc-cluster"/snapshot_name: "initial-setup"/g' \
@@ -43,7 +42,7 @@ node() {
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5 $6 $7
+  node $2 $3 $4 $5 $6 $7 $8 $9
 else
   pod
 fi

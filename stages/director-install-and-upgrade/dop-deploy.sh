@@ -18,6 +18,7 @@ node() {
   # Setting up DOP_URL variable
 
   DOP_URL=$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | head -n 1)
+  echo -e "\n DOP URL: $DOP_URL"
 
   #####################################
   ##           Deploy DOP            ##
@@ -57,7 +58,7 @@ node() {
   helm install --name dop .
 
   # Dump Director On-Prem pods
-  echo "\n[ Dumping Director On-Prem components ]\n"
+  echo -e "\n[ Dumping Director On-Prem components ]\n"
   kubectl get pod
   cd ~/oep-e2e-konvoy/
 
