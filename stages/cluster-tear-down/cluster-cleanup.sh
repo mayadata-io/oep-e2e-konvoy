@@ -37,8 +37,8 @@ node() {
   
   ansible-playbook k8s/on-prem/openshift-installer/revert_cluster_state.yml -v
   
-  # Removing oep-e2e-konvoy repo
-  cd && rm -rf oep-e2e-konvoy
+  # Removing oep-e2e-konvoy repo and cluster-info directory
+  cd && rm -rf oep-e2e-konvoy cluster-info
 }
 
 if [ "$1" == "node" ];then

@@ -16,8 +16,8 @@ do
   sleep 30
 done
 
-echo "*** Copy OnPrem cluster config ***"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cp -v ~/.kube/config_onprem ~/.kube/config'
+echo "*** Create cluster-info dir and copy OnPrem cluster config ***"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'mkdir cluster-info && cp -v ~/.kube/config_onprem ~/.kube/config'
 
 echo "*************************Checking the Cluster's Health********************"
 
