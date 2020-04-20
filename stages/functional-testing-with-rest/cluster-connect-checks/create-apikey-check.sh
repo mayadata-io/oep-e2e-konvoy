@@ -12,11 +12,12 @@ node() {
   # Check current context
   kubectl config current-context
 
-  ls
-
   # Setup litmus on the cluster
   kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
   kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
+
+  # Creating docker secret named oep-secret
+  kubectl apply -f oep-e2e/litmus/prerequisite/docker-secret.yml -n litmus
 
   # Applying e2e-CRD
   echo "***Applying e2e-crd***********"
@@ -55,13 +56,13 @@ node() {
   then
     exit 1;
   else
-    # saving secret yaml into a file
+    # Saving secret yaml into a file
     kubectl get secret director-user-pass -n litmus -oyaml > secret.yaml
 
-    # changing config to director cluster
+    # Changing config to director cluster
     cp  .kube/config_onprem ~/.kube/config
 
-    # creating director-user-pass secret in director cluster
+    # Creating director-user-pass secret in director cluster
     kubectl create -f secret.yaml -n litmus
     kubectl get secret -n litmus
 

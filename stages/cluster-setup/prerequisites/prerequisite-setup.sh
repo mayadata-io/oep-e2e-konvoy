@@ -13,7 +13,7 @@ git clone https://github.com/mayadata-io/oep-e2e.git
 kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
 kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
 
-# creating docker secret
+# creating docker secret named oep-secret
 kubectl apply -f oep-e2e/litmus/prerequisite/docker-secret.yml -n litmus
 
 echo -e "\n************* Setting up metrics server *************"

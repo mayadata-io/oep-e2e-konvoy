@@ -17,7 +17,7 @@ node() {
   worker4_name=$(echo $5)
   worker5_name=$(echo $6)
   user_master1_name=$(echo $7)
-  user_worker2_name=$(echo $8)
+  user_worker1_name=$(echo $8)
   
   git clone https://github.com/mayadata-io/litmus.git
   cd litmus
@@ -29,7 +29,7 @@ node() {
   -e "s/auto4/$worker3_name/g" k8s/on-prem/openshift-installer/vm_name.csv
   
   sed -i -e "/$worker3_name/a \
-  $worker4_name\n$worker5_name\n$user_master1_name\n$user_worker2_name" k8s/on-prem/openshift-installer/vm_name.csv
+  $worker4_name\n$worker5_name\n$user_master1_name\n$user_worker1_name" k8s/on-prem/openshift-installer/vm_name.csv
   
   # Replace the snapshot name and esx ip in vars
   sed -i -e 's/snapshot_name: "oc-cluster"/snapshot_name: "initial-setup"/g' \
