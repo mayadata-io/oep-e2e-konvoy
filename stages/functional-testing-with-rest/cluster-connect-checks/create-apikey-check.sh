@@ -62,7 +62,7 @@ node() {
     kubectl get secret director-user-pass -n litmus -oyaml > secret.yaml
 
     # Changing config to director cluster
-    cp  ~/.kube/config_onprem ~/.kube/config
+    cp -v ~/.kube/config_onprem ~/.kube/config
 
     # Creating director-user-pass secret in director cluster
     kubectl create -f secret.yaml -n litmus
