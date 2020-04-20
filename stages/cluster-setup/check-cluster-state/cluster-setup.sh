@@ -16,8 +16,6 @@ do
   sleep 30
 done
 
-mkdir cluster-info
-
 echo "*** Copy OnPrem cluster config ***"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cp -v ~/.kube/config_onprem ~/.kube/config'
 

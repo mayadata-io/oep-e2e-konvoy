@@ -16,8 +16,10 @@ node() {
   kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
   kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
 
-  # Creating docker secret named oep-secret
+  # Creating docker secret named oep-secret and configmap
   kubectl apply -f oep-e2e/litmus/prerequisite/docker-secret.yml -n litmus
+  kubectl create cm config --from-literal=url=$director_url -n litmus
+
 
   # Applying e2e-CRD
   echo "***Applying e2e-crd***********"
@@ -60,7 +62,7 @@ node() {
     kubectl get secret director-user-pass -n litmus -oyaml > secret.yaml
 
     # Changing config to director cluster
-    cp  .kube/config_onprem ~/.kube/config
+    cp  ~/.kube/config_onprem ~/.kube/config
 
     # Creating director-user-pass secret in director cluster
     kubectl create -f secret.yaml -n litmus
