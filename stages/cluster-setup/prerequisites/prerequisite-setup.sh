@@ -51,4 +51,7 @@ echo $director_url
 # Note: Do not change the configmap name config, otherwise update the name in all other playbooks
 kubectl create cm config --from-literal=url=$director_url -n litmus
 
+# Store this cm in a file
+kubectl get cm -n litmus config -oyaml --export > director_url.txt
+
 echo -e "\n************* Finished Prerequisites *************"
