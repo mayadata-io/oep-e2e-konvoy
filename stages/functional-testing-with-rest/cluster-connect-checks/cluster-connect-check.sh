@@ -41,7 +41,6 @@ node() {
     exit 1; 
   else
     bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Completed
-
   fi
 }
 
