@@ -19,7 +19,7 @@ node() {
   # Creating docker secret named oep-secret
   kubectl apply -f oep-e2e/litmus/prerequisite/docker-secret.yml -n litmus
 
-  # Create config configmap for director_url.txt file
+  # Create config configmap from  director_url.txt
   kubectl apply -f director_url.txt -n litmus
 
 
@@ -60,6 +60,8 @@ node() {
   then
     exit 1;
   else
+    bash utils/e2e-cr jobname:create-apikey-check jobphase:Completed
+
     # Saving secret yaml into a file
     kubectl get secret director-user-pass -n litmus -oyaml > secret.yaml
 
@@ -70,7 +72,9 @@ node() {
     kubectl create -f secret.yaml -n litmus
     kubectl get secret -n litmus
 
-    bash utils/e2e-cr jobname:create-apikey-check jobphase:Completed
+    # Switch back to user cluster config for next dependent jobs to proceed
+    cp -v ~/.kube/config_user ~/.kube/config
+
   fi
 }
 
