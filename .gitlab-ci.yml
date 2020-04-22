@@ -63,6 +63,15 @@ client-components-check:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
 
+director-self-cluster-connect-check:
+  image: harshshekhar15/gitlab-job:v3
+  stage: FUNCTIONAL-TESTING-WITH-REST
+  dependencies:
+    - director-health-check
+  script:
+    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
+    - ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
+
 ## E2E metrics stage
 e2e-metrics:
   when: always
