@@ -35,6 +35,34 @@ node() {
   echo "Create new api key for new user account in director onprem ------------------------"
   kubectl create -f oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
 
+  echo -e "\n************* Setting up metrics server *************"
+
+  # Download file
+  wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+
+  # Fix "no metrics known for node" error by adding - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname
+  sed -i -e '/args:/ a\          - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname \n          - --kubelet-insecure-tls' components.yaml
+
+  # Apply metrics-server
+  kubectl apply -f components.yaml
+  sleep 60
+
+  # The below line turns off case sensitive comparison of strings
+  shopt -s nocasematch
+
+  # Check if metrics server is returning output
+  node_stats=$(kubectl top nodes 2>&1)
+  while [[ $node_stats == *error* ]]
+  do
+    node_stats=$(kubectl top nodes 2>&1)
+    echo "Waiting for metrics server to return top node details"
+    sleep 30
+  done
+
+  echo -e "\n************* Top Node Output *************"
+  kubectl top node
+  ######################## metrics-server setup done
+
   test_name=create-apikey-check
   echo $test_name
 
