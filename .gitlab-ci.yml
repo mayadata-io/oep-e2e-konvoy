@@ -3,6 +3,7 @@ stages:
   - CLUSTER-SETUP
   - DIRECTOR-INSTALL-AND-UPGRADE
   - FUNCTIONAL-TESTING-WITH-REST
+  - SELF-CLUSTER-CONNECT
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
 ## Setup kubernetes cluster using Konvoy
@@ -63,9 +64,10 @@ client-components-check:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
 
+## Self cluster connect check
 director-self-cluster-connect-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: FUNCTIONAL-TESTING-WITH-REST
+  stage: SELF-CLUSTER-CONNECT
   dependencies:
     - director-health-check
   script:
