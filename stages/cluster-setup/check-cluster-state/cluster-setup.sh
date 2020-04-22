@@ -23,7 +23,7 @@ echo "*************************Checking the Cluster's Health********************
 
 # ssh into the deployer machine and check number of ready nodes
 echo "***************Checking for the number of nodes in ready state***************"
-ready_nodes=$(sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get nodes | grep Ready | wc -l)
+ready_nodes=$(sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get nodes --no-headers | grep -v NotReady | wc -l)
 
 if [ "$ready_nodes" -eq 6 ];
 then
@@ -35,7 +35,7 @@ then
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get pod --all-namespaces
 
   echo "*************Cloning oep-e2e-konvoy repo*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone -b oep-release https://github.com/mayadata-io/oep-e2e-konvoy.git'
   #####################################
   ##          Prerequisites          ##
   #####################################
@@ -45,8 +45,7 @@ then
 
 else
   echo "All nodes are not ready"
-  echo "*******Cluster is in Unhealthy state*******"
-  echo "*************Cloning oep-e2e-konvoy repo*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone https://github.com/mayadata-io/oep-e2e-konvoy.git'
-  exit;
+  echo -e "Number of nodes in ready state: $ready_nodes"
+  echo -e "\nCluster State: Not Healthy\n"
+  exit 1;
 fi
