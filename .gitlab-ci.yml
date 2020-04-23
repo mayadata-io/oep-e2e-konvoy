@@ -73,6 +73,16 @@ director-self-cluster-connect-check:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
 
+## Director metrics check
+metrics-check:
+  image: harshshekhar15/gitlab-job:v3
+  stage: FUNCTIONAL-TESTING-WITH-REST
+  dependencies:
+    - director-health-check
+  script:
+    - chmod 755 ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
+    - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
+
 ## E2E metrics stage
 e2e-metrics:
   when: always
