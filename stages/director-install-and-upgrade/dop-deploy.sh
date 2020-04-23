@@ -17,7 +17,7 @@ node() {
 
   # Setting up DOP_URL variable
 
-  DOP_URL=$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | head -n 1):30380
+  DOP_URL=$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2'):30380
   echo -e "\n DOP URL: $DOP_URL"
 
   #####################################
