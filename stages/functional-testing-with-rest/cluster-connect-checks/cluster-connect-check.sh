@@ -7,8 +7,12 @@ pod() {
 }
 
 node() {
-  # Copy user's cluster kube-config
-  cp -v ~/.kube/config_user ~/.kube/config
+  # Use user's cluster kube-config
+  echo -e "Use kubeconfig of cluster2\n"
+  export KUBECONFIG=~/.kube/config_user
+
+  # Verify current context
+  kubectl config current-context
 
   bash utils/pooling jobname:create-apikey-check
   bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Running

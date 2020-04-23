@@ -6,8 +6,6 @@ pod() {
 }
 
 node() {
-  cp -v ~/.kube/config_onprem ~/.kube/config
-
   ######################
   ##   Running test  ##
   ######################

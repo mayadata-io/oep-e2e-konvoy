@@ -6,10 +6,11 @@ pod() {
 }
 
 node() {
-  # Copy user's cluster kube-config
-  cp -v ~/.kube/config_user ~/.kube/config
+  # Use user's cluster kube-config
+  echo -e "Use kubeconfig of cluster2\n"
+  export KUBECONFIG=~/.kube/config_user
 
-  # Check current context
+  # Verify current context
   kubectl config current-context
 
   # Setup litmus on the cluster
@@ -94,14 +95,14 @@ node() {
     kubectl get secret director-user-pass -n litmus -oyaml > secret.yaml
 
     # Changing config to director cluster
-    cp -v ~/.kube/config_onprem ~/.kube/config
+    export KUBECONFIG=~/.kube/config_onprem
 
     # Creating director-user-pass secret in director cluster
     kubectl create -f secret.yaml -n litmus
     kubectl get secret -n litmus
 
     # Switch back to user cluster config for next dependent jobs to proceed
-    cp -v ~/.kube/config_user ~/.kube/config
+    export KUBECONFIG=~/.kube/config_user
 
   fi
 }
