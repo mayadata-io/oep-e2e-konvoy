@@ -13,6 +13,9 @@ node() {
   # Verify current context
   kubectl config current-context
 
+  bash utils/pooling jobname:client-components-check
+  bash utils/e2e-cr jobname:metrics-check jobphase:Running
+
   kubectl create clusterrolebinding upgrade-admin --clusterrole cluster-admin --serviceaccount=litmus:litmus
 
   echo -e "\nList pods in openebs namespace: "
@@ -45,7 +48,7 @@ node() {
   testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
   echo $testResult
 
-  if [ "$testResult" != Pass ]; then 
+  if [ "$testResult" != Pass ]; then
     exit 1; 
   fi
 
@@ -73,7 +76,9 @@ node() {
   echo $testResult
 
   if [ "$testResult" != Pass ]; then
-    exit 1; 
+    exit 1;
+  else
+    bash utils/e2e-cr jobname:metrics-check jobphase:Completed
   fi
 }
 

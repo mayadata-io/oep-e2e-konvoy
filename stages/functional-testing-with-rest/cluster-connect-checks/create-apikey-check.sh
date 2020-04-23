@@ -32,6 +32,8 @@ node() {
   bash utils/e2e-cr jobname:create-apikey-check jobphase:Running 
   bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Waiting
   bash utils/e2e-cr jobname:client-components-check jobphase:Waiting
+  bash utils/e2e-cr jobname:metrics-check jobphase:Waiting
+
 
   echo "Create new api key for new user account in director onprem ------------------------"
   kubectl create -f oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
