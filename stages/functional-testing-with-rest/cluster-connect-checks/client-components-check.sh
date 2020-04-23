@@ -6,6 +6,13 @@ pod() {
 }
 
 node() {
+  # Use user's cluster kube-config
+  echo -e "Use kubeconfig of cluster2\n"
+  export KUBECONFIG=~/.kube/config_user
+
+  # Verify current context
+  kubectl config current-context
+
   bash utils/pooling jobname:trrc01-cluster-connect-check
   bash utils/e2e-cr jobname:client-components-check jobphase:Running
 
