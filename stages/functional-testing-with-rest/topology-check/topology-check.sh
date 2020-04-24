@@ -45,7 +45,6 @@ node() {
   fi
 }
 
-
 if [ "$1" == "node" ];then
   node
 else

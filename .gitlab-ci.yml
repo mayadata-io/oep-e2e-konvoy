@@ -115,7 +115,7 @@ trrc03-teaming-change-role-negative-check:
 
 ## Topology check
 topology-check:
-  image: atulabhi/kops:v8
+  image: harshshekhar15/gitlab-job:v3
   stage: TOPOLOGY-CHECK
   dependencies:
     - client-components-check
