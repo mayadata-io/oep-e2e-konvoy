@@ -3,6 +3,8 @@ stages:
   - CLUSTER-SETUP
   - DIRECTOR-INSTALL-AND-UPGRADE
   - FUNCTIONAL-TESTING-WITH-REST
+  - TEAMING-CHECK
+  - TOPOLOGY-CHECK
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
 ## Setup kubernetes cluster using Konvoy
@@ -73,15 +75,53 @@ director-self-cluster-connect-check:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
 
-## Director metrics check
-metrics-check:
+# ## Director metrics check
+# metrics-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: FUNCTIONAL-TESTING-WITH-REST
+#   dependencies:
+#     - director-health-check
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
+#     - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
+
+## Teaming checks
+triv01-teaming-invite-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: FUNCTIONAL-TESTING-WITH-REST
+  stage: TEAMING-CHECK
   dependencies:
-    - director-health-check
+    - client-components-check
   script:
-    - chmod 755 ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
-    - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
+    - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
+    - ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
+
+trrc02-teaming-change-role-check:
+  image: harshshekhar15/gitlab-job:v3
+  stage: TEAMING-CHECK
+  dependencies:
+    - client-components-check
+  script:
+    - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
+    - ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
+
+trrc03-teaming-change-role-negative-check:
+  image: harshshekhar15/gitlab-job:v3
+  stage: TEAMING-CHECK
+  dependencies:
+    - client-components-check
+  script:
+    - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-negative-check.sh
+    - ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-negative-check.sh
+
+## Topology check
+topology-check:
+  image: atulabhi/kops:v8
+  stage: TOPOLOGY-CHECK
+  dependencies:
+    - client-components-check
+  script:
+    - chmod 755 ./stages/functional-testing-with-rest/topology-check/topology-check.sh
+    - ./stages/functional-testing-with-rest/topology-check/topology-check.sh
 
 ## E2E metrics stage
 e2e-metrics:

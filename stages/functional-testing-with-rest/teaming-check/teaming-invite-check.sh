@@ -35,6 +35,7 @@ node() {
     echo "Waiting for job status to be Completed..."
     sleep 6
   done
+
   echo -e "\nLitmus pod logs: "
   kubectl logs -f $litmus_pod -n litmus
 
