@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pod() {
-  echo "*************Cluster connect check*************"
+  echo "*************Teaming change role check*************"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh node'
 }
 

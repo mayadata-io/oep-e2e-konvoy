@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pod() {
-  echo "*************Cluster connect check*************"
+  echo "*************Self cluster connect check*************"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh node'
 }
 
