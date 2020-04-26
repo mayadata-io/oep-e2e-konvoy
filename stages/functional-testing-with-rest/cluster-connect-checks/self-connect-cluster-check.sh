@@ -61,7 +61,6 @@ node() {
   done
 
   echo -e "\nLitmus pod logs: "
-
   kubectl logs -f $litmus_pod -n litmus
 
   testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)

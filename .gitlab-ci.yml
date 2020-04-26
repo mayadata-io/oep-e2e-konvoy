@@ -144,3 +144,13 @@ cluster-cleanup:
   script:
     - chmod 755 ./stages/cluster-tear-down/cluster-cleanup.sh
     - ./stages/cluster-tear-down/cluster-cleanup.sh
+
+cluster2-cleanup:
+  when: always
+  image: harshshekhar15/gitlab-job:v2
+  stage: CLUSTER-TEAR-DOWN
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/cluster-tear-down/c2-cleanup.sh
+    - ./stages/cluster-tear-down/c2-cleanup.sh

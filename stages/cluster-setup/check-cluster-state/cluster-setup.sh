@@ -17,7 +17,7 @@ do
 done
 
 echo "*** Copy OnPrem cluster config ***"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cp -v ~/.kube/config_onprem ~/.kube/config'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cp -v ~/.kube/config_c1 ~/.kube/config'
 
 echo "*************************Checking the Cluster's Health********************"
 

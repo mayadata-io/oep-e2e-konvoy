@@ -6,16 +6,16 @@ pod() {
 }
 
 node() {
+  # Job sequencing
+  bash utils/pooling jobname:trrc02-teaming-change-role-check
+  bash utils/e2e-cr jobname:trrc03-teaming-change-role-negative-check jobphase:Running
+
   # Use user's cluster kube-config
   echo -e "Use kubeconfig of cluster2\n"
-  export KUBECONFIG=~/.kube/config_user
+  export KUBECONFIG=~/.kube/config_c2
 
   # Verify current context
   kubectl config current-context
-
-  # Job sequencing
-  bash utils/pooling jobname:trrc02-teaming-change-role-check
-  bash utils/e2e-cr jobname:trrc03-teaming-change-role-negative-check jobphase:Running 
 
   ######################
   ##   Running test   ##
@@ -25,10 +25,10 @@ node() {
   kubectl create -f oep-e2e/litmus/director/change-role-negative/run_litmus_test.yml
 
   test_name=change-role-negative-check
-  echo $test_name
+  echo -e "\nTest Name: $test_name\n"
 
   litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
-  echo $litmus_pod
+  echo -e "\n Litmus Pod name: $litmus_pod"
 
   job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
   while [[ "$job_status" != "Completed" ]]
@@ -47,6 +47,7 @@ node() {
   then
     exit 1;
   else
+    export KUBECONFIG=~/.kube/config_c1
     bash utils/e2e-cr jobname:trrc03-teaming-change-role-negative-check jobphase:Completed
   fi
 }

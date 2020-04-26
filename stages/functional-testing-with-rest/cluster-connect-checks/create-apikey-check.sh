@@ -6,14 +6,25 @@ pod() {
 }
 
 node() {
+  # Job Sequencing
+  bash utils/e2e-cr jobname:create-apikey-check jobphase:Waiting
+  bash utils/e2e-cr jobname:create-apikey-check jobphase:Running
+  bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Waiting
+  bash utils/e2e-cr jobname:client-components-check jobphase:Waiting
+  # bash utils/e2e-cr jobname:metrics-check jobphase:Waiting
+
   # Use user's cluster kube-config
   echo -e "Use kubeconfig of cluster2\n"
-  export KUBECONFIG=~/.kube/config_user
+  export KUBECONFIG=~/.kube/config_c2
 
   # Verify current context
   kubectl config current-context
 
+  # Apply pre-requisites
+  echo -e "\n[ Applying pre-requisites ]-------------------------------------------------\n"
+
   # Setup litmus on the cluster
+  echo -e "\n[ Setting up Litmus ]-----------------------------\n"
   kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
   kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
 
@@ -23,54 +34,18 @@ node() {
   # Create config configmap from  director_url.txt
   kubectl apply -f director_url.txt -n litmus
 
+  # Wait for the resources to show up
+  echo -e "\nWaiting for the litmus resources to show up\n"
+  sleep 10
 
-  # Applying e2e-CRD
-  echo "***Applying e2e-crd***********"
-  kubectl apply -f utils/e2e-crd.yml
-
-  bash utils/e2e-cr jobname:create-apikey-check jobphase:Waiting
-  bash utils/e2e-cr jobname:create-apikey-check jobphase:Running 
-  bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Waiting
-  bash utils/e2e-cr jobname:client-components-check jobphase:Waiting
-  # bash utils/e2e-cr jobname:metrics-check jobphase:Waiting
-
-
-  echo "Create new api key for new user account in director onprem ------------------------"
+  echo "Create new api key for new user account in director c1 ------------------------"
   kubectl create -f oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
 
-  echo -e "\n************* Setting up metrics server *************"
-
-  # Download file
-  wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
-
-  # Fix "no metrics known for node" error by adding - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname
-  sed -i -e '/args:/ a\          - --kubelet-preferred-address-types=InternalDNS,InternalIP,ExternalDNS,ExternalIP,Hostname \n          - --kubelet-insecure-tls' components.yaml
-
-  # Apply metrics-server
-  kubectl apply -f components.yaml
-  sleep 60
-
-  # The below line turns off case sensitive comparison of strings
-  shopt -s nocasematch
-
-  # Check if metrics server is returning output
-  node_stats=$(kubectl top nodes 2>&1)
-  while [[ $node_stats == *error* ]]
-  do
-    node_stats=$(kubectl top nodes 2>&1)
-    echo "Waiting for metrics server to return top node details"
-    sleep 30
-  done
-
-  echo -e "\n************* Top Node Output *************"
-  kubectl top node
-  ######################## metrics-server setup done
-
   test_name=create-apikey-check
-  echo $test_name
+  echo -e "\nTest Name: $test_name\n"
 
   litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
-  echo $litmus_pod
+  echo -e "\n Litmus Pod name: $litmus_pod"
 
   # Check completed status for job
   job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
@@ -85,27 +60,25 @@ node() {
   kubectl logs -f $litmus_pod -n litmus
 
   testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
-  echo $testResult
+  echo -e "\nTest Result: $testResult\n"
 
   if [ "$testResult" != Pass ]
   then
+    export KUBECONFIG=~/.kube/config_c1
+    bash utils/e2e-cr jobname:create-apikey jobphase:Completed
     exit 1;
   else
-    bash utils/e2e-cr jobname:create-apikey-check jobphase:Completed
-
     # Saving secret yaml into a file
     kubectl get secret director-user-pass -n litmus -oyaml > secret.yaml
 
     # Changing config to director cluster
-    export KUBECONFIG=~/.kube/config_onprem
+    export KUBECONFIG=~/.kube/config_c1
 
     # Creating director-user-pass secret in director cluster
     kubectl create -f secret.yaml -n litmus
     kubectl get secret -n litmus
 
-    # Switch back to user cluster config for next dependent jobs to proceed
-    export KUBECONFIG=~/.kube/config_user
-
+    bash utils/e2e-cr jobname:create-apikey-check jobphase:Completed
   fi
 }
 

@@ -6,15 +6,16 @@ pod() {
 }
 
 node() {
+  # Job sequencing
+  bash utils/pooling jobname:client-components-check
+  bash utils/e2e-cr jobname:metrics-check jobphase:Running
+
   # Use user's cluster kube-config
   echo -e "Use kubeconfig of cluster2\n"
-  export KUBECONFIG=~/.kube/config_user
+  export KUBECONFIG=~/.kube/config_c2
 
   # Verify current context
   kubectl config current-context
-
-  bash utils/pooling jobname:client-components-check
-  bash utils/e2e-cr jobname:metrics-check jobphase:Running
 
   kubectl create clusterrolebinding upgrade-admin --clusterrole cluster-admin --serviceaccount=litmus:litmus
 
@@ -78,6 +79,7 @@ node() {
   if [ "$testResult" != Pass ]; then
     exit 1;
   else
+    export KUBECONFIG=~/.kube/config_c1
     bash utils/e2e-cr jobname:metrics-check jobphase:Completed
   fi
 }
