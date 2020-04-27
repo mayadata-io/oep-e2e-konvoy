@@ -17,23 +17,22 @@ node() {
   C2_ESX_IP=$(echo $7)
   C2_SNAPSHOT_NAME=$(echo $8)
 
-  git clone https://github.com/mayadata-io/litmus.git
-  cd litmus
+  git clone https://github.com/openebs/e2e-tests.git
 
   # Replace the VM names in CSV file
   sed -i -e "s/auto1/$c2_master1_name/g" \
   -e "s/auto2/$c2_worker1_name/g" \
   -e "s/auto3/$c2_worker2_name/g" \
-  -e "s/auto4/$c2_worker3_name/g" k8s/on-prem/openshift-installer/vm_name.csv
+  -e "s/auto4/$c2_worker3_name/g" e2e-tests/k8s/on-prem/openshift-installer/vm_name.csv
 
   sed -i -e "/$c2_worker3_name/a \
-  $c2_worker4_name\n$c2_worker5_name" k8s/on-prem/openshift-installer/vm_name.csv
+  $c2_worker4_name\n$c2_worker5_name" e2e-tests/k8s/on-prem/openshift-installer/vm_name.csv
 
   # Replace the snapshot name and esx ip in vars
   sed -i -e 's/snapshot_name: "oc-cluster"/snapshot_name: "'$C2_SNAPSHOT_NAME'"/g' \
-  -e 's/esx_ip: "10.12.1.1"/esx_ip: "'$C2_ESX_IP'"/g' k8s/on-prem/openshift-installer/vars.yml
+  -e 's/esx_ip: "10.12.1.1"/esx_ip: "'$C2_ESX_IP'"/g' e2e-tests/k8s/on-prem/openshift-installer/vars.yml
 
-  ansible-playbook k8s/on-prem/openshift-installer/revert_cluster_state.yml -v
+  ansible-playbook e2e-tests/k8s/on-prem/openshift-installer/revert_cluster_state.yml -v
 
   ## Add sleep so that the VM's are ready
   sleep 10
