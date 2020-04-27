@@ -50,7 +50,7 @@ node() {
   echo -e "\nTest Name: $test_name\n"
 
   litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
-  echo -e "\n Litmus Pod name: $litmus_pod"
+  echo -e "\nLitmus Pod name: $litmus_pod"
 
   # Check completed status for job
   job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)

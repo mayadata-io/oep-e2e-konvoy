@@ -5,6 +5,7 @@ stages:
   - FUNCTIONAL-TESTING-WITH-REST
   - TEAMING-CHECK
   - TOPOLOGY-CHECK
+  - OPENEBS-INSTALL
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
 ## Setup kubernetes cluster using Konvoy
@@ -122,6 +123,24 @@ topology-check:
   script:
     - chmod 755 ./stages/functional-testing-with-rest/topology-check/topology-check.sh
     - ./stages/functional-testing-with-rest/topology-check/topology-check.sh
+
+tcid-iuoi02-openebs-install:
+  image: harshshekhar15/gitlab-job:v2
+  stage: OPENEBS-INSTALL
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/tcid-iuoi02-openebs-install.sh
+    - ./stages/openebs-install/tcid-iuoi02-openebs-install.sh
+
+tcid-ppcp01-create-cstor-pool:
+  image: harshshekhar15/gitlab-job:v2
+  stage: OPENEBS-INSTALL
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/tcid-ppcp01-create-cstor-pool.sh
+    - ./stages/openebs-install/tcid-ppcp01-create-cstor-pool.sh
 
 ## E2E metrics stage
 e2e-metrics:
