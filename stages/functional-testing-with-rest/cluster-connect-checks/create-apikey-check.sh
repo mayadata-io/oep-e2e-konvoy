@@ -28,6 +28,11 @@ node() {
   kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
   kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
 
+  kubectl create clusterrolebinding upgrade-admin --clusterrole cluster-admin --serviceaccount=litmus:litmus
+
+  echo "Fetching director admin credentials for further test (metrics check and topology check)----------------"
+  kubectl create -f oep-e2e/litmus/director/admin-secret/run_litmus_test.yml
+
   # Creating docker secret named oep-secret
   kubectl apply -f oep-e2e/litmus/prerequisite/docker-secret.yml -n litmus
 

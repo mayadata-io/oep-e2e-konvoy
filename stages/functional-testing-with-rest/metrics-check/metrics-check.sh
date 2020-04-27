@@ -17,7 +17,8 @@ node() {
   # Verify current context
   kubectl config current-context
 
-  kubectl create clusterrolebinding upgrade-admin --clusterrole cluster-admin --serviceaccount=litmus:litmus
+  # This line has been added in the first check(create-apikey-check)
+  #kubectl create clusterrolebinding upgrade-admin --clusterrole cluster-admin --serviceaccount=litmus:litmus
 
   echo -e "\nList pods in openebs namespace: "
   kubectl get po -n openebs
@@ -26,8 +27,9 @@ node() {
   ##   Running test   ##
   ######################
 
-  echo "Fetching director admin credentials for the following test----------------"
-  kubectl create -f oep-e2e/litmus/director/admin-secret/run_litmus_test.yml
+  # This line has been added in the first check(create-apikey-check)
+  #echo "Fetching director admin credentials for the following test----------------"
+  #kubectl create -f oep-e2e/litmus/director/admin-secret/run_litmus_test.yml
 
   test_name=fetch-unique-id-check
   echo $test_name
