@@ -64,7 +64,7 @@ node() {
 
   # Add manual sleep of 12min
   echo -e "\n Manual wait for director components to get deployed"
-  sleep 720
+  sleep 900
 
   #List pods
   kubectl get pods
