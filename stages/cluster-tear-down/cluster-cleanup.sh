@@ -37,7 +37,7 @@ node() {
 
   # Wait for cluster2 to revert to its latest snapshot
   echo -e "\nWaiting for cluster2 to revert to its latest snapshot\n"
-  sleep 180
+  sleep 120
 
   # Removing oep-e2e-konvoy repo
   cd && rm -rf oep-e2e-konvoy
