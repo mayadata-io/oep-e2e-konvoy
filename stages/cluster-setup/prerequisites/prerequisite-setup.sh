@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo -e "\n Updating tiller in the cluster \n"
-kubectl set image -n kube-system deployment/tiller-deploy tiller=gcr.io/kubernetes-helm/tiller:v2.16.6 --record
-
 echo "************* Applying e2e-crd *************"
 kubectl apply -f utils/e2e-crd.yml
 
