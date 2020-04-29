@@ -44,7 +44,7 @@ node() {
   if [ "$testResult" != Pass ]
   then
     export KUBECONFIG=~/.kube/config_c1
-    bash utils/e2e-cr jobname:trrc01-cluster-connect jobphase:Completed
+    bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Completed
     exit 1;
   else
     export KUBECONFIG=~/.kube/config_c1
