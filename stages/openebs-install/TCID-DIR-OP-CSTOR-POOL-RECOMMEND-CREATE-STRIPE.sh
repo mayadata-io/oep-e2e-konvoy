@@ -3,13 +3,10 @@
 pod() {
   ## Creating Cstor pool using DOP on cluster2
   echo -e "\n************************ Creating Cstor pool ******************************************\n"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/tcid-ppcp01-create-cstor-pool.sh node'
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh node'
 }
 
 node() {
-
-  bash utils/pooling jobname:tcid-iuoi02-openebs-install
-  bash utils/e2e-cr jobname:tcid-ppcp01-create-cstor-pool jobphase:Running
 
   # Use user's cluster kube-config
   echo -e "Use kubeconfig of cluster2\n"
@@ -18,7 +15,10 @@ node() {
   # Verify current context
   kubectl config current-context
 
-  kubectl create -f oep-e2e/litmus/director/tcid-ppcp01-create-cstor-pool/run_litmus_test.yml
+  bash utils/pooling jobname:tcid-iuoi02-openebs-install
+  bash utils/e2e-cr jobname:TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE jobphase:Running
+
+  kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE/run_litmus_test.yml
   echo -e "\nPods in litmus namespace:\n"
   kubectl get pods -n litmus 
 
@@ -45,12 +45,12 @@ node() {
 
   if [ "$testResult" != Pass ]
   then
-    export KUBECONFIG=~/.kube/config_c1
-    bash utils/e2e-cr jobname:tcid-ppcp01-create-cstor-pool jobphase:Completed
+    # export KUBECONFIG=~/.kube/config_c1
+    bash utils/e2e-cr jobname:TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE jobphase:Completed
     exit 1;
   else
-    export KUBECONFIG=~/.kube/config_c1
-    bash utils/e2e-cr jobname:tcid-ppcp01-create-cstor-pool jobphase:Completed
+    # export KUBECONFIG=~/.kube/config_c1
+    bash utils/e2e-cr jobname:TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE jobphase:Completed
   fi
 
 }

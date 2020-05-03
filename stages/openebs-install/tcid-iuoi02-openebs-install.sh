@@ -8,16 +8,16 @@ pod() {
 
 node() {
 
-  bash utils/e2e-cr jobname:tcid-iuoi02-openebs-install jobphase:Waiting
-  bash utils/e2e-cr jobname:tcid-iuoi02-openebs-install jobphase:Running 
-  bash utils/e2e-cr jobname:tcid-ppcp01-create-cstor-pool jobphase:Waiting
-
   # Use user's cluster kube-config
   echo -e "Use kubeconfig of cluster2\n"
   export KUBECONFIG=~/.kube/config_c2
 
   # Verify current context
   kubectl config current-context
+
+  bash utils/e2e-cr jobname:tcid-iuoi02-openebs-install jobphase:Waiting
+  bash utils/e2e-cr jobname:tcid-iuoi02-openebs-install jobphase:Running
+  bash utils/e2e-cr jobname:TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE jobphase:Waiting
 
   kubectl create -f oep-e2e/litmus/director/tcid-iuoi02-openebs-install/run_litmus_test.yml
   echo -e "\nPods in litmus namespace:\n"
@@ -46,11 +46,11 @@ node() {
 
   if [ "$testResult" != Pass ]
   then
-    export KUBECONFIG=~/.kube/config_c1
+    # export KUBECONFIG=~/.kube/config_c1
     bash utils/e2e-cr jobname:tcid-iuoi02-openebs-install jobphase:Completed
     exit 1;
   else
-    export KUBECONFIG=~/.kube/config_c1
+    # export KUBECONFIG=~/.kube/config_c1
     bash utils/e2e-cr jobname:tcid-iuoi02-openebs-install jobphase:Completed
   fi 
 
