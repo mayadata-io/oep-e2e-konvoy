@@ -3,9 +3,9 @@ stages:
   - CLUSTER-SETUP
   - DIRECTOR-INSTALL-AND-UPGRADE
   - FUNCTIONAL-TESTING-WITH-REST
+  - OPENEBS-INSTALL
   - TEAMING-CHECK
   - TOPOLOGY-CHECK
-  - OPENEBS-INSTALL
   - DIRECTOR-GUI
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
@@ -87,6 +87,25 @@ director-self-cluster-connect-check:
 #     - chmod 755 ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
 #     - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
 
+## OpenEBS install
+tcid-iuoi02-openebs-install:
+  image: harshshekhar15/gitlab-job:v2
+  stage: OPENEBS-INSTALL
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/tcid-iuoi02-openebs-install.sh
+    - ./stages/openebs-install/tcid-iuoi02-openebs-install.sh
+
+TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
+  image: harshshekhar15/gitlab-job:v2
+  stage: OPENEBS-INSTALL
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh
+    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh
+
 ## Teaming checks
 triv01-teaming-invite-check:
   image: harshshekhar15/gitlab-job:v3
@@ -125,24 +144,6 @@ topology-check:
     - chmod 755 ./stages/functional-testing-with-rest/topology-check/topology-check.sh
     - ./stages/functional-testing-with-rest/topology-check/topology-check.sh
 
-tcid-iuoi02-openebs-install:
-  image: harshshekhar15/gitlab-job:v2
-  stage: OPENEBS-INSTALL
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/tcid-iuoi02-openebs-install.sh
-    - ./stages/openebs-install/tcid-iuoi02-openebs-install.sh
-
-TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
-  image: harshshekhar15/gitlab-job:v2
-  stage: OPENEBS-INSTALL
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh
-    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh
-
 ## Selenium Grid Spin up
 selenium-grid-deploy:
   image: harshshekhar15/gitlab-job:v5
@@ -150,8 +151,8 @@ selenium-grid-deploy:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/selenium-grid/create-grid.sh
-    - ./stages/selenium-grid/create-grid.sh
+    - chmod 755 ./stages/director-gui/create-grid.sh
+    - ./stages/director-gui/create-grid.sh
 
 ## Selenium Grid Clean up
 selenium-grid-cleanup:
@@ -160,8 +161,8 @@ selenium-grid-cleanup:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/selenium-grid/delete-grid.sh
-    - ./stages/selenium-grid/delete-grid.sh
+    - chmod 755 ./stages/director-gui/delete-grid.sh
+    - ./stages/director-gui/delete-grid.sh
 
 ## E2E metrics stage
 e2e-metrics:

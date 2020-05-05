@@ -2,7 +2,7 @@
 
 pod() {
   echo -e "\n*************Setting up Selenium Grid****************\n"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/selenium-grid/create-grid.sh node '"'$CI_PIPELINE_ID'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-gui/create-grid.sh node '"'$CI_PIPELINE_ID'"''
 }
 
 node() {
@@ -21,12 +21,12 @@ node() {
   echo "Number of GUI test scripts: $tests_count"
   cd ..
 
-  cd stages/selenium-grid/templates
+  cd stages/director-gui/templates
   ls
   cluster1=$(echo "pipeline-$PIPELINE_ID")
 
   echo -e "\n[ Creating selenium stack ] ----------------------------------------\n"
-  aws cloudformation create-stack --stack-name selenium-grid-${cluster1} --template-body file://hub.yml --parameters ParameterKey=NumberOfChromeNodes,ParameterValue=$tests_count ParameterKey=ClusterName,ParameterValue=${cluster1} ParameterKey=LogName,ParameterValue=${cluster1}
+  aws cloudformation create-stack --stack-name konvoy-selenium-grid-${cluster1} --template-body file://hub.yml --parameters ParameterKey=NumberOfChromeNodes,ParameterValue=$tests_count ParameterKey=ClusterName,ParameterValue=${cluster1} ParameterKey=LogName,ParameterValue=${cluster1}
 
   cd ../../..
   bash utils/e2e-cr jobname:selenium-grid-deploy jobphase:Completed

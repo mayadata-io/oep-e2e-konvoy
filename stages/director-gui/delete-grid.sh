@@ -4,7 +4,7 @@ set -e
 pod() {
   ## Installing OpenEBS using DOP on cluster2
   echo -e "\n*************Cleaning up Selenium Grid****************\n"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/selenium-grid/delete-grid.sh node '"'$CI_PIPELINE_ID'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-gui/delete-grid.sh node '"'$CI_PIPELINE_ID'"''
 }
 
 node() {
@@ -16,7 +16,7 @@ node() {
 
   {
     cluster1=$(echo "pipeline-$PIPELINE_ID")
-    aws cloudformation delete-stack --stack-name selenium-grid-${cluster1}
+    aws cloudformation delete-stack --stack-name konvoy-selenium-grid-${cluster1}
   } || {
     echo 'Selenium CloudFormation stack was absent'
   }
