@@ -26,7 +26,7 @@ node() {
   cluster1=$(echo "pipeline-$PIPELINE_ID")
 
   echo -e "\n[ Creating selenium stack ] ----------------------------------------\n"
-  aws cloudformation create-stack --stack-name konvoy-selenium-grid-${cluster1} --template-body file://hub.yml --parameters ParameterKey=NumberOfChromeNodes,ParameterValue=$tests_count ParameterKey=ClusterName,ParameterValue=${cluster1} ParameterKey=LogName,ParameterValue=${cluster1}
+  aws cloudformation create-stack --stack-name selenium-grid-${cluster1} --template-body file://hub.yml --parameters ParameterKey=NumberOfChromeNodes,ParameterValue=$tests_count ParameterKey=ClusterName,ParameterValue=${cluster1} ParameterKey=LogName,ParameterValue=${cluster1}
 
   cd ../../..
   bash utils/e2e-cr jobname:selenium-grid-deploy jobphase:Completed

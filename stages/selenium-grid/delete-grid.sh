@@ -12,12 +12,11 @@ node() {
   bash utils/pooling jobname:selenium-grid-deploy
   bash utils/e2e-cr jobname:selenium-grid-cleanup jobphase:Running
 
-  ls aws/
   PIPELINE_ID=$1
 
   {
     cluster1=$(echo "pipeline-$PIPELINE_ID")
-    aws cloudformation delete-stack --stack-name konvoy-selenium-grid-${cluster1}
+    aws cloudformation delete-stack --stack-name selenium-grid-${cluster1}
   } || {
     echo 'Selenium CloudFormation stack was absent'
   }
