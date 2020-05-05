@@ -21,7 +21,7 @@ node() {
   echo "Number of GUI test scripts: $tests_count"
   cd ..
 
-  cd stages/director-gui/templates
+  cd stages/selenium-grid/templates
   ls
   cluster1=$(echo "pipeline-$PIPELINE_ID")
 
