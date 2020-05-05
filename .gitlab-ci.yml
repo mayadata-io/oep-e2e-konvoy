@@ -6,6 +6,7 @@ stages:
   - TEAMING-CHECK
   - TOPOLOGY-CHECK
   - OPENEBS-INSTALL
+  - DIRECTOR-GUI
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
 ## Setup kubernetes cluster using Konvoy
@@ -86,16 +87,6 @@ director-self-cluster-connect-check:
 #     - chmod 755 ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
 #     - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
 
-## Selenium Grid Spin up
-# selenium-grid-deploy:
-#   image: harshshekhar15/gitlab-job:v5
-#   stage: SELENIUM-GRID-SETUP
-#   dependencies:
-#     - director-deploy
-#   script:
-#     - chmod 755 ./stages/selenium-grid/create-grid.sh
-#     - ./stages/selenium-grid/create-grid.sh
-
 ## Teaming checks
 triv01-teaming-invite-check:
   image: harshshekhar15/gitlab-job:v3
@@ -151,6 +142,26 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
   script:
     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh
     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh
+
+## Selenium Grid Spin up
+selenium-grid-deploy:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
+  script:
+    - chmod 755 ./stages/selenium-grid/create-grid.sh
+    - ./stages/selenium-grid/create-grid.sh
+
+## Selenium Grid Clean up
+selenium-grid-cleanup:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
+  script:
+    - chmod 755 ./stages/selenium-grid/delete-grid.sh
+    - ./stages/selenium-grid/delete-grid.sh
 
 ## E2E metrics stage
 e2e-metrics:
