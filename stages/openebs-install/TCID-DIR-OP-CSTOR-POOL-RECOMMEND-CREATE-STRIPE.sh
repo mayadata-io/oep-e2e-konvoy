@@ -16,7 +16,7 @@ node() {
   kubectl config current-context
 
   bash utils/pooling jobname:tcid-iuoi02-openebs-install
-  bash utils/e2e-cr jobname:TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE jobphase:Running
+  bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Running
 
   kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE/run_litmus_test.yml
   echo -e "\nPods in litmus namespace:\n"
@@ -46,11 +46,11 @@ node() {
   if [ "$testResult" != Pass ]
   then
     # export KUBECONFIG=~/.kube/config_c1
-    bash utils/e2e-cr jobname:TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE jobphase:Completed
+    bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Completed
     exit 1;
   else
     # export KUBECONFIG=~/.kube/config_c1
-    bash utils/e2e-cr jobname:TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE jobphase:Completed
+    bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Completed
   fi
 
 }
