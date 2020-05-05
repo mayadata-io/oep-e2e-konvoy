@@ -148,7 +148,7 @@ selenium-grid-deploy:
   image: harshshekhar15/gitlab-job:v5
   stage: DIRECTOR-GUI
   dependencies:
-    - TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
+    - cluster-create
   script:
     - chmod 755 ./stages/selenium-grid/create-grid.sh
     - ./stages/selenium-grid/create-grid.sh
@@ -158,7 +158,7 @@ selenium-grid-cleanup:
   image: harshshekhar15/gitlab-job:v5
   stage: DIRECTOR-GUI
   dependencies:
-    - TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
+    - cluster-create
   script:
     - chmod 755 ./stages/selenium-grid/delete-grid.sh
     - ./stages/selenium-grid/delete-grid.sh
