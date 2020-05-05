@@ -23,6 +23,9 @@ node() {
   # Apply pre-requisites
   echo -e "\n[ Applying pre-requisites ]-------------------------------------------------\n"
 
+  echo "************* Applying e2e-crd *************"
+  kubectl apply -f utils/e2e-crd.yml
+
   # Setup litmus on the cluster
   echo -e "\n[ Setting up Litmus ]-----------------------------\n"
   kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
