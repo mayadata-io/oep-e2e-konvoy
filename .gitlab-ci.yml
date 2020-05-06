@@ -18,7 +18,7 @@ cluster-create:
     - ./stages/cluster-setup/check-cluster-state/cluster-setup.sh
 
 ## Deploy Director On-Prem
-director-deploy:
+TCID-DIR-INSTALL-ON-LOCAL-HP:
   image: harshshekhar15/gitlab-job:v3
   stage: DIRECTOR-INSTALL-AND-UPGRADE
   dependencies:
@@ -42,7 +42,7 @@ create-apikey-check:
   image: harshshekhar15/gitlab-job:v3
   stage: FUNCTIONAL-TESTING-WITH-REST
   dependencies:
-    - director-deploy
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
@@ -52,7 +52,7 @@ trrc01-cluster-connect-check:
   image: harshshekhar15/gitlab-job:v3
   stage: FUNCTIONAL-TESTING-WITH-REST
   dependencies:
-    - director-deploy
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
@@ -62,7 +62,7 @@ client-components-check:
   image: harshshekhar15/gitlab-job:v3
   stage: FUNCTIONAL-TESTING-WITH-REST
   dependencies:
-    - director-deploy
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
@@ -153,6 +153,79 @@ selenium-grid-deploy:
   script:
     - chmod 755 ./stages/director-gui/create-grid.sh
     - ./stages/director-gui/create-grid.sh
+
+## Selenium tests
+tcid-gaau01-gui-auth:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
+  script:
+    - chmod 755 ./stages/director-gui/tcid-gaau01-gui-auth.sh
+    - ./stages/director-gui/tcid-gaau01-gui-auth.sh
+
+tcid-gacc01-gui-cluster:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
+  script:
+    - chmod 755 ./stages/director-gui/tcid-gacc01-gui-cluster.sh
+    - ./stages/director-gui/tcid-gacc01-gui-cluster.sh
+
+tcid-gada01-gui-dashboard-home:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
+  script:
+    - chmod 755 ./stages/director-gui/tcid-gada01-gui-dashboard-home.sh
+    - ./stages/director-gui/tcid-gada01-gui-dashboard-home.sh
+
+tcid-gato01-gui-dashboard-topology:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
+  script:
+    - chmod 755 ./stages/director-gui/tcid-gato01-gui-dashboard-topology.sh
+    - ./stages/director-gui/tcid-gato01-gui-dashboard-topology.sh
+
+gui-dashboard:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
+  script:
+    - chmod 755 ./stages/director-gui/gui-dashboard.sh
+    - ./stages/director-gui/gui-dashboard.sh
+
+tcid-gaal01-gui-dashboard-alerts:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
+  script:
+    - chmod 755 ./stages/director-gui/tcid-gaal01-gui-dashboard-alerts.sh
+    - ./stages/director-gui/tcid-gaal01-gui-dashboard-alerts.sh
+
+tcid-galo01-gui-dashboard-logs:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
+  script:
+    - chmod 755 ./stages/director-gui/tcid-galo01-gui-dashboard-logs.sh
+    - ./stages/director-gui/tcid-galo01-gui-dashboard-logs.sh
+
+tcid-gada02-gui-dashboard-overview:
+  image: harshshekhar15/gitlab-job:v5
+  stage: DIRECTOR-GUI
+  dependencies:
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
+  script:
+    - chmod 755 ./stages/director-gui/tcid-gada02-gui-dashboard-overview.sh
+    - ./stages/director-gui/tcid-gada02-gui-dashboard-overview.sh
 
 ## Selenium Grid Clean up
 selenium-grid-cleanup:

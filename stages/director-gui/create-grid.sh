@@ -8,6 +8,14 @@ pod() {
 node() {
   bash utils/e2e-cr jobname:selenium-grid-deploy jobphase:Waiting
   bash utils/e2e-cr jobname:selenium-grid-deploy jobphase:Running
+  bash utils/e2e-cr jobname:tcid-gaau01-gui-auth jobphase:Waiting
+  bash utils/e2e-cr jobname:tcid-gacc01-gui-cluster jobphase:Waiting
+  bash utils/e2e-cr jobname:tcid-gada01-gui-dashboard-home jobphase:Waiting
+  bash utils/e2e-cr jobname:tcid-gato01-gui-dashboard-topology jobphase:Waiting
+  bash utils/e2e-cr jobname:gui-dashboard jobphase:Waiting
+  bash utils/e2e-cr jobname:tcid-gaal01-gui-dashboard-alerts jobphase:Waiting
+  bash utils/e2e-cr jobname:tcid-galo01-gui-dashboard-logs jobphase:Waiting
+  bash utils/e2e-cr jobname:tcid-gada02-gui-dashboard-overview jobphase:Waiting
   bash utils/e2e-cr jobname:selenium-grid-cleanup jobphase:Waiting
 
   PIPELINE_ID=$1
