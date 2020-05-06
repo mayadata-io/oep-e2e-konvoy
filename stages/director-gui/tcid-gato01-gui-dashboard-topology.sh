@@ -4,7 +4,7 @@ pod() {
 
 ## Running gui-dasboard-topology test
 echo -e "\n************************ Running GUI dasboard-topology test ***************************\n"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-rancher && bash stages/director-gui/tcid-gato01-gui-dashboard-topology.sh node'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-gui/tcid-gato01-gui-dashboard-topology.sh node'
 }
 
 node() {

@@ -4,7 +4,7 @@ pod() {
 
 ## Running gui-dashboard-home test
 echo -e "\n************************ Running GUI dashboard-home test ******************************\n"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-rancher && bash stages/director-gui/tcid-gada01-gui-dashboard-home.sh node'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-gui/tcid-gada01-gui-dashboard-home.sh node'
 }
 
 node() {

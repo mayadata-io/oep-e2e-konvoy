@@ -4,7 +4,7 @@ pod() {
 
 ## Running gui-auth test
 echo -e "\n************************ Running GUI auth test ****************************************\n"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-rancher && bash stages/director-gui/tcid-gaau01-gui-auth.sh node'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-gui/tcid-gaau01-gui-auth.sh node'
 }
 
 node() {
