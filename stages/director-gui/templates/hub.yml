@@ -4,11 +4,11 @@ Parameters:
   
   ClusterName:
     Type: String
-    Default: 'selenium-grid-aws-ci-dev'
+    Default: 'selenium-grid-konvoy-ci-release'
     Description: Cluster name.
   LogName:
     Type: String
-    Default: 'selenium-grid-aws-ecs-ci-dev'
+    Default: 'selenium-grid-konvoy-ecs-ci-release'
     Description: Cluster name.
   ContainerCpu:
     Type: Number
@@ -48,15 +48,20 @@ Parameters:
     Default: 'arn:aws:iam::385569096892:role/ecs-iam'
     Description: ARN of ecsTaskExecutionRole
     
-  PublicLoadBalancer:
+  VPC:
     Type: String
-    Default: 'selenium-grid-aws-505804605.eu-north-1.elb.amazonaws.com'
-    Description: Name of load balancer
+    Default: 'vpc-04f4f13983ea7442f'
+    Description: Vpc ID
+
+  # PublicLoadBalancer:
+  #   Type: String
+  #   Default: 'selenium-grid-aws-505804605.eu-north-1.elb.amazonaws.com'
+  #   Description: Name of load balancer
     
-  PublicLoadBalancerArn:
-    Type: String
-    Default: 'arn:aws:elasticloadbalancing:eu-north-1:385569096892:loadbalancer/app/selenium-grid-aws/6ec9471dbbd7ba29'
-    Description: ARN of Public Load Balancer
+  # PublicLoadBalancerArn:
+  #   Type: String
+  #   Default: 'arn:aws:elasticloadbalancing:eu-north-1:385569096892:loadbalancer/app/selenium-grid-aws/6ec9471dbbd7ba29'
+  #   Description: ARN of Public Load Balancer
     
   TargetGroupArn:
     Type: String
@@ -71,7 +76,52 @@ Conditions:
   HasCustomRole: !Not [ !Equals [!Ref 'Role', ''] ]
 
 Resources:
-  
+  PublicLoadBalancerSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the public facing load balancer
+      VpcId: !Ref 'VPC'
+      SecurityGroupIngress:
+          - CidrIp: 0.0.0.0/0
+            IpProtocol: -1
+
+  PublicLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      LoadBalancerAttributes:
+      - Key: idle_timeout.timeout_seconds
+        Value: '30'
+      Subnets:
+        - 'subnet-0027cf4119cc5d2d4'
+        - 'subnet-0e93574029eaf08a3'
+        - 'subnet-0fee3e522fd27c27a'
+      SecurityGroups: [!Ref 'PublicLoadBalancerSG']
+
+  DummyTargetGroupPublic:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 6
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      Name: !Join ['-', [!Ref 'AWS::StackName', 'drop-1']]
+      Port: 4444
+      Protocol: HTTP
+      UnhealthyThresholdCount: 2
+      VpcId: !Ref 'VPC'
+  PublicLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn: PublicLoadBalancer
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref 'DummyTargetGroupPublic'
+          Type: 'forward'
+      LoadBalancerArn: !Ref 'PublicLoadBalancer'
+      Port: 4444
+      Protocol: HTTP
+
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
@@ -82,7 +132,7 @@ Resources:
       DefaultActions:
         - TargetGroupArn: !Ref 'TargetGroupArn'
           Type: 'forward'
-      LoadBalancerArn: !Ref 'PublicLoadBalancerArn'
+      LoadBalancerArn: !Ref 'PublicLoadBalancer'
       Port: 4444
       Protocol: HTTP
   
@@ -139,7 +189,7 @@ Resources:
           Image: 'selenium/node-chrome:3.141.59'
           Environment:
             - Name: 'HUB_HOST'
-              Value: !Ref 'PublicLoadBalancer'
+              Value: !GetAtt 'PublicLoadBalancer.DNSName'
             - Name: 'HUB_PORT'
               Value: '4444'
             - Name: 'NODE_MAX_INSTANCES'
@@ -243,6 +293,7 @@ Resources:
   #     VpcId: 'vpc-0bdfb1e5085dda8af'
   LoadBalancerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    DependsOn: PublicLoadBalancerListener
     Properties:
       Actions:
         - TargetGroupArn: !Ref 'TargetGroupArn'
@@ -254,8 +305,8 @@ Resources:
       Priority: !Ref 'Priority'
 
 Outputs:
-  ExternalUrl:
+  Hub:
     Description: The url of the external Selenium Grid
-    Value: !Join ['', ['http://', !Ref 'PublicLoadBalancer', ':4444/grid/console']]
+    Value: !GetAtt 'PublicLoadBalancer.DNSName'
     Export:
-      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ExternalUrl' ] ]
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'Hub' ] ]
