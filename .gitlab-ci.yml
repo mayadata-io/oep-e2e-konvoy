@@ -230,12 +230,12 @@ tcid-gada02-gui-dashboard-overview:
 ## Selenium Grid Clean up
 selenium-grid-cleanup:
   image: harshshekhar15/gitlab-job:v5
-  stage: DIRECTOR-GUI
+  stage: CLUSTER-TEAR-DOWN
   dependencies:
-    - cluster-create
+    - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
-    - chmod 755 ./stages/director-gui/delete-grid.sh
-    - ./stages/director-gui/delete-grid.sh
+    - chmod 755 ./stages/cluster-tear-down/delete-grid.sh
+    - ./stages/cluster-tear-down/delete-grid.sh
 
 ## E2E metrics stage
 e2e-metrics:
