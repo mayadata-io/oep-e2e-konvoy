@@ -36,6 +36,9 @@ node() {
 
   kubectl logs -f $litmus_pod -n litmus
 
+  echo -e "\n---------------------------------------\n Pods in maya-system namespace:\n"
+  kubectl get po -n maya-system
+
   testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
   echo $testResult
 
