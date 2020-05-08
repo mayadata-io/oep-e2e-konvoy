@@ -62,9 +62,13 @@ node() {
   kubectl get pod
   cd ~/oep-e2e-konvoy/
 
-  # Add manual sleep of 12min
+  # Add manual sleep of 9min
   echo -e "\n Manual wait for director components to get deployed"
   sleep 540
+
+  #Run Components health check
+  chmod 755 ./stages/director-install-and-upgrade/components-health-check.sh
+  ./stages/director-install-and-upgrade/components-health-check.sh
 
   #List pods
   kubectl get pods

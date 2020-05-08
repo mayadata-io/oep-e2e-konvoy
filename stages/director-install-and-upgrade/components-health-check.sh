@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 pod() {
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/components-health-check.sh node'
