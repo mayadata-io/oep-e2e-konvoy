@@ -91,7 +91,7 @@ metrics-check:
   image: harshshekhar15/gitlab-job:v3
   stage: FUNCTIONAL-TESTING-WITH-REST
   dependencies:
-    - director-health-check
+    - client-components-check
   script:
     - chmod 755 ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
     - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
