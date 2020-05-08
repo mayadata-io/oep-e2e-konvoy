@@ -4,6 +4,7 @@ stages:
   - DIRECTOR-INSTALL-AND-UPGRADE
   - FUNCTIONAL-TESTING-WITH-REST
   - OPENEBS-INSTALL
+  - METRICS-CHECK
   - TEAMING-CHECK
   - TOPOLOGY-CHECK
   - DIRECTOR-GUI
@@ -89,7 +90,7 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
 # ## Director metrics check
 metrics-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: FUNCTIONAL-TESTING-WITH-REST
+  stage: METRICS-CHECK
   dependencies:
     - client-components-check
   script:
