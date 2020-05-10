@@ -4,7 +4,7 @@ stages:
   - DIRECTOR-INSTALL-AND-UPGRADE
   - FUNCTIONAL-TESTING-WITH-REST
   - OPENEBS-INSTALL
-  - METRICS-CHECK
+  # - METRICS-CHECK
   - TEAMING-CHECK
   - TOPOLOGY-CHECK
   - DIRECTOR-GUI
@@ -88,14 +88,14 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh
 
 # ## Director metrics check
-metrics-check:
-  image: harshshekhar15/gitlab-job:v3
-  stage: METRICS-CHECK
-  dependencies:
-    - client-components-check
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
-    - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
+# metrics-check:
+#   image: harshshekhar15/gitlab-job:v3
+#   stage: METRICS-CHECK
+#   dependencies:
+#     - client-components-check
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
+#     - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
 
 ## Teaming checks
 triv01-teaming-invite-check:
