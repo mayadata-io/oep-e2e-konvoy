@@ -31,7 +31,7 @@ cd gui-automation
 python3.7 -m pip install -r requirements.txt
 
 #Running tests with gaal01 marker
-python3.7 -m pytest -m gaal01 --url $URL --environment remote --hub $grid -v --tests-per-worker 10 --reruns 1 --html=./results/report.html
+python3.7 -m pytest -m gaal01 --url $URL --environment remote --hub "$grid" -v --tests-per-worker 10 --reruns 1 --html=./results/report.html
 
 cd ..
 

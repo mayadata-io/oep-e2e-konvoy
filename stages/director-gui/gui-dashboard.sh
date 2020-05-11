@@ -31,7 +31,7 @@ cd gui-automation
 python3.7 -m pip install -r requirements.txt
 
 #Running tests with dashboard marker
-python3.7 -m pytest -m dashboard --url $URL --environment --hub $grid remote -v --tests-per-worker 10 --reruns 1 --html=./results/report.html
+python3.7 -m pytest -m dashboard --url $URL --environment --hub "$grid" remote -v --tests-per-worker 10 --reruns 1 --html=./results/report.html
 
 cd ..
 
