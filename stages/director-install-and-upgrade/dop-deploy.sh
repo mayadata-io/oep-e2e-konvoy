@@ -6,9 +6,9 @@ pod() {
 }
 
 node() {
-  bash utils/e2e-cr jobname:dop-deploy jobphase:Waiting
-  bash utils/e2e-cr jobname:dop-deploy jobphase:Running 
-  bash utils/e2e-cr jobname:components-health-check jobphase:Waiting
+  #bash utils/e2e-cr jobname:dop-deploy jobphase:Waiting
+  #bash utils/e2e-cr jobname:dop-deploy jobphase:Running 
+  #bash utils/e2e-cr jobname:components-health-check jobphase:Waiting
 
   GITHUB_USERNAME=$1
   GITHUB_PASSWORD=$2
@@ -73,7 +73,7 @@ node() {
   #List pods
   kubectl get pods
 
-  bash utils/e2e-cr jobname:dop-deploy jobphase:Completed 
+  #bash utils/e2e-cr jobname:dop-deploy jobphase:Completed 
 }
 
 if [ "$1" == "node" ];then
