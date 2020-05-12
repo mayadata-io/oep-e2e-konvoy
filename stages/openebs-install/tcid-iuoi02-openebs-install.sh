@@ -19,7 +19,7 @@ node() {
   bash utils/e2e-cr jobname:tcid-iuoi02-openebs-install jobphase:Running
   bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Waiting
 
-  kubectl create -f oep-e2e/litmus/director/tcid-iuoi02-openebs-install/run_litmus_test.yml
+  kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-INSTALL-OPENEBS/run_litmus_test.yml
   echo -e "\nPods in litmus namespace:\n"
   kubectl get pods -n litmus
 
