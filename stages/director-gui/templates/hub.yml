@@ -4,11 +4,11 @@ Parameters:
   
   ClusterName:
     Type: String
-    Default: 'selenium-grid-konvoy-ci-release'
+    Default: 'grid-konvoy-ci-release'
     Description: Cluster name.
   LogName:
     Type: String
-    Default: 'selenium-grid-konvoy-ecs-ci-release'
+    Default: 'grid-konvoy-ci-release'
     Description: Cluster name.
   ContainerCpu:
     Type: Number
@@ -63,10 +63,10 @@ Parameters:
   #   Default: 'arn:aws:elasticloadbalancing:eu-north-1:385569096892:loadbalancer/app/selenium-grid-aws/6ec9471dbbd7ba29'
   #   Description: ARN of Public Load Balancer
     
-  TargetGroupArn:
-    Type: String
-    Default: 'arn:aws:elasticloadbalancing:eu-north-1:385569096892:targetgroup/selenium-grid-aws-tg/8fc1c4a89abbe510'
-    Description: ARN of Target Group
+  # TargetGroupArn:
+  #   Type: String
+  #   Default: 'arn:aws:elasticloadbalancing:eu-north-1:385569096892:targetgroup/selenium-grid-aws-tg/8fc1c4a89abbe510'
+  #   Description: ARN of Target Group
   
   SecurityGroup:
     Type: String
@@ -84,7 +84,7 @@ Resources:
       SecurityGroupIngress:
           - CidrIp: 0.0.0.0/0
             IpProtocol: -1
-
+          
   PublicLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -98,30 +98,6 @@ Resources:
         - 'subnet-0fee3e522fd27c27a'
       SecurityGroups: [!Ref 'PublicLoadBalancerSG']
 
-  DummyTargetGroupPublic:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      HealthCheckIntervalSeconds: 6
-      HealthCheckPath: /
-      HealthCheckProtocol: HTTP
-      HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 2
-      Name: !Join ['-', [!Ref 'AWS::StackName', 'drop-1']]
-      Port: 4444
-      Protocol: HTTP
-      UnhealthyThresholdCount: 2
-      VpcId: !Ref 'VPC'
-  PublicLoadBalancerListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    DependsOn: PublicLoadBalancer
-    Properties:
-      DefaultActions:
-        - TargetGroupArn: !Ref 'DummyTargetGroupPublic'
-          Type: 'forward'
-      LoadBalancerArn: !Ref 'PublicLoadBalancer'
-      Port: 4444
-      Protocol: HTTP
-
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
@@ -130,7 +106,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       DefaultActions:
-        - TargetGroupArn: !Ref 'TargetGroupArn'
+        - TargetGroupArn: !Ref 'TargetGroup'
           Type: 'forward'
       LoadBalancerArn: !Ref 'PublicLoadBalancer'
       Port: 4444
@@ -255,7 +231,7 @@ Resources:
       LoadBalancers:
         - ContainerName: 'hub'
           ContainerPort: 4444
-          TargetGroupArn: !Ref 'TargetGroupArn'
+          TargetGroupArn: !Ref 'TargetGroup'
   ServiceNodeChrome:
     Type: AWS::ECS::Service
     DependsOn: ServiceHub
@@ -277,26 +253,26 @@ Resources:
             - 'subnet-0e93574029eaf08a3'
             - 'subnet-0fee3e522fd27c27a'
       TaskDefinition: !Ref 'TaskDefinitionNodeChrome'
-  # TargetGroup:
-  #   Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  #   Properties:
-  #     HealthCheckIntervalSeconds: 6
-  #     HealthCheckPath: /
-  #     HealthCheckProtocol: HTTP
-  #     HealthCheckTimeoutSeconds: 5
-  #     HealthyThresholdCount: 2
-  #     TargetType: ip
-  #     Name: 'selenium-grid-aws-tg'
-  #     Port: 4444
-  #     Protocol: HTTP
-  #     UnhealthyThresholdCount: 2
-  #     VpcId: 'vpc-0bdfb1e5085dda8af'
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 6
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      TargetType: ip
+      Name: !Ref 'AWS::StackName'
+      Port: 4444
+      Protocol: HTTP
+      UnhealthyThresholdCount: 2
+      VpcId: !Ref 'VPC'
   LoadBalancerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     DependsOn: PublicLoadBalancerListener
     Properties:
       Actions:
-        - TargetGroupArn: !Ref 'TargetGroupArn'
+        - TargetGroupArn: !Ref 'TargetGroup'
           Type: 'forward'
       Conditions:
         - Field: path-pattern
