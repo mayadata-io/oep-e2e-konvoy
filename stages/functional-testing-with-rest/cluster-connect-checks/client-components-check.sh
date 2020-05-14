@@ -17,6 +17,9 @@ node() {
   # Verify current context
   kubectl config current-context
 
+  echo -e "\nManual wait for 3mins"
+  sleep 180
+
   echo "Check cluster client components-------------------------------------------------"
   kubectl create -f oep-e2e/litmus/director/cluster-connect-check/run_litmus_test.yml
 
