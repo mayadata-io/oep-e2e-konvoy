@@ -4,9 +4,10 @@ stages:
   - DIRECTOR-INSTALL
   - CLUSTER-CONNECT
   - OPENEBS-INSTALL
+  - DIRECTOR-FUNCTIONAL
   # - METRICS-CHECK
-  - TEAMING-CHECK
-  - TOPOLOGY-CHECK
+  # - TEAMING-CHECK
+  # - TOPOLOGY-CHECK
   - DIRECTOR-GUI
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
@@ -90,7 +91,7 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
 # ## Director metrics check
 # metrics-check:
 #   image: harshshekhar15/gitlab-job:v3
-#   stage: METRICS-CHECK
+#   stage: DIRECTOR-FUNCTIONAL
 #   dependencies:
 #     - client-components-check
 #   script:
@@ -100,7 +101,7 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
 ## Teaming checks
 triv01-teaming-invite-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: TEAMING-CHECK
+  stage: DIRECTOR-FUNCTIONAL
   dependencies:
     - client-components-check
   script:
@@ -109,7 +110,7 @@ triv01-teaming-invite-check:
 
 trrc02-teaming-change-role-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: TEAMING-CHECK
+  stage: DIRECTOR-FUNCTIONAL
   dependencies:
     - client-components-check
   script:
@@ -118,7 +119,7 @@ trrc02-teaming-change-role-check:
 
 trrc03-teaming-change-role-negative-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: TEAMING-CHECK
+  stage: DIRECTOR-FUNCTIONAL
   dependencies:
     - client-components-check
   script:
@@ -128,7 +129,7 @@ trrc03-teaming-change-role-negative-check:
 ## Topology check
 topology-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: TOPOLOGY-CHECK
+  stage: DIRECTOR-FUNCTIONAL
   dependencies:
     - client-components-check
   script:
