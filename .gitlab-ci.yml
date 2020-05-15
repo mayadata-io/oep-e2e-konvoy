@@ -2,7 +2,7 @@
 stages:
   - CLUSTER-SETUP
   - DIRECTOR-INSTALL
-  - FUNCTIONAL-TESTING-WITH-REST
+  - CLUSTER-CONNECT
   - OPENEBS-INSTALL
   # - METRICS-CHECK
   - TEAMING-CHECK
@@ -31,7 +31,7 @@ TCID-DIR-INSTALL-ON-LOCAL-HP:
 ## Create user's apikey
 create-apikey-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: FUNCTIONAL-TESTING-WITH-REST
+  stage: CLUSTER-CONNECT
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
@@ -41,7 +41,7 @@ create-apikey-check:
 ## Cluster connect check
 trrc01-cluster-connect-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: FUNCTIONAL-TESTING-WITH-REST
+  stage: CLUSTER-CONNECT
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
@@ -51,7 +51,7 @@ trrc01-cluster-connect-check:
 ## Client component check
 client-components-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: FUNCTIONAL-TESTING-WITH-REST
+  stage: CLUSTER-CONNECT
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
@@ -61,7 +61,7 @@ client-components-check:
 ## Self cluster connect check
 director-self-cluster-connect-check:
   image: harshshekhar15/gitlab-job:v3
-  stage: FUNCTIONAL-TESTING-WITH-REST
+  stage: CLUSTER-CONNECT
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
