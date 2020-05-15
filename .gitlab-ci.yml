@@ -1,7 +1,7 @@
 ## Define the stages & order of execution
 stages:
   - CLUSTER-SETUP
-  - DIRECTOR-INSTALL-AND-UPGRADE
+  - DIRECTOR-INSTALL
   - FUNCTIONAL-TESTING-WITH-REST
   - OPENEBS-INSTALL
   # - METRICS-CHECK
@@ -21,12 +21,12 @@ cluster-create:
 ## Deploy Director On-Prem
 TCID-DIR-INSTALL-ON-LOCAL-HP:
   image: harshshekhar15/gitlab-job:v3
-  stage: DIRECTOR-INSTALL-AND-UPGRADE
+  stage: DIRECTOR-INSTALL
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/director-install-and-upgrade/dop-deploy.sh
-    - ./stages/director-install-and-upgrade/dop-deploy.sh
+    - chmod 755 ./stages/director-install/dop-deploy.sh
+    - ./stages/director-install/dop-deploy.sh
 
 ## Create user's apikey
 create-apikey-check:
