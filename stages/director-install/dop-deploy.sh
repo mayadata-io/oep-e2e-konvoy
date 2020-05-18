@@ -2,7 +2,7 @@
 
 pod() {
   echo "*************Deploying Director On-Prem*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install-and-upgrade/dop-deploy.sh node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-install/dop-deploy.sh node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"''
 }
 
 node() {
@@ -62,8 +62,8 @@ node() {
   sleep 540
 
   #Run Components health check
-  chmod 755 ./stages/director-install-and-upgrade/components-health-check.sh
-  ./stages/director-install-and-upgrade/components-health-check.sh
+  chmod 755 ./stages/director-install/components-health-check.sh
+  ./stages/director-install/components-health-check.sh
 
   #List pods
   kubectl get pods
