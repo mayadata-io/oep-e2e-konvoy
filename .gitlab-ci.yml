@@ -248,8 +248,8 @@ cluster-cleanup:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/cluster-tear-down/cluster-cleanup.sh
-    - ./stages/cluster-tear-down/cluster-cleanup.sh
+    - chmod 755 ./stages/cluster-tear-down/c1-cleanup.sh
+    - ./stages/cluster-tear-down/c1-cleanup.sh
 
 cluster2-cleanup:
   when: always
