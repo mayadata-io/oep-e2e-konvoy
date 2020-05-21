@@ -3,7 +3,7 @@ set -x
 
 pod() {
   echo "*************Cleaning up the cluster*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/cluster-cleanup.sh node '"'$c1_master1_name'"' '"'$c1_worker1_name'"' '"'$c1_worker2_name'"' '"'$c1_worker3_name'"' '"'$c1_worker4_name'"' '"'$c1_worker5_name'"' '"'$C1_ESX_IP'"' '"'$C1_SNAPSHOT_NAME'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/c1-cleanup.sh node '"'$c1_master1_name'"' '"'$c1_worker1_name'"' '"'$c1_worker2_name'"' '"'$c1_worker3_name'"' '"'$c1_worker4_name'"' '"'$c1_worker5_name'"' '"'$C1_ESX_IP'"' '"'$C1_SNAPSHOT_NAME'"''
 }
 
 node() {
