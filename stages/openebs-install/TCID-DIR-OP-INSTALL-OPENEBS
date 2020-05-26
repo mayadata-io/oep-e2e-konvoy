@@ -1,9 +1,9 @@
 #!/bin/bash
 
 pod() {
-  ## Creating Cstor pool using DOP on cluster2
-  echo -e "\n************************ Creating Cstor pool ******************************************\n"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE.sh node'
+  ## Installing OpenEBS using DOP on cluster2
+  echo -e "\n************************ Installing OpenEBS *******************************************\n"
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS node'
 }
 
 node() {
@@ -15,14 +15,15 @@ node() {
   # Verify current context
   kubectl config current-context
 
-  bash utils/pooling jobname:tcid-iuoi02-openebs-install
-  bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Running
+  bash utils/e2e-cr jobname:tcid-dir-op-install-openebs jobphase:Waiting
+  bash utils/e2e-cr jobname:tcid-dir-op-install-openebs jobphase:Running
+  bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Waiting
 
-  kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE/run_litmus_test.yml
+  kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-INSTALL-OPENEBS/run_litmus_test.yml
   echo -e "\nPods in litmus namespace:\n"
-  kubectl get pods -n litmus 
+  kubectl get pods -n litmus
 
-  test_name=create-cstor-pool
+  test_name=openebs-install
   echo -e "\nTest Name: $test_name\n"
 
   litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
@@ -46,12 +47,12 @@ node() {
   if [ "$testResult" != Pass ]
   then
     # export KUBECONFIG=~/.kube/config_c1
-    bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Completed
+    bash utils/e2e-cr jobname:tcid-dir-op-install-openebs jobphase:Completed
     exit 1;
   else
     # export KUBECONFIG=~/.kube/config_c1
-    bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Completed
-  fi
+    bash utils/e2e-cr jobname:tcid-dir-op-install-openebs jobphase:Completed
+  fi 
 
 }
 

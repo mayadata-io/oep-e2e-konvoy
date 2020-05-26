@@ -1,0 +1,132 @@
+#!/bin/bash
+
+
+pod() {
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional/cstor-csi-volume-snapshot/csi-cstor-snapshot node '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$RELEASE_TAG'"'
+}
+
+node() {
+  
+export KUBECONFIG=~/.kube/cluster2_config
+
+job_id=$(echo $1)
+pipeline_id=$(echo $2)
+commit_id=$(echo $3)
+releaseTag=$(echo $4)
+case_id=MSIT
+
+time="date"
+current_time=$(eval $time)
+
+present_dir=$(pwd)
+echo $present_dir
+
+bash utils/e2e-cr-new jobname:csi-cstor-snapshot jobphase:Waiting
+bash utils/e2e-cr-new jobname:csi-cstor-snapshot jobphase:Running init_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag"
+bash utils/e2e-cr-new jobname:csi-cstor-clone jobphase:Waiting
+
+################
+# LitmusBook 1 #
+################
+
+echo "*******Deploying Busybox Application****"
+
+test_name=$(bash utils/generate_test_name testcase=busybox-provision-cstor-snap-clone metadata="")
+echo $test_name
+
+cd e2e-tests
+echo "Running the litmus test for Busybox Deployment.."
+
+cp apps/busybox/deployers/run_litmus_test.yml busybox_snap_clone.yml
+
+sed -i -e 's/app: busybox-litmus/app: deploy-busybox-snap-clone/g' \
+-e 's/value: openebs-cstor-sparse/value: openebs-cstor-csi/g' \
+-e 's/value: openebs-busybox/value: csi-vol/g' \
+-e 's/value: statefulset/value: deployment/g' \
+-e 's/value: app-busybox-ns/value: cstor-snap-clone/g' busybox_snap_clone.yml
+cat busybox_snap_clone.yml
+
+bash ../utils/litmus_job_runner label='app:deploy-busybox-snap-clone' job=busybox_snap_clone.yml
+cd ..
+bash utils/dump_cluster_state;
+bash utils/event_updater jobname:csi-cstor-snapshot $test_name jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id"
+
+if [ "$?" != "0" ]; then
+exit 1;
+fi
+
+################
+# LitmusBook 2 #
+################
+
+test_name=$(bash utils/generate_test_name testcase=cstor-snapshotclass metadata="")
+echo $test_name
+
+cd e2e-tests
+
+cp experiments/functional/cstor-csi/cstor-snapshotclass/run_litmus_test.yml cstor-snapshotclass.yml
+
+cat cstor-snapshotclass.yml
+
+bash ../utils/litmus_job_runner label='name:cstor-snapshotclass' job=cstor-snapshotclass.yml
+cd ..
+bash utils/dump_cluster_state;
+bash utils/event_updater jobname:csi-cstor-snapshot $test_name jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id"
+
+if [ "$?" != "0" ]; then
+exit 1;
+fi
+
+################
+# LitmusBook 3 #
+################
+
+echo "*******Performing snapshot litmus test**********"
+
+test_name=$(bash utils/generate_test_name testcase=cstor-csi-snapshot metadata="")
+echo $test_name
+
+cd e2e-tests
+cp experiments/functional/cstor-csi/csi-snapshot/run_litmus_test.yml run_snapshot_test.yml
+
+## Replace the value of DATA_PERSISTENCE with application name in litmus experiment. 
+sed -i -e '/name: DATA_PERSISTENCE/{n;s/.*/            value: busybox/}' \
+-e '/name: APP_NAMESPACE/{n;s/.*/            value: cstor-snap-clone/}' \
+-e '/name: APP_PVC/{n;s/.*/            value: csi-vol/}' run_snapshot_test.yml
+
+## Insert the set of variables for busybox data consistency util into configmap spec.
+sed -i '/parameters.yml: |/a \
+    blocksize: 4k\
+    blockcount: 1024\
+    testfile: csisnapclonetest
+' run_snapshot_test.yml
+
+echo "Running the litmus test for creation of snapshot.."
+cat run_snapshot_test.yml
+
+bash ../utils/litmus_job_runner label='name:cstor-csi-snapshot' job=run_snapshot_test.yml
+cd ..
+bash utils/dump_cluster_state;
+bash utils/event_updater jobname:csi-cstor-snapshot $test_name jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id"
+
+rc_val=$(echo $?)
+current_time=$(eval $time)
+
+if [ "$rc_val" != "0" ]; then
+bash utils/e2e-cr-new jobname:csi-cstor-snapshot jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Fail
+exit 1;
+fi
+
+bash utils/e2e-cr-new jobname:csi-cstor-snapshot jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Pass
+
+if [ "$rc_val" != "0" ]; then
+exit 1;
+fi
+
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3 $4 $5
+else
+  pod
+fi

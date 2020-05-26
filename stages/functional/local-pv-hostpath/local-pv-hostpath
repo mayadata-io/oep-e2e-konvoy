@@ -1,0 +1,112 @@
+#!/bin/bash
+
+pod() {
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional/local-pv-hostpath/local-pv-hostpath node '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$RELEASE_TAG'"'
+}
+
+node() {
+
+export KUBECONFIG=~/.kube/cluster2_config
+
+job_id=$(echo $1)
+pipeline_id=$(echo $2)
+commit_id=$(echo $3)
+releaseTag=$(echo $4)
+
+time="date"
+current_time=$(eval $time)
+
+present_dir=$(pwd)
+echo $present_dir
+
+bash utils/e2e-cr-new jobname:local-pv-hostpath jobphase:Waiting
+bash utils/e2e-cr-new jobname:local-pv-hostpath jobphase:Running init_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag"
+
+################
+# LitmusBook 1 #
+################
+
+echo "*******Deploying Busybox Application****"
+
+run_id="localpv";test_name=$(bash utils/generate_test_name testcase=busybox-provision-busybox-hostpath metadata=${run_id})
+echo $test_name
+
+cd e2e-tests
+cp apps/busybox/deployers/run_litmus_test.yml run_test_local_pv_hostpath.yml
+
+sed -i -e 's/app: busybox-litmus/app: busybox-local-pv-hostpath/g' \
+-e 's/app=busybox-sts/app=local-pv-hostpath/g' \
+-e 's/value: statefulset/value: deployment/g' \
+-e 's/value: openebs-cstor-sparse/value: openebs-hostpath/g' \
+-e 's/value: openebs-busybox/value: openebs-busybox-hostpath/g' \
+-e 's/value: app-busybox-ns/value: busybox-hostpath/g' run_test_local_pv_hostpath.yml
+
+sed -i '/command:/i \
+          - name: RUN_ID\
+            value: '"$run_id"'\
+' run_test_local_pv_hostpath.yml
+
+cat run_test_local_pv_hostpath.yml
+
+bash ../utils/litmus_job_runner label='app:busybox-local-pv-hostpath' job=run_test_local_pv_hostpath.yml
+cd ..
+bash utils/dump_cluster_state;
+bash utils/event_updater jobname:local-pv-hostpath $test_name jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id"
+
+if [ "$?" != "0" ]; then
+exit 1;
+fi
+
+################
+# LitmusBook 2 #
+################
+
+echo "****Deprovisioning Busybox Application****"
+
+run_id="localpv";test_name=$(bash utils/generate_test_name testcase=busybox-deprovision-busybox-hostpath metadata=${run_id})
+echo $test_name
+
+cd e2e-tests
+cp apps/busybox/deployers/run_litmus_test.yml run_test_deprovision_hostpath.yml
+
+sed -i -e 's/app: busybox-litmus/app: deprovision-busybox-local-pv-hostpath/g' \
+-e 's/app=busybox-sts/app=local-pv-hostpath/g' \
+-e 's/value: statefulset/value: deployment/g' \
+-e 's/value: openebs-cstor-sparse/value: openebs-hostpath/g' \
+-e 's/value: openebs-busybox/value: openebs-busybox-hostpath/g' \
+-e 's/value: provision/value: deprovision/g' \
+-e 's/value: app-busybox-ns/value: busybox-hostpath/g' run_test_deprovision_hostpath.yml
+
+sed -i '/command:/i \
+          - name: RUN_ID\
+            value: '"$run_id"'\
+' run_test_deprovision_hostpath.yml
+
+cat run_test_deprovision_hostpath.yml
+
+bash ../utils/litmus_job_runner label='app:deprovision-busybox-local-pv-hostpath' job=run_test_deprovision_hostpath.yml
+cd ..
+bash utils/dump_cluster_state;
+bash utils/event_updater jobname:local-pv-hostpath $test_name jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id"
+
+rc_val=$(echo $?)
+current_time=$(eval $time)
+
+if [ "$rc_val" != "0" ]; then
+bash utils/e2e-cr-new jobname:local-pv-hostpath jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Fail
+exit 1;
+fi
+
+bash utils/e2e-cr-new jobname:local-pv-hostpath jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Pass
+
+if [ "$rc_val" != "0" ]; then
+exit 1;
+fi
+
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3 $4 $5
+else
+  pod
+fi
