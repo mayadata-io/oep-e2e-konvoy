@@ -11,7 +11,7 @@ node() {
   ######################
 
   echo "Fetching Administrator secrets of self connected cluster---------------"
-  test_name=create-admininstator-secret-check
+  test_name=create-administator-secret-check
   echo -e "\n Test Name: $test_name"
 
   kubectl get pods
@@ -19,7 +19,7 @@ node() {
   
   # check litmus test result
   litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
-  echo -e "\n Litmus Pod name: $litmus_pod"
+  echo -e "\nLitmus Pod name: $litmus_pod"
 
   job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
   while [[ "$job_status" != "Completed" ]]
