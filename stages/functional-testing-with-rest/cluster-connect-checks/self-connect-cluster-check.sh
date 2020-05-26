@@ -11,7 +11,7 @@ node() {
   ######################
 
   echo "Fetching Administrator secrets of self connected cluster---------------"
-  test_name=create-administator-secret-check
+  test_name=create-admininstator-secret-check
   echo -e "\n Test Name: $test_name"
 
   kubectl get pods
