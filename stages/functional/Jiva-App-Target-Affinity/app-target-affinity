@@ -7,7 +7,7 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-
 
 node() {
 
-export KUBECONFIG=~/.kube/cluster2_config
+export KUBECONFIG=~/.kube/config_c2
 
 job_id=$(echo $1)
 pipeline_id=$(echo $2)

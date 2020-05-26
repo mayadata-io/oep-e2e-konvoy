@@ -9,6 +9,9 @@ git clone https://github.com/mayadata-io/e2e-metrics.git
 # Cloning oep-e2e repository which contains all the test scripts
 git clone https://github.com/mayadata-io/oep-e2e.git
 
+# Cloning e2e-tests repo for OpenEBS
+git clone https://github.com/openebs/e2e-tests.git
+
 # Setup litmus on the cluster
 kubectl apply -f oep-e2e/litmus/prerequisite/rbac.yaml
 kubectl apply -f oep-e2e/litmus/prerequisite/crds.yaml
