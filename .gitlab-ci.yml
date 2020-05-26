@@ -24,12 +24,12 @@ cluster-create:
 ## Deploy Director On-Prem
 TCID-DIR-INSTALL-ON-LOCAL-HP:
   image: harshshekhar15/gitlab-job:v3
-  stage: TCID-DIR-INSTALL-ON-LOCAL-HP
+  stage: DIRECTOR-INSTALL
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/director-install/TCID-DIR-INSTALL-ON-LOCAL-HP.sh
-    - ./stages/director-install/TCID-DIR-INSTALL-ON-LOCAL-HP.sh
+    - chmod 755 ./stages/director-install/TCID-DIR-INSTALL-ON-LOCAL-HP
+    - ./stages/director-install/TCID-DIR-INSTALL-ON-LOCAL-HP
 
 ## Create user's apikey
 create-apikey-check:
@@ -74,7 +74,7 @@ director-self-cluster-connect-check:
 ## OpenEBS install
 TCID-DIR-OP-INSTALL-OPENEBS:
   image: harshshekhar15/gitlab-job:v2
-  stage: OPENEBS-INSTALL
+  stage: OPENEBS-SETUP
   dependencies:
     - cluster-create
   script:
@@ -83,7 +83,7 @@ TCID-DIR-OP-INSTALL-OPENEBS:
 
 TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
   image: harshshekhar15/gitlab-job:v2
-  stage: OPENEBS-INSTALL
+  stage: OPENEBS-SETUP
   dependencies:
     - cluster-create
   script:
