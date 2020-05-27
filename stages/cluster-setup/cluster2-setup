@@ -1,0 +1,60 @@
+#!/bin/bash
+
+time="$(TZ=IST date)"
+current_time=$time
+echo $current_time
+
+echo -e "\n************************ Checking if cluster is Engaged or not ************************\n"
+
+state="sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'ls | grep oep-e2e-konvoy'"
+cluster_state=$(eval $state)
+
+while [ "${cluster_state}" == "oep-e2e-konvoy" ]; do
+  echo "Cluster Status: Engaged"
+  wait=1
+  sleep 30
+  cluster_state=$(eval $state)
+done
+
+if [ "$wait" == "1" ]; then
+sleep 120
+fi
+
+echo -e "\nCluster Status: Free"
+
+echo -e "\n************************ Checking the Cluster's Health ********************************\n"
+
+echo -e "[ Checking for the number of nodes in ready state ] -----------------\n"
+ready_nodes=$(sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl get nodes --no-headers | grep -v NotReady | wc -l')
+
+if [ "$ready_nodes" -eq 6 ]; then
+echo -e "Number of nodes in ready state: $ready_nodes"
+echo -e "Cluster State: Healthy\n"
+
+echo -e "\n************************ Dumping cluster components state *****************************\n"
+echo -e "[ Print 'kubectl get nodes' output ] --------------------------------\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl get nodes'
+echo -e "\n[ Print 'kubectl get pod --all-namespaces' output ] -----------------\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl get pod --all-namespaces'
+echo -e "\n[ Print 'kubectl top node' output ] ---------------------------------\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl top node'
+echo -e "\n[ Print 'k8s version' ] ---------------------------------------------\n"
+version=$(sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl get nodes -o=jsonpath='{.items[0].status.nodeInfo.kubeletVersion}'')
+echo -e "KubernetesVersion: $version"
+
+echo -e "\n************************ Cloning oep-e2e-konvoy repo *********************************\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone -b '$CI_COMMIT_REF_NAME' https://github.com/mayadata-io/oep-e2e-konvoy.git'
+
+echo -e "\n************************ Cloning openebs/e2e-test repo ********************************\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && git clone https://github.com/openebs/e2e-tests.git'
+
+echo -e "\n************************ Applying e2e-crd *********************************************\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl apply -f oep-e2e-konvoy/e2e-tests/hack/crds.yaml'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl apply -f oep-e2e-konvoy/e2e-tests/hack/rbac.yaml'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl apply -f oep-e2e-konvoy/utils/e2e-crd.yml'
+
+else
+echo -e "Number of nodes in ready state: $ready_nodes"
+echo -e "Cluster State: Unhealthy\n"
+exit 1;
+fi

@@ -18,8 +18,22 @@ cluster-create:
   image: harshshekhar15/gitlab-job:v3
   stage: CLUSTER-SETUP
   script:
-    - chmod 755 ./stages/cluster-setup/check-cluster-state/cluster-setup.sh
-    - ./stages/cluster-setup/check-cluster-state/cluster-setup.sh
+    - chmod 755 ./stages/cluster-setup/cluster1-setup.sh
+    - ./stages/cluster-setup/cluster1-setup.sh
+
+cluster2-create:
+  image: harshshekhar15/gitlab-job:v2
+  stage: CLUSTER-SETUP
+  script:
+    - chmod 755 ./stages/cluster-setup/cluster2-setup
+    - ./stages/cluster-setup/cluster2-setup
+
+cluster3-create:
+  image: harshshekhar15/gitlab-job:v2
+  stage: CLUSTER-SETUP
+  script:
+    - chmod 755 ./stages/cluster-setup/cluster3-setup
+    - ./stages/cluster-setup/cluster3-setup
 
 ## Deploy Director On-Prem
 TCID-DIR-INSTALL-ON-LOCAL-HP:
@@ -70,6 +84,25 @@ director-self-cluster-connect-check:
   script:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
+
+## Cluster3 connect check
+cluster3-connect:
+  image: harshshekhar15/gitlab-job:v2
+  stage: CLUSTER-CONNECT
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/cluster3-connect
+    - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster3-connect
+
+client3-components-check:
+  image: harshshekhar15/gitlab-job:v2
+  stage: CLUSTER-CONNECT
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client3-components-check
+    - ./stages/functional-testing-with-rest/cluster-connect-checks/client3-components-check
 
 ## OpenEBS install
 TCID-DIR-OP-INSTALL-OPENEBS:
@@ -391,3 +424,13 @@ cluster2-cleanup:
   script:
     - chmod 755 ./stages/cluster-tear-down/c2-cleanup.sh
     - ./stages/cluster-tear-down/c2-cleanup.sh
+
+cluster3-cleanup:
+  when: always
+  image: harshshekhar15/gitlab-job:v2
+  stage: CLUSTER-TEAR-DOWN
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/cluster-tear-down/c3-cleanup.sh
+    - ./stages/cluster-tear-down/c3-cleanup.sh
