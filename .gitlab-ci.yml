@@ -90,6 +90,15 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
 
+OPENEBS-STORAGE-POLICIES:
+  image: harshshekhar15/gitlab-job:v2
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/openebs-storage-policies
+    - ./stages/openebs-install/openebs-storage-policies
+
 ## OpenEBS Functional Tests
 
 .func_test_template:

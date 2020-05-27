@@ -1,0 +1,67 @@
+#!/bin/bash
+
+pod() {
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/openebs-storage-policies node '
+}
+
+node() {
+
+export KUBECONFIG=~/.kube/config_c2
+
+#pooling over previous job to complete
+bash utils/pooling jobname:tcid-dir-op-cstor-pool-recommend-create-stripe
+bash utils/e2e-cr jobname:openebs-storage-policies jobphase:Running
+
+test_name=$(bash utils/generate_test_name testcase=cstor-storage-policies metadata="")
+echo $test_name
+
+cd e2e-tests
+
+: << EOF
+  ---------------------------------------------------------------------------------------------------------------------
+ | specAttribute     | kind   |         default value               | test specifc value                               |
+  ---------------------------------------------------------------------------------------------------------------------|
+ | pool type         | env    | spc                                 | cspc                                             | 
+ | cspc pool name    | env    | rec-create-test                     | rec-create-test                                  | 
+  ----------------------------------------------------------------------------------------------------------------------
+EOF
+
+echo "Running the litmus test.."
+
+sed -i -e 's/value: spc/value: cspc/g' \
+-e 's/cstor-sparse-pool/rec-create-test/g' providers/cstor-storage-policies/run_litmus_test.yml
+
+run_test=providers/cstor-storage-policies/run_litmus_test.yml
+
+cat $run_test
+
+bash ../utils/litmus_job_runner label='app:cstor-storage-policy' job=$run_test
+
+echo "Dumping state of cluster post job run"; echo ""
+bash ../utils/dump_cluster_state;
+
+cd ..
+bash utils/event_updater jobname:openebs-storage-policies $test_name
+
+#################
+## GET RESULT  ##
+#################
+rc_val=$(echo $?)
+
+## Check the test status & result from the litmus result custom resource
+source ~/.profile
+testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
+
+bash utils/e2e-cr jobname:openebs-storage-policies jobphase:Completed
+
+if [ "$rc_val" != "0" ]; then
+exit 1;
+fi
+
+}
+
+if [ "$1" == "node" ];then
+  node
+else
+  pod
+fi
