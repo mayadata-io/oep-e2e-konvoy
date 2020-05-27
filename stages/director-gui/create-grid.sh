@@ -25,7 +25,8 @@ node() {
   echo -e "\n[ Cloning gui-automation repo ] ------------------------------------\n"
   git clone https://github.com/mayadata-io/gui-automation.git
   cd gui-automation
-  tests_count=`find . -type f -name '*_test.py' -exec grep -e 'def test_' '{}' \; | wc -l`
+  #tests_count=`find . -type f -name '*_test.py' -exec grep -e 'def test_' '{}' \; | wc -l`
+  tests_count=25
   echo "Number of GUI test scripts: $tests_count"
   cd ..
 
