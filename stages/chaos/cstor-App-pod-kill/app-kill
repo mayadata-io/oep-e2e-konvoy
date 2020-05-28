@@ -124,7 +124,7 @@ fi
 
 # Performing Application Pod Chaos
 
-test_name=$(bash utils/generate_test_name testcase=application-pod-failure metadata="")
+run_id="cstor-csi";test_name=$(bash utils/generate_test_name testcase=application-pod-failure metadata=${run_id})
 echo $test_name
 
 cd e2e-tests
@@ -133,6 +133,7 @@ cp experiments/chaos/app_pod_failure/run_litmus_test.yml appkill.yml
 
 sed -i -e 's/app=jenkins-app/app=app-kill/g' \
 -e 's/name: app-failure/name: app-kill/g' \
+-e 's/value: docker/value: containerd/g' \
 -e 's/value: app-jenkins-ns/value: app-kill/g' appkill.yml
 
 ## Replace the value of DATA_PERSISTENCE with application name in litmus experiment. 
@@ -143,6 +144,11 @@ sed -i '/parameters.yml: |/a \
     blocksize: 4k\
     blockcount: 1024\
     testfile: appkill
+' appkill.yml
+
+sed -i '/command:/i \
+          - name: RUN_ID\
+            value: '"$run_id"'\
 ' appkill.yml
 
 echo "Running the litmus test for Busybox Deployment application pod kill.."
