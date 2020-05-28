@@ -36,8 +36,8 @@ echo -e "[ Print 'kubectl get nodes' output ] --------------------------------\n
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c3 && kubectl get nodes'
 echo -e "\n[ Print 'kubectl get pod --all-namespaces' output ] -----------------\n"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c3 && kubectl get pod --all-namespaces'
-echo -e "\n[ Print 'kubectl top node' output ] ---------------------------------\n"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c3 && kubectl top node'
+#echo -e "\n[ Print 'kubectl top node' output ] ---------------------------------\n"
+#sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c3 && kubectl top node'
 echo -e "\n[ Print 'k8s version' ] ---------------------------------------------\n"
 version=$(sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c3 && kubectl get nodes -o=jsonpath='{.items[0].status.nodeInfo.kubeletVersion}'')
 echo -e "KubernetesVersion: $version"

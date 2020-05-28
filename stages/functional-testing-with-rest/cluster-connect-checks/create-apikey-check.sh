@@ -10,8 +10,11 @@ node() {
   bash utils/e2e-cr jobname:create-apikey-check jobphase:Waiting
   bash utils/e2e-cr jobname:create-apikey-check jobphase:Running
   bash utils/e2e-cr jobname:trrc01-cluster-connect-check jobphase:Waiting
+  bash utils/e2e-cr jobname:trrc01-cluster3-connect jobphase:Waiting
   bash utils/e2e-cr jobname:client-components-check jobphase:Waiting
+  bash utils/e2e-cr jobname:client3-components-check jobphase:Waiting
   # bash utils/e2e-cr jobname:metrics-check jobphase:Waiting
+
 
   # Use user's cluster kube-config
   echo -e "Use kubeconfig of cluster2\n"

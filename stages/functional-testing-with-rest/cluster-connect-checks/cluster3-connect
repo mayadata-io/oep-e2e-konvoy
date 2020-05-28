@@ -2,7 +2,7 @@
 
 pod() {
 
-## Connecting the cluster to DOP
+## Connecting the cluster3 to DOP
 echo -e "\n************************ Connecting cluster to DOP ************************************\n"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional-testing-with-rest/cluster-connect-checks/cluster3-connect node'
 }
@@ -12,8 +12,8 @@ node() {
 bash utils/pooling jobname:trrc01-cluster-connect
 bash utils/e2e-cr jobname:trrc01-cluster3-connect jobphase:Running
 
-URL=http://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | tail -n 1):30380
-echo "URL to access DOP: $URL"
+#URL=http://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} |  awk 'NR==2'):30380
+#echo "URL to access DOP: $URL"
 
 # Use cluster3 kube config
 export KUBECONFIG=~/.kube/config_c3
@@ -27,9 +27,9 @@ kubectl apply -f oep-e2e/litmus/prerequisite/docker-secret.yml
 echo -e "\n[ Applying DOP user credentials secret ]-----------------------------------------------\n"
 kubectl create -f secret.yaml -n litmus
 
-# Create a configmap from URL
+# Create a configmap from file
 echo -e "\n[ Create configmap for DOP URL ]-------------------------------------------------------\n"
-kubectl create configmap config --from-literal=url=$URL -n litmus
+kubectl create -f director_url.txt
 
 echo -e "\n[ Updating cluster name in litmus job ]------------------------------------------------\n"
 sed 's|value: oep-cluster|value: oep-cluster3|' -i oep-e2e/litmus/director/cluster-connect/run_litmus_test.yml
