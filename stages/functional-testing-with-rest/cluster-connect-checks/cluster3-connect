@@ -29,7 +29,7 @@ kubectl create -f secret.yaml -n litmus
 
 # Create a configmap from file
 echo -e "\n[ Create configmap for DOP URL ]-------------------------------------------------------\n"
-kubectl create -f director_url.txt
+kubectl create -f director_url.txt -n litmus
 
 echo -e "\n[ Updating cluster name in litmus job ]------------------------------------------------\n"
 sed 's|value: oep-cluster|value: oep-cluster3|' -i oep-e2e/litmus/director/cluster-connect/run_litmus_test.yml
