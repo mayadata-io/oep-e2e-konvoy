@@ -137,13 +137,20 @@ cp experiments/chaos/openebs_replica_network_delay/run_litmus_test.yml run_rep_n
   ----------------------------------------------------------------------------------------------------------------------
 EOF
 
-sed -i -e 's/name=percona/app=busybox-rep-network-jiva/g' \
+sed -i -e 's/name: openebs-replica-network-delay/name: jiva-replica-network-delay/g' \
 -e 's/value: app-percona-ns/value: rep-network-delay-jiva/g' \
--e 's/value: percona-mysql-claim/value: openebs-busybox-rep-network/g' run_rep_network_delay_jiva.yml
+-e 's/value: percona-mysql-claim/value: openebs-busybox-rep-network/g' \
+-e '/name: DATA_PERSISTENCE/{n;s/.*/            value: busybox/}' run_rep_network_delay_jiva.yml
 
 sed -i '/command:/i \
           - name: RUN_ID\
             value: '"$run_id"'\
+' run_rep_network_delay_jiva.yml
+
+sed -i '/parameters.yml: |/a \
+    blocksize: 4k\
+    blockcount: 1024\
+    testfile: jiva_rep_nw_delay
 ' run_rep_network_delay_jiva.yml
 
 cat run_rep_network_delay_jiva.yml
