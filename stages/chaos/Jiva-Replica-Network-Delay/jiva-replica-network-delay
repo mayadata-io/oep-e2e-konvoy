@@ -23,14 +23,14 @@ echo $present_dir
 bash utils/e2e-cr-new jobname:volume-replica-network-delay-jiva jobphase:Waiting init_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag"
 bash utils/e2e-cr-new jobname:volume-replica-network-delay-jiva jobphase:Running
 
+################
+# LitmusBook 1 #
+################
+
 echo "*******Deploying Busybox Application****"
 
 test_name=$(bash utils/generate_test_name testcase=busybox-provision-rep-network-delay-jiva metadata="") 
 echo $test_name
-
-################
-# LitmusBook 1 #
-################
 
 cd e2e-tests
 echo "Running the litmus test for Busybox Deployment.."
@@ -137,13 +137,20 @@ cp experiments/chaos/openebs_replica_network_delay/run_litmus_test.yml run_rep_n
   ----------------------------------------------------------------------------------------------------------------------
 EOF
 
-sed -i -e 's/name=percona/app=busybox-rep-network-jiva/g' \
+sed -i -e 's/name: openebs-replica-network-delay/name: jiva-replica-network-delay/g' \
 -e 's/value: app-percona-ns/value: rep-network-delay-jiva/g' \
--e 's/value: percona-mysql-claim/value: openebs-busybox-rep-network/g' run_rep_network_delay_jiva.yml
+-e 's/value: percona-mysql-claim/value: openebs-busybox-rep-network/g' \
+-e '/name: DATA_PERSISTENCE/{n;s/.*/            value: busybox/}' run_rep_network_delay_jiva.yml
 
 sed -i '/command:/i \
           - name: RUN_ID\
             value: '"$run_id"'\
+' run_rep_network_delay_jiva.yml
+
+sed -i '/parameters.yml: |/a \
+    blocksize: 4k\
+    blockcount: 1024\
+    testfile: jiva_rep_nw_delay
 ' run_rep_network_delay_jiva.yml
 
 cat run_rep_network_delay_jiva.yml
@@ -156,11 +163,6 @@ bash utils/event_updater jobname:volume-replica-network-delay-jiva $test_name jo
 if [ "$?" != "0" ]; then
 exit 1;
 fi
-
-echo "********Deprovisioning Busybox Application*******"
-
-test_name=$(bash utils/generate_test_name testcase=busybox-deprovision-rep-network-delay-jiva metadata="")
-echo $test_name
 
 ################
 # LitmusBook 4 #
@@ -215,6 +217,10 @@ fi
 ################
 # LitmusBook 5 #
 ################
+echo "********Deprovisioning Busybox Application*******"
+
+test_name=$(bash utils/generate_test_name testcase=busybox-deprovision-rep-network-delay-jiva metadata="")
+echo $test_name
 
 cd e2e-tests
 cp apps/busybox/deployers/run_litmus_test.yml deprovision_rep_network_jiva.yml
