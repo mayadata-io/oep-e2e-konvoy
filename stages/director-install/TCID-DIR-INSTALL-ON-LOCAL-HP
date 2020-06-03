@@ -18,7 +18,7 @@ node() {
 
   # Setting up DOP_URL variable
 
-  DOP_URL=$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2'):30380
+  DOP_URL=https://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2'):30380
   echo -e "\n DOP URL: $DOP_URL"
 
   #####################################
@@ -27,7 +27,7 @@ node() {
 
   echo -e "\n[ Cloning director-charts-internal repo ]\n"
 
-  git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/director-charts-internal.git
+  # git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/director-charts-internal.git
 
   cd director-charts-internal
 
@@ -44,11 +44,12 @@ node() {
   kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
 
   # Replace storageClass to be used to openebs-hostpath in values.yaml
-  sed 's/storageClass: standard/storageClass: openebs-hostpath/' -i ./values.yaml
-  cat values.yaml
+  # sed 's/storageClass: standard/storageClass: openebs-hostpath/' -i ./values.yaml
+  # cat values.yaml
 
   # Apply helm chart
-  helm install --name dop . --set server.url=$DOP_URL --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
+  # helm install --name dop . --set server.url=$DOP_URL --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
+  helm install --repo=https://charts.mayadata.io/ dop --set type.installopenebs=false --set server.url=$DOP_URL --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
 
   # Dump Director On-Prem pods
   echo -e "\n[ Dumping Director On-Prem components ]\n"
