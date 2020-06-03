@@ -15,21 +15,21 @@ stages:
 
 ## Setup kubernetes cluster using Konvoy
 cluster-create:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-SETUP
   script:
     - chmod 755 ./stages/cluster-setup/cluster1-setup.sh
     - ./stages/cluster-setup/cluster1-setup.sh
 
 cluster2-create:
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-SETUP
   script:
     - chmod 755 ./stages/cluster-setup/cluster2-setup
     - ./stages/cluster-setup/cluster2-setup
 
 cluster3-create:
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-SETUP
   script:
     - chmod 755 ./stages/cluster-setup/cluster3-setup
@@ -37,7 +37,7 @@ cluster3-create:
 
 ## Deploy Director On-Prem
 TCID-DIR-INSTALL-ON-LOCAL-HP:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-INSTALL
   dependencies:
     - cluster-create
@@ -47,7 +47,7 @@ TCID-DIR-INSTALL-ON-LOCAL-HP:
 
 ## Create user's apikey
 create-apikey-check:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -57,7 +57,7 @@ create-apikey-check:
 
 ## Cluster connect check
 trrc01-cluster-connect-check:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -67,7 +67,7 @@ trrc01-cluster-connect-check:
 
 ## Client component check
 client-components-check:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -77,7 +77,7 @@ client-components-check:
 
 ## Self cluster connect check
 director-self-cluster-connect-check:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -87,7 +87,7 @@ director-self-cluster-connect-check:
 
 ## Cluster3 connect check
 cluster3-connect:
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
     - cluster-create
@@ -96,7 +96,7 @@ cluster3-connect:
     - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster3-connect
 
 client3-components-check:
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
     - cluster-create
@@ -106,7 +106,7 @@ client3-components-check:
 
 ## OpenEBS install
 TCID-DIR-OP-INSTALL-OPENEBS:
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-SETUP
   dependencies:
     - cluster-create
@@ -115,7 +115,7 @@ TCID-DIR-OP-INSTALL-OPENEBS:
     - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS
 
 TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-SETUP
   dependencies:
     - cluster-create
@@ -124,7 +124,7 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
 
 OPENEBS-STORAGE-POLICIES:
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-SETUP
   dependencies:
     - cluster-create
@@ -135,7 +135,7 @@ OPENEBS-STORAGE-POLICIES:
 ## OpenEBS Functional Tests
 
 .func_test_template:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-FUNCTIONAL
   when: always
   dependencies:
@@ -198,7 +198,7 @@ LocalPV-hostpath:
 # OpenEBS CHAOS Tests JOBS
 
 .chaos_test_template:
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-CHAOS
   when: always
   dependencies:
@@ -254,7 +254,7 @@ cStor-Target-kill:
 
 # ## Director metrics check
 # metrics-check:
-#   image: harshshekhar15/gitlab-job:v3
+#   image: mayadataio/tools:gitlab-job-v5
 #   stage: DIRECTOR-FUNCTIONAL
 #   dependencies:
 #     - client-components-check
@@ -264,7 +264,7 @@ cStor-Target-kill:
 
 ## Teaming checks
 triv01-teaming-invite-check:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-FUNCTIONAL
   dependencies:
     - client-components-check
@@ -273,7 +273,7 @@ triv01-teaming-invite-check:
     - ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
 
 trrc02-teaming-change-role-check:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-FUNCTIONAL
   dependencies:
     - client-components-check
@@ -282,7 +282,7 @@ trrc02-teaming-change-role-check:
     - ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
 
 trrc03-teaming-change-role-negative-check:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-FUNCTIONAL
   dependencies:
     - client-components-check
@@ -292,7 +292,7 @@ trrc03-teaming-change-role-negative-check:
 
 ## Topology check
 topology-check:
-  image: harshshekhar15/gitlab-job:v3
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-FUNCTIONAL
   dependencies:
     - client-components-check
@@ -302,7 +302,7 @@ topology-check:
 
 ## Selenium Grid Spin up
 selenium-grid-deploy:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - cluster-create
@@ -312,7 +312,7 @@ selenium-grid-deploy:
 
 ## Selenium tests
 tcid-gaau01-gui-auth:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -321,7 +321,7 @@ tcid-gaau01-gui-auth:
     - ./stages/director-gui/tcid-gaau01-gui-auth.sh
 
 tcid-gacc01-gui-cluster:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -330,7 +330,7 @@ tcid-gacc01-gui-cluster:
     - ./stages/director-gui/tcid-gacc01-gui-cluster.sh
 
 tcid-gada01-gui-dashboard-home:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -339,7 +339,7 @@ tcid-gada01-gui-dashboard-home:
     - ./stages/director-gui/tcid-gada01-gui-dashboard-home.sh
 
 tcid-gato01-gui-dashboard-topology:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -348,7 +348,7 @@ tcid-gato01-gui-dashboard-topology:
     - ./stages/director-gui/tcid-gato01-gui-dashboard-topology.sh
 
 gui-dashboard:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -357,7 +357,7 @@ gui-dashboard:
     - ./stages/director-gui/gui-dashboard.sh
 
 tcid-gaal01-gui-dashboard-alerts:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -366,7 +366,7 @@ tcid-gaal01-gui-dashboard-alerts:
     - ./stages/director-gui/tcid-gaal01-gui-dashboard-alerts.sh
 
 tcid-galo01-gui-dashboard-logs:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -375,7 +375,7 @@ tcid-galo01-gui-dashboard-logs:
     - ./stages/director-gui/tcid-galo01-gui-dashboard-logs.sh
 
 tcid-gada02-gui-dashboard-overview:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -385,7 +385,7 @@ tcid-gada02-gui-dashboard-overview:
 
 ## Selenium Grid Clean up
 selenium-grid-cleanup:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-TEAR-DOWN
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
@@ -396,7 +396,7 @@ selenium-grid-cleanup:
 ## E2E metrics stage
 e2e-metrics:
   when: always
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-TEAR-DOWN
   dependencies:
     - cluster-create
@@ -407,7 +407,7 @@ e2e-metrics:
 ## Revert the cluster to previous snapshot
 cluster-cleanup:
   when: always
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-TEAR-DOWN
   dependencies:
     - cluster-create
@@ -417,7 +417,7 @@ cluster-cleanup:
 
 cluster2-cleanup:
   when: always
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-TEAR-DOWN
   dependencies:
     - cluster-create
@@ -427,7 +427,7 @@ cluster2-cleanup:
 
 cluster3-cleanup:
   when: always
-  image: harshshekhar15/gitlab-job:v2
+  image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-TEAR-DOWN
   dependencies:
     - cluster-create
