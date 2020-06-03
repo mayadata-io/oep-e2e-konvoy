@@ -17,6 +17,9 @@ node() {
   C3_ESX_IP=$(echo $7)
   C3_SNAPSHOT_NAME=$(echo $8)
 
+  # Make a separate dir for C3 to save from conflict during cluster-revert process
+  mkdir c3-cleanup && cd c3-cleanup
+
   git clone https://github.com/openebs/e2e-tests.git
 
   # Replace the VM names in CSV file
