@@ -31,7 +31,7 @@ node() {
   helm install --name dop directoronprem/oep-charts-internal --set type.installopenebs=false --set server.url=$DOP_URL --set server.release=$RELEASE --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
   
   echo -e "Get the changed values from chart\n"
-  helm get values dop -n director > values.yaml
+  helm get values dop > values.yaml
 
   echo -e "Changed values in values.yaml\n"
   cat values.yaml
