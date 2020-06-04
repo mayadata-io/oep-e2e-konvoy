@@ -6,36 +6,17 @@ pod() {
 }
 
 node() {
-  #bash utils/e2e-cr jobname:dop-deploy jobphase:Waiting
-  #bash utils/e2e-cr jobname:dop-deploy jobphase:Running 
-  #bash utils/e2e-cr jobname:components-health-check jobphase:Waiting
-
   GITHUB_USERNAME=$1
   GITHUB_PASSWORD=$2
   RELEASE_USERNAME=$3
   RELEASE_PASSWORD=$4
   RELEASE=$5
 
-  # Setting up DOP_URL variable
-
   DOP_URL=http://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2'):30380
   echo -e "\n DOP URL: $DOP_URL"
 
-  #####################################
-  ##           Deploy DOP            ##
-  #####################################
-
-  # echo -e "\n[ Cloning director-charts-internal repo ]\n"
-
-  # git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/director-charts-internal.git
-
-  # cd director-charts-internal
-
   echo -e "\n[ Print DOP release version ]-------------------------------------\n"
   echo -e "Release Version: $RELEASE\n"
-
-  # Get into latest release directory of helm chart
-  # cd "$RELEASE"/director
 
   # Create secret having maya-init repo access
   kubectl create secret docker-registry directoronprem-registry-secret --docker-server=registry.mayadata.io --docker-username=$RELEASE_USERNAME --docker-password=$RELEASE_PASSWORD
@@ -43,11 +24,10 @@ node() {
   # Create clusterrolebinding
   kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
 
-  # add directoronprem in local repository
+  # Add directoronprem in local repository
   helm repo add directoronprem https://charts.mayadata.io/
   
   # Apply helm chart
-  # helm install --name dop . --set server.url=$DOP_URL --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
   helm install --name dop directoronprem/oep-charts-internal --set type.installopenebs=false --set server.url=$DOP_URL --set server.release=$RELEASE --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
   
   echo -e "Get the changed values from chart\n"
@@ -89,8 +69,6 @@ node() {
 
   #List pods
   kubectl get pods
-
-  #bash utils/e2e-cr jobname:dop-deploy jobphase:Completed 
 }
 
 if [ "$1" == "node" ];then
