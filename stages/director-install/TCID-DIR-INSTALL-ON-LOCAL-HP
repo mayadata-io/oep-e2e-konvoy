@@ -24,14 +24,14 @@ node() {
   # Create clusterrolebinding
   kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
 
-  # Add directoronprem in local repository
-  helm repo add directoronprem https://charts.mayadata.io/
+  # Add kubera in local repository
+  helm repo add kubera https://charts.mayadata.io/
   
   # Apply helm chart
-  helm install --name dop directoronprem/oep-charts-internal --set type.installopenebs=false --set server.url=$DOP_URL --set server.release=$RELEASE --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
+  helm install --name kubera kubera/kubera-charts  --set type.installOpenebs=false --set server.url=$DOP_URL --set server.release=$RELEASE --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
   
-  echo -e "Get the changed values from chart\n"
-  helm get values dop > values.yaml
+  # Get the changed values from chart
+  helm get values kubera > values.yaml
 
   echo -e "Changed values in values.yaml\n"
   cat values.yaml
