@@ -54,7 +54,7 @@ node() {
   bash oep-e2e/scripts/director-health-check.sh
 
   # If any of the above check fails, then fail this job
-  if [ $(cat result.txt | grep -v ingress | grep -ic fail) != 0 ];then
+  if [ $(cat result.txt | grep -ic fail) != 0 ];then
     testResult="Fail"
     echo -e "\nTest Result: $testResult\n"
     # if [[ $branch_name == "oep-release" ]]; then
