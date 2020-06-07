@@ -12,7 +12,7 @@ node() {
   RELEASE_PASSWORD=$4
   RELEASE=$5
 
-  DOP_URL=http://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2'):30380
+  DOP_URL=http://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2')
   echo -e "\n DOP URL: $DOP_URL"
 
   echo -e "\n[ Print DOP release version ]-------------------------------------\n"
@@ -28,7 +28,9 @@ node() {
   helm repo add kubera https://charts.mayadata.io/
   
   # Apply helm chart
-  helm install --name kubera kubera/kubera-charts  --set type.installOpenebs=false --set server.url=$DOP_URL --set server.release=$RELEASE --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
+  helm install --name kubera kubera/kubera-charts  --set type.installOpenebs=false --set server.url=$DOP_URL --set server.release=$RELEASE 
+  
+  # Pass these values as well if need to run ingress as deployment:  --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
   
   # Get the changed values from chart
   helm get values kubera > values.yaml
