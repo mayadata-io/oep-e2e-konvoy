@@ -120,7 +120,7 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
 
-OPENEBS-STORAGE-POLICIES:
+TCID-OPENEBS-POLICIES-CREATE:
   image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-SETUP
   dependencies:
@@ -260,7 +260,7 @@ TCID-CSTOR-TARGET-KILL:
 #     - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
 
 ## Teaming checks
-triv01-teaming-invite-check:
+TCID-DIR-TEAMING-USER-INVITE:
   image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-FUNCTIONAL
   dependencies:
@@ -269,7 +269,7 @@ triv01-teaming-invite-check:
     - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
     - ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
 
-trrc02-teaming-change-role-check:
+TCID-DIR-TEAMING-USER-ROLE-UPDATE:
   image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-FUNCTIONAL
   dependencies:
@@ -278,7 +278,7 @@ trrc02-teaming-change-role-check:
     - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
     - ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
 
-trrc03-teaming-change-role-negative-check:
+TCID-DIR-TEAMING-USER-ROLE-UPDATE-NEGATIVE:
   image: mayadataio/tools:gitlab-job-v5
   stage: DIRECTOR-FUNCTIONAL
   dependencies:
