@@ -7,9 +7,6 @@ stages:
   - OPENEBS-FUNCTIONAL
   - OPENEBS-CHAOS
   - DIRECTOR-FUNCTIONAL
-  # - METRICS-CHECK
-  # - TEAMING-CHECK
-  # - TOPOLOGY-CHECK
   - DIRECTOR-GUI
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
@@ -141,55 +138,55 @@ OPENEBS-STORAGE-POLICIES:
   dependencies:
     - TCID-DIR-OP-INSTALL-OPENEBS
 
-Jiva-App-Target-Affinity:
+TCID-JIVA-APP-TARGET-AFFINITY:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/Jiva-App-Target-Affinity/app-target-affinity
     - ./stages/functional/Jiva-App-Target-Affinity/app-target-affinity
 
-Jiva-Snapshot:
+TCID-JIVA-SNAPSHOT-CREATE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/Jiva-snapshot/jiva-snapshot
     - ./stages/functional/Jiva-snapshot/jiva-snapshot
 
-Jiva-Volume-Scaleup:
+TCID-JIVA-VOLUME-SCALEUP:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/Jiva-Volume-Scaleup/jiva-vol-scaleup
     - ./stages/functional/Jiva-Volume-Scaleup/jiva-vol-scaleup
 
-cStor-csi-volume-snapshot:
+TCID-CSTOR-SNAPSHOT-CREATE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/cstor-csi-volume-snapshot/csi-cstor-snapshot
     - ./stages/functional/cstor-csi-volume-snapshot/csi-cstor-snapshot
 
-cStor-csi-volume-clone:
+TCID-CSTOR-CLONE-CREATE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/cstor-csi-volume-clone/csi-cstor-clone
     - ./stages/functional/cstor-csi-volume-clone/csi-cstor-clone
 
-cStor-ext4-volume-resize:
+TCID-CSTOR-VOLUME-EXT4-RESIZE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/cstor-ext4-volume-resize/csi-volume-resize
     - ./stages/functional/cstor-ext4-volume-resize/csi-volume-resize
 
-cStor-xfs-volume-resize:
+TCID-CSTOR-VOLUME-XFS-RESIZE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/cstor-xfs-volume-resize/csi-volume-resize-xfs
     - ./stages/functional/cstor-xfs-volume-resize/csi-volume-resize-xfs
 
-LocalPV-device:
+TCID-LOCALPV-RANDOM-DEVICE-CREATE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/local-pv-device/local-pv-device
     - ./stages/functional/local-pv-device/local-pv-device
 
-LocalPV-hostpath:
+TCID-LOCALPV-HOSTPATH-CREATE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/local-pv-hostpath/local-pv-hostpath
@@ -204,49 +201,49 @@ LocalPV-hostpath:
   dependencies:
     - TCID-DIR-OP-INSTALL-OPENEBS
 
-Jiva-App-Kill:
+TCID-JIVA-BUSYBOX-KILL:
   extends: .chaos_test_template
   script:
     - chmod 755 ./stages/chaos/Jiva-App-kill/jiva-app-kill
     - ./stages/chaos/Jiva-App-kill/jiva-app-kill
 
-Jiva-Revision-Counter:
+TCID-JIVA-MULTIPLE-REPLICAS-FAILURE:
   extends: .chaos_test_template
   script:
     - chmod 755 ./stages/chaos/Jiva-revision-counter/jiva-revision-counter
     - ./stages/chaos/Jiva-revision-counter/jiva-revision-counter
 
-Jiva-Replica-Network-Delay:
+TCID-JIVA-REPLICA-NETWORK-DELAY:
   extends: .chaos_test_template
   script:
     - chmod 755 ./stages/chaos/Jiva-Replica-Network-Delay/jiva-replica-network-delay
     - ./stages/chaos/Jiva-Replica-Network-Delay/jiva-replica-network-delay
 
-Jiva-Controller-Kill:
+TCID-JIVA-CONTROLLER-KILL:
   extends: .chaos_test_template
   script:
     - chmod 755 ./stages/chaos/Jiva-Controller-kill/jiva-controller-kill
     - ./stages/chaos/Jiva-Controller-kill/jiva-controller-kill
 
-Jiva-Controller-Network-Delay:
+TCID-JIVA-CONTROLLER-NETWORK-DELAY:
   extends: .chaos_test_template
   script:
     - chmod 755 ./stages/chaos/Jiva-Controller-Network-Delay/ctrl-network-delay
     - ./stages/chaos/Jiva-Controller-Network-Delay/ctrl-network-delay
 
-Jiva-Replica-Node-Affinity:
+TCID-JIVA-REPLICA-NODE-AFFINITY:
   extends: .chaos_test_template
   script:
     - chmod 755 ./stages/chaos/Jiva-Replica-Node-Affinity/rep-node-affinity
     - ./stages/chaos/Jiva-Replica-Node-Affinity/rep-node-affinity
 
-cStor-App-kill:
+TCID-CSTOR-BUSYBOX-APP-KILL:
   extends: .chaos_test_template
   script:
     - chmod 755 ./stages/chaos/cstor-App-pod-kill/app-kill
     - ./stages/chaos/cstor-App-pod-kill/app-kill
 
-cStor-Target-kill:
+TCID-CSTOR-TARGET-KILL:
   extends: .chaos_test_template
   script:
     - chmod 755 ./stages/chaos/cstor-Target-kill/target-kill
