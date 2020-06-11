@@ -1,7 +1,7 @@
 ## Define the stages & order of execution
 stages:
   - CLUSTER-SETUP
-  - DIRECTOR-INSTALL
+  - INFRA-SETUP
   - CLUSTER-CONNECT
   - OPENEBS-SETUP
   - OPENEBS-FUNCTIONAL
@@ -35,12 +35,12 @@ cluster3-create:
 ## Deploy Director On-Prem
 TCID-DIR-INSTALL-ON-LOCAL-HP:
   image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-INSTALL
+  stage: INFRA-SETUP
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/director-install/TCID-DIR-INSTALL-ON-LOCAL-HP
-    - ./stages/director-install/TCID-DIR-INSTALL-ON-LOCAL-HP
+    - chmod 755 ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
+    - ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
 
 ## Create user's apikey
 create-apikey-check:
