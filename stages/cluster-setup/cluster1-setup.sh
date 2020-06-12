@@ -40,6 +40,8 @@ then
   ##          Prerequisites          ##
   #####################################
 
+  #adding wait here as cloning the repo is taking time.
+  sleep 10
   echo "************* Running Prerequisites *************"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && chmod 755 ./stages/cluster-setup/prerequisites/prerequisite-setup.sh && ./stages/cluster-setup/prerequisites/prerequisite-setup.sh'
 
