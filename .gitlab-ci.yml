@@ -134,7 +134,6 @@ TCID-OPENEBS-POLICIES-CREATE:
 .func_test_template:
   image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-FUNCTIONAL
-  when: always
   dependencies:
     - TCID-DIR-OP-INSTALL-OPENEBS
 
@@ -197,7 +196,6 @@ TCID-LOCALPV-HOSTPATH-CREATE:
 .chaos_test_template:
   image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-CHAOS
-  when: always
   dependencies:
     - TCID-DIR-OP-INSTALL-OPENEBS
 
