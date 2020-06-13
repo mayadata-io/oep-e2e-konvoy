@@ -1,0 +1,109 @@
+#!/bin/bash
+
+
+pod() {
+
+## Running gui-dashboard test
+echo -e "\n************************ Running GUI test ***********************************\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-gui/gui-dmaas-cstor-minio node '"'$CI_PROJECT_NAME'"' '"'$CI_PIPELINE_ID'"' '"'$DOP_URL'"' '"'$GROUP'"' '"'$THREADS'"' '"'$AWS_CREDS'"' '"'$MINIO_CREDS'"''
+}
+
+node() {
+path=$(pwd)
+# Copy kubeconfig
+export KUBECONFIG=~/.kube/cluster2_config
+
+
+####################################
+##  Sequencing and Running test   ##
+####################################
+bash utils/pooling jobname:tcid-dir-dmaas-schd-local-hp-minio-bucket
+bash utils/e2e-cr jobname:tcid-dir-dmaas-schd-cstor-minio-bucket jobphase:Running
+
+kubectl get ns
+
+PV_CLAIM_NAME="minio-pv-claim-cstor-minio"
+NAMESPACE="cstor-minio"
+STORAGE_CLASS_NAME="cstor-sc-gui"
+NODE_PORT="32751"
+
+kubectl create ns ${NAMESPACE}
+
+# git clone https://github.com/qiell/minio-manifest.git
+mkdir -p $path/cstor-minio
+cp -R $path/stages/director-gui/template/minio-manifest $path/cstor-minio
+
+
+# Add pv claim name, namespace and storage class name in minio-pvc.yaml
+sed 's|name: minio-pv-claim|name: '${PV_CLAIM_NAME}'|' -i $path/cstor-minio/minio-manifest/minio-pvc.yaml
+sed 's|storageClassName: openebs-cstor-sparse|storageClassName: '${STORAGE_CLASS_NAME}'|' -i $path/cstor-minio/minio-manifest/minio-pvc.yaml
+sed 's|namespace: test|namespace: '${NAMESPACE}'|' -i $path/cstor-minio/minio-manifest/minio-pvc.yaml
+
+cat $path/cstor-minio/minio-manifest/minio-pvc.yaml
+
+# Add pv claim name and namespace in minio-official.yaml
+sed 's|namespace: test|namespace: '${NAMESPACE}'|' -i $path/cstor-minio/minio-manifest/minio-official.yaml
+sed 's|claimName: minio-pv-claim|claimName: '${PV_CLAIM_NAME}'|' -i $path/cstor-minio/minio-manifest/minio-official.yaml
+
+cat $path/cstor-minio/minio-manifest/minio-official.yaml
+
+# Add node port and namespace in minio-official.yaml
+sed 's|namespace: test|namespace: '${NAMESPACE}'|' -i $path/cstor-minio/minio-manifest/minio-svc.yaml
+sed 's|nodePort: 32701|nodePort: '${NODE_PORT}'|' -i $path/cstor-minio/minio-manifest/minio-svc.yaml
+
+cat $path/cstor-minio/minio-manifest/minio-svc.yaml
+
+
+kubectl get ns
+kubectl apply -f $path/cstor-minio/minio-manifest/
+kubectl get pod -n ${NAMESPACE}
+
+####################################
+##   Prerequisites GUI Automation ##
+####################################
+
+URL=$3
+echo -e "\nDOP URL: $URL\n"
+
+CI_PROJECT_NAME=$(echo $1)
+CI_PIPELINE_ID=$(echo $2)
+GUID=grid-${CI_PROJECT_NAME}-${CI_PIPELINE_ID}
+GROUP=$(echo $4)
+THREADS=$(echo $5)
+AWS_CREDS=$(echo $6)
+MINIO_CREDS=$(echo $7)
+
+#copy aws and minio cred
+# mkdir -p ~/.dmaas
+# echo "$AWS_CREDS" > ~/.dmaas/aws_cred
+# echo "$MINIO_CREDS" > ~/.dmaas/minio_cred
+
+#make empty directory
+mkdir -p selenium-auto
+cd selenium-auto
+
+# Cloning oep repository which contains all the test scripts
+git clone https://$username:$password@github.com/mayadata-io/gui-automation.git
+cd gui-automation
+
+#creating credential file
+# cat ~/.dmaas/aws_cred ~/.dmaas/minio_cred >> cred.ini
+
+# Copy credential file
+cp ~/.dmaas/cred.ini cred.ini
+
+bash scripts/dop-gui-stages/run-gui-tests.sh ${GROUP} ${GUID} ${URL} ${THREADS} eu-west-2
+STATUS=$(echo $?)
+cd ../..
+bash utils/e2e-cr jobname:tcid-dir-dmaas-schd-cstor-minio-bucket jobphase:Completed
+if [ "$STATUS" != "0" ]; then
+exit 1;
+fi
+
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3 $4 $5 $6 $7 $8
+else
+  pod
+fi
