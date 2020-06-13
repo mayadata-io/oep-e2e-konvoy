@@ -42,6 +42,16 @@ TCID-DIR-INSTALL-ON-LOCAL-HP:
     - chmod 755 ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
     - ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
 
+## Selenium Grid Spin up
+selenium-grid-deploy:
+  image: harshshekhar15/gitlab-job:v5
+  stage: INFRA-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/infra-setup/selenium-grid-deploy
+    - ./stages/infra-setup/selenium-grid-deploy
+
 ## Create user's apikey
 create-apikey-check:
   image: mayadataio/tools:gitlab-job-v5
@@ -381,7 +391,7 @@ selenium-grid-cleanup:
   image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-TEAR-DOWN
   dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
+    - selenium-grid-deploy
   script:
     - chmod 755 ./stages/cluster-tear-down/selenium-grid-cleanup
     - ./stages/cluster-tear-down/selenium-grid-cleanup
