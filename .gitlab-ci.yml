@@ -305,10 +305,10 @@ TCID-CSTOR-TARGET-KILL:
   script:
     - chmod 755 ./stages/director-gui/run-gui-tests
     - ./stages/director-gui/run-gui-tests
-  artifacts:
-    when: always
-    paths:
-      - /builds/oep/oep-e2e-konvoy/gui-automation/results
+  # artifacts:
+  #   when: always
+  #   paths:
+  #     - /builds/oep/oep-e2e-konvoy/gui-automation/results
 
 TCID-GUI-AUTH:
   extends: .gui_test_template
