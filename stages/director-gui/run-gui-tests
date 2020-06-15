@@ -22,7 +22,7 @@ echo -e "\n************************ Run GUI tests ******************************
 git clone https://$username:$password@github.com/mayadata-io/gui-automation.git
 cd gui-automation
 
-bash scripts/dop-gui-stages/run-gui-tests.sh ${GROUP} ${GUID} ${URL} ${THREADS} eu-west-2
+bash scripts/dop-gui-stages/run-gui-tests.sh ${GROUP} ${GUID} ${URL} ${THREADS} us-east-2
 
 }
 

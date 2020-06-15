@@ -98,7 +98,7 @@ cd gui-automation
 # Copy credential file
 cp ~/.dmaas/cred.ini cred.ini
 
-bash scripts/dop-gui-stages/run-gui-tests.sh ${GROUP} ${GUID} ${URL} ${THREADS} eu-west-2
+bash scripts/dop-gui-stages/run-gui-tests.sh ${GROUP} ${GUID} ${URL} ${THREADS} us-east-2
 STATUS=$(echo $?)
 cd ../..
 bash utils/e2e-cr jobname:tcid-dir-dmaas-schd-local-dev-minio-buckeT jobphase:Completed
