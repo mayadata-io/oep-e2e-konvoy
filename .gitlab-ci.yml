@@ -388,6 +388,7 @@ TCID-DIR-GUI-OPENEBS-COMPONENTS-VERSION:
 
 ## Selenium Grid Clean up
 selenium-grid-cleanup:
+  when: always
   image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-TEAR-DOWN
   dependencies:
