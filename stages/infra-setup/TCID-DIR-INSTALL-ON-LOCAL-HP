@@ -45,7 +45,7 @@ node() {
   cat values.yaml
 
   # Apply helm chart
-  helm install --name dop . --set server.url=$DOP_URL --set nginx-ingress.enabled=false
+  helm install --name dop . --set server.url=$DOP_URL
 
   # Dump Director On-Prem pods
   echo -e "\n[ Dumping Director On-Prem components ]\n"
