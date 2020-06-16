@@ -6,7 +6,7 @@ stages:
   - OPENEBS-SETUP
   - OPENEBS-FUNCTIONAL
   - OPENEBS-CHAOS
-  - DIRECTOR-FUNCTIONAL
+  # - DIRECTOR-FUNCTIONAL
   - DIRECTOR-GUI
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
@@ -41,6 +41,16 @@ TCID-DIR-INSTALL-ON-LOCAL-HP:
   script:
     - chmod 755 ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
     - ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
+
+## Selenium Grid Spin up
+selenium-grid-deploy:
+  image: harshshekhar15/gitlab-job:v5
+  stage: INFRA-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/infra-setup/selenium-grid-deploy
+    - ./stages/infra-setup/selenium-grid-deploy
 
 ## Create user's apikey
 create-apikey-check:
@@ -258,135 +268,134 @@ TCID-CSTOR-TARGET-KILL:
 #     - ./stages/functional-testing-with-rest/metrics-check/metrics-check.sh
 
 ## Teaming checks
-TCID-DIR-TEAMING-USER-INVITE:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-FUNCTIONAL
-  dependencies:
-    - client-components-check
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
-    - ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
+# TCID-DIR-TEAMING-USER-INVITE:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: DIRECTOR-FUNCTIONAL
+#   dependencies:
+#     - client-components-check
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
+#     - ./stages/functional-testing-with-rest/teaming-check/teaming-invite-check.sh
 
-TCID-DIR-TEAMING-USER-ROLE-UPDATE:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-FUNCTIONAL
-  dependencies:
-    - client-components-check
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
-    - ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
+# TCID-DIR-TEAMING-USER-ROLE-UPDATE:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: DIRECTOR-FUNCTIONAL
+#   dependencies:
+#     - client-components-check
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
+#     - ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-check.sh
 
-TCID-DIR-TEAMING-USER-ROLE-UPDATE-NEGATIVE:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-FUNCTIONAL
-  dependencies:
-    - client-components-check
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-negative-check.sh
-    - ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-negative-check.sh
+# TCID-DIR-TEAMING-USER-ROLE-UPDATE-NEGATIVE:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: DIRECTOR-FUNCTIONAL
+#   dependencies:
+#     - client-components-check
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-negative-check.sh
+#     - ./stages/functional-testing-with-rest/teaming-check/teaming-change-role-negative-check.sh
 
 ## Topology check
-topology-check:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-FUNCTIONAL
-  dependencies:
-    - client-components-check
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/topology-check/topology-check.sh
-    - ./stages/functional-testing-with-rest/topology-check/topology-check.sh
+# topology-check:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: DIRECTOR-FUNCTIONAL
+#   dependencies:
+#     - client-components-check
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/topology-check/topology-check.sh
+#     - ./stages/functional-testing-with-rest/topology-check/topology-check.sh
 
-## Selenium Grid Spin up
-selenium-grid-deploy:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-GUI
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/director-gui/create-grid.sh
-    - ./stages/director-gui/create-grid.sh
-
-## Selenium tests
-tcid-gaau01-gui-auth:
-  image: mayadataio/tools:gitlab-job-v5
+## GUI Checks
+.gui_test_template:
+  when: always
+  image: mayadataio/tools:gitlab-job-v6
   stage: DIRECTOR-GUI
   dependencies:
     - TCID-DIR-INSTALL-ON-LOCAL-HP
   script:
-    - chmod 755 ./stages/director-gui/tcid-gaau01-gui-auth.sh
-    - ./stages/director-gui/tcid-gaau01-gui-auth.sh
+    - chmod 755 ./stages/director-gui/run-gui-tests
+    - ./stages/director-gui/run-gui-tests
+  # artifacts:
+  #   when: always
+  #   paths:
+  #     - /builds/oep/oep-e2e-konvoy/gui-automation/results
 
-tcid-gacc01-gui-cluster:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-GUI
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/director-gui/tcid-gacc01-gui-cluster.sh
-    - ./stages/director-gui/tcid-gacc01-gui-cluster.sh
+TCID-GUI-AUTH:
+  extends: .gui_test_template
+  variables:
+    GROUP: auth
+    THREADS: 10
 
-tcid-gada01-gui-dashboard-home:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-GUI
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/director-gui/tcid-gada01-gui-dashboard-home.sh
-    - ./stages/director-gui/tcid-gada01-gui-dashboard-home.sh
+TCID-DIR-AUTH-LOCAL-ADMIN:
+  extends: .gui_test_template
+  variables:
+    GROUP: localAdminAuth
+    THREADS: 10
 
-tcid-gato01-gui-dashboard-topology:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-GUI
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/director-gui/tcid-gato01-gui-dashboard-topology.sh
-    - ./stages/director-gui/tcid-gato01-gui-dashboard-topology.sh
+TCID-DIR-AUTH-LOCAL-USER:
+  extends: .gui_test_template
+  variables:
+    GROUP: localUserAuth
+    THREADS: 10
 
-gui-dashboard:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-GUI
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/director-gui/gui-dashboard.sh
-    - ./stages/director-gui/gui-dashboard.sh
+TCID-DIR-AUTH-LOCAL-PERF:
+  extends: .gui_test_template
+  variables:
+    GROUP: localPerfAuth
+    THREADS: 10
 
-tcid-gaal01-gui-dashboard-alerts:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-GUI
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/director-gui/tcid-gaal01-gui-dashboard-alerts.sh
-    - ./stages/director-gui/tcid-gaal01-gui-dashboard-alerts.sh
+TCID-GUI-CLUSTER:
+  extends: .gui_test_template
+  variables:
+    GROUP: cluster
+    THREADS: 10
 
-tcid-galo01-gui-dashboard-logs:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-GUI
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/director-gui/tcid-galo01-gui-dashboard-logs.sh
-    - ./stages/director-gui/tcid-galo01-gui-dashboard-logs.sh
+TCID-GUI-DASHBOARD:
+  extends: .gui_test_template
+  variables:
+    GROUP: dashboard
+    THREADS: 10
 
-tcid-gada02-gui-dashboard-overview:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: DIRECTOR-GUI
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/director-gui/tcid-gada02-gui-dashboard-overview.sh
-    - ./stages/director-gui/tcid-gada02-gui-dashboard-overview.sh
+TCID-GUI-PROFILE:
+  extends: .gui_test_template
+  variables:
+    GROUP: profile
+    THREADS: 10
+
+TCID-DIR-TEAMING-USER-INVITE:
+  extends: .gui_test_template
+  variables:
+    GROUP: teamingUserInvite
+    THREADS: 10
+
+TCID-DIR-TEAMING-USER-ROLE-UPDATE:
+  extends: .gui_test_template
+  variables:
+    GROUP: teamingRoleUpdate
+    THREADS: 10
+
+TCID-DIR-TEAMING-USER-ROLE-UPDATE-NEGATIVE:
+  extends: .gui_test_template
+  variables:
+    GROUP: teamingRoleUpdateNegative
+    THREADS: 10
+
+TCID-DIR-GUI-OPENEBS-COMPONENTS-VERSION:
+  extends: .gui_test_template
+  variables:
+    GROUP: openebs
+    THREADS: 10
 
 ## Selenium Grid Clean up
 selenium-grid-cleanup:
+  when: always
   image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-TEAR-DOWN
   dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
+    - selenium-grid-deploy
   script:
-    - chmod 755 ./stages/cluster-tear-down/delete-grid.sh
-    - ./stages/cluster-tear-down/delete-grid.sh
+    - chmod 755 ./stages/cluster-tear-down/selenium-grid-cleanup
+    - ./stages/cluster-tear-down/selenium-grid-cleanup
 
 ## E2E metrics stage
 e2e-metrics:

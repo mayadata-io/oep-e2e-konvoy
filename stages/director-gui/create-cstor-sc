@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+pod() {
+
+## Installing OpenEBS using DOP on cluster2
+echo -e "\n************************ Installing OpenEBS *******************************************\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/director-gui/create-cstor-sc node'
+}
+
+node() {
+path=$(pwd)
+export KUBECONFIG=~/.kube/cluster2_config
+####################################
+##  Sequencing and Running test   ##
+####################################
+
+bash utils/e2e-cr jobname:director-dmaas-sc-creation jobphase:Waiting
+bash utils/e2e-cr jobname:director-dmaas-sc-creation jobphase:Running
+
+kubectl apply -f $path/stages/director-gui/template/create-cstor-sc.yaml
+kubectl get sc
+
+# Install minio on cluster 3
+export KUBECONFIG=~/.kube/cluster3_config
+kubectl apply -f $path/stages/director-gui/template/create-cstor-sc.yaml
+kubectl get sc
+
+export KUBECONFIG=~/.kube/cluster2_config
+bash utils/e2e-cr jobname:director-dmaas-sc-creation jobphase:Completed
+
+
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3 $4
+else
+  pod
+fi

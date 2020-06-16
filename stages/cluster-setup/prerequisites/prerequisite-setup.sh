@@ -47,7 +47,7 @@ echo -e "\n************* Top Node Output *************"
 kubectl top node
 
 echo -e "\n************* Setting up Director URL configmap *************"
-director_url=http://$(kubectl get node -o wide | awk {'print $6'} | head -n 4 | tail -n 1):30380
+director_url=http://$(kubectl get node -o wide | awk {'print $6'} | head -n 4 | tail -n 1)
 echo $director_url
 
 # Create configmap for director URL

@@ -3,7 +3,7 @@
 pod() {
   ## Cleaning up selenium-grid
   echo -e "\n*************Cleaning up Selenium Grid****************\n"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/delete-grid.sh node '"'$CI_PROJECT_NAME'"' '"'$CI_PIPELINE_ID'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/selenium-grid-cleanup node '"'$CI_PROJECT_NAME'"' '"'$CI_PIPELINE_ID'"''
 }
 
 node() {

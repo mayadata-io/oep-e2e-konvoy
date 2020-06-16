@@ -32,7 +32,7 @@ echo -e "\n[ Create configmap for DOP URL ]-------------------------------------
 kubectl create -f director_url.txt -n litmus
 
 echo -e "\n[ Updating cluster name in litmus job ]------------------------------------------------\n"
-sed 's|value: oep-cluster|value: oep-cluster3|' -i oep-e2e/litmus/director/cluster-connect/run_litmus_test.yml
+sed 's|value: oep-cluster-cluster2|value: oep-cluster-cluster3|' -i oep-e2e/litmus/director/cluster-connect/run_litmus_test.yml
 
 echo -e "\n[ Connecting the cluster to DOP ]------------------------------------------------------\n"
 kubectl create -f oep-e2e/litmus/director/cluster-connect/run_litmus_test.yml
