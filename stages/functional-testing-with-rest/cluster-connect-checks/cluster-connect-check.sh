@@ -17,7 +17,9 @@ node() {
   # Verify current context
   kubectl config current-context
 
-  # git clone https://$username:$password@github.com/mayadata-io/oep-e2e.git
+  echo -e "\n[ Updating cluster name in litmus job ]------------------------------------------------\n"
+  sed 's|value: oep-cluster|value: oep-cluster-cluster2|' -i oep-e2e/litmus/director/cluster-connect/run_litmus_test.yml
+
   echo "Connect new cluster -------------------------------------------------"
   kubectl create -f oep-e2e/litmus/director/cluster-connect/run_litmus_test.yml
 

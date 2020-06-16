@@ -40,7 +40,8 @@ node() {
   kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
 
   # Replace storageClass to be used to openebs-hostpath in values.yaml
-  sed 's/storageClass: standard/storageClass: openebs-hostpath/' -i ./values.yaml
+  sed 's/storageClass: standard/storageClass: openebs-hostpath/' -i values.yaml
+  sed 's|maxMemberCountInOneProject: 10|maxMemberCountInOneProject: 100|' -i values.yaml
   cat values.yaml
 
   # Apply helm chart
