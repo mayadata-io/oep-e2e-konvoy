@@ -10,7 +10,7 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-
 
 node() {
 path=$(pwd)
-export KUBECONFIG=~/.kube/cluster2_config
+export KUBECONFIG=~/.kube/config_c2
 ####################################
 ##  Sequencing and Running test   ##
 ####################################
@@ -22,11 +22,11 @@ kubectl apply -f $path/stages/director-gui/template/create-cstor-sc.yaml
 kubectl get sc
 
 # Install minio on cluster 3
-export KUBECONFIG=~/.kube/cluster3_config
+export KUBECONFIG=~/.kube/config_c3
 kubectl apply -f $path/stages/director-gui/template/create-cstor-sc.yaml
 kubectl get sc
 
-export KUBECONFIG=~/.kube/cluster2_config
+export KUBECONFIG=~/.kube/config_c2
 bash utils/e2e-cr jobname:director-dmaas-sc-creation jobphase:Completed
 
 

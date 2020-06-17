@@ -1,0 +1,72 @@
+#!/bin/bash
+
+pod() {
+
+## Installing OpenEBS using DOP on cluster2
+echo -e "\n************************ Installing OpenEBS *******************************************\n"
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS node '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"''
+}
+
+node() {
+
+CI_JOB_ID=$1
+GITHUB_TOKEN=$2
+CI_COMMIT_REF_NAME=$3
+job_id=$(echo $CI_JOB_ID)
+gittoken=$(echo "$GITHUB_TOKEN")
+current_time=$(date)
+branch_name=$CI_COMMIT_REF_NAME
+stage="OPENEBS-SETUP"
+test_desc="Install OpenEBS on a machine already OpenEBS is installed with same version using operator"
+
+export KUBECONFIG=~/.kube/config_c2
+
+bash utils/pooling jobname:tcid-dir-op-install-openebs-dp-on-specific-node
+bash utils/e2e-cr jobname:tcid-dir-op-re-install-openebs jobphase:Running
+
+export KUBECONFIG=~/.kube/config_c3
+
+kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-RE-INSTALL-OPENEBS/run_litmus_test.yml
+kubectl get pods -n litmus
+
+test_name=openebs-reinstallation
+echo -e "\nTest Name: $test_name\n"
+job_name=TCID-DIR-OP-RE-INSTALL-OPENEBS
+
+litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
+echo $litmus_pod
+
+job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
+
+while [[ "$job_status" != "Completed" ]]
+do 
+  job_status=$(kubectl get po  $litmus_pod -n litmus | awk {'print $3'} | tail -n 1)
+  sleep 6
+done
+
+kubectl logs -f $litmus_pod -n litmus
+testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
+echo -e "\nTest Result: $testResult\n"
+
+echo $branch_name
+if [[ $branch_name == "oep-release" ]]; then
+  python3 oep-e2e/utils/result_update.py --job_id "$job_id" --stage "$stage" --test_desc "$test_desc" --test_result "$testResult" --time_stamp "$current_time" --token "$gittoken" --test_name "$test_name" --job_name "$job_name" --platform "konvoy"
+fi
+
+if [ "$testResult" != Pass ]
+then
+  export KUBECONFIG=~/.kube/config_c2
+  bash utils/e2e-cr jobname:tcid-dir-op-re-install-openebs jobphase:Completed
+  exit 1;
+else
+  export KUBECONFIG=~/.kube/config_c2 
+  bash utils/e2e-cr jobname:tcid-dir-op-re-install-openebs jobphase:Completed
+fi 
+
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3 $4
+else
+  pod
+fi

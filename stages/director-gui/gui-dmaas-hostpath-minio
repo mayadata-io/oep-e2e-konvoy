@@ -10,7 +10,7 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-
 node() {
 path=$(pwd)
 # Copy kubeconfig
-export KUBECONFIG=~/.kube/cluster2_config
+export KUBECONFIG=~/.kube/config_c2
 
 ####################################
 ##  Sequencing and Running test   ##

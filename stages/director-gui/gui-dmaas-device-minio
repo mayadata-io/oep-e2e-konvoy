@@ -15,7 +15,7 @@ node() {
 
 path=$(pwd)
 # Copy kubeconfig
-export KUBECONFIG=~/.kube/cluster2_config
+export KUBECONFIG=~/.kube/config_c2
 
 # ####################################
 # ##  Sequencing and Running test   ##

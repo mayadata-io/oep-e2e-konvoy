@@ -2,7 +2,7 @@
 
 pod() {
   echo "*************Deploying Director On-Prem*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"' '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"''
 }
 
 node() {
@@ -11,6 +11,17 @@ node() {
   RELEASE_USERNAME=$3
   RELEASE_PASSWORD=$4
   RELEASE=$5
+  CI_JOB_ID=$6
+  GITHUB_TOKEN=$7
+  CI_COMMIT_REF_NAME=$8
+
+  job_id=$(echo $CI_JOB_ID)
+  gittoken=$(echo "$GITHUB_TOKEN")
+  current_time=$(date)
+  branch_name=$CI_COMMIT_REF_NAME
+  test_name="TCID-DIR-INSTALL-ON-LOCAL-HP"
+  stage="INFRA-SETUP"
+  test_desc="Install DOP using helm with SSD underneath"
 
   # Setting up DOP_URL variable
 
@@ -67,16 +78,16 @@ node() {
     testResult="Fail"
     echo -e "\nTest Result: $testResult\n"
     kubectl get po
-    # if [[ $branch_name == "oep-release" ]]; then
-    #   python3 oep-e2e/utils/result_update.py --job_id "$job_id" --stage "$stage" --test_desc "$test_desc" --test_result "$testResult" --time_stamp "$current_time" --token "$gittoken" --test_name "$test_name" --job_name "$test_name" --platform "konvoy"
-    # fi
+    if [[ $branch_name == "oep-release" ]]; then
+      python3 oep-e2e/utils/result_update.py --job_id "$job_id" --stage "$stage" --test_desc "$test_desc" --test_result "$testResult" --time_stamp "$current_time" --token "$gittoken" --test_name "$test_name" --job_name "$test_name" --platform "konvoy"
+    fi
     exit 1
   else
     testResult="Pass"
     echo -e "\nTest Result: $testResult\n"
-    # if [[ $branch_name == "oep-release" ]]; then
-    #   python3 oep-e2e/utils/result_update.py --job_id "$job_id" --stage "$stage" --test_desc "$test_desc" --test_result "$testResult" --time_stamp "$current_time" --token "$gittoken" --test_name "$test_name" --job_name "$test_name" --platform "konvoy"
-    # fi
+    if [[ $branch_name == "oep-release" ]]; then
+      python3 oep-e2e/utils/result_update.py --job_id "$job_id" --stage "$stage" --test_desc "$test_desc" --test_result "$testResult" --time_stamp "$current_time" --token "$gittoken" --test_name "$test_name" --job_name "$test_name" --platform "konvoy"
+    fi
   fi
 
   #List pods
