@@ -121,6 +121,42 @@ TCID-DIR-OP-INSTALL-OPENEBS:
     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS
     - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS
 
+TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE:
+  image: mayadataio/tools:gitlab-job-v6
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE
+    - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE
+
+TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE:
+  image: mayadataio/tools:gitlab-job-v6
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE
+    - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE
+
+TCID-DIR-OP-RE-INSTALL-OPENEBS:
+  image: mayadataio/tools:gitlab-job-v6
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS
+    - ./stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS
+
+TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE:
+  image: mayadataio/tools:gitlab-job-v6
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
+    - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
+
 TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
   image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-SETUP
@@ -129,6 +165,78 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
   script:
     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
+
+TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR
+    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR
+
+TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE
+    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE
+
+TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR
+    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR
+
+TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM
+    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM
+
+TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME
+    - ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME
+
+TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ
+    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ
+
+TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ
+    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ
+
+TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
+    - ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
 
 TCID-OPENEBS-POLICIES-CREATE:
   image: mayadataio/tools:gitlab-job-v5
