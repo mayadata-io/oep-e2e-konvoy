@@ -20,7 +20,10 @@ node() {
   echo -e "\n[ Creating selenium stack ] ----------------------------------------\n"
   bash configure-grid.sh ${GUID} us-east-2
 
-  cd ../../..
+  cd ../..
+  # Install requirements here only
+  python3.7 -m pip install -r requirements.txt
+  cd ..
 }
 
 if [ "$1" == "node" ];then

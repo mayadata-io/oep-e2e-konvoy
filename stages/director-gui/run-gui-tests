@@ -19,11 +19,11 @@ GROUP=$(echo $4)
 THREADS=$(echo $5)
 
 echo -e "\n************************ Run GUI tests **********************************\n"
-git clone https://$username:$password@github.com/mayadata-io/gui-automation.git
+# git clone https://$username:$password@github.com/mayadata-io/gui-automation.git
 cd gui-automation
 
-sed 's/--reruns 1 //' -i scripts/dop-gui-stages/run-gui-tests.sh
-
+# sed 's/--reruns 1 //' -i scripts/dop-gui-stages/run-gui-tests.sh
+sed 's/python3.7 -m pip install -r requirements.txt//' -i scripts/dop-gui-stages/run-gui-tests.sh
 bash scripts/dop-gui-stages/run-gui-tests.sh ${GROUP} ${GUID} ${URL} ${THREADS} us-east-2
 
 }
