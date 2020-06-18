@@ -2,10 +2,10 @@
 stages:
   - CLUSTER-SETUP
   - INFRA-SETUP
-  - CLUSTER-CONNECT
-  - OPENEBS-SETUP
-  - OPENEBS-FUNCTIONAL
-  - OPENEBS-CHAOS
+  # - CLUSTER-CONNECT
+  # - OPENEBS-SETUP
+  # - OPENEBS-FUNCTIONAL
+  # - OPENEBS-CHAOS
   # - DIRECTOR-FUNCTIONAL
   - DIRECTOR-GUI
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
@@ -52,318 +52,318 @@ selenium-grid-deploy:
     - chmod 755 ./stages/infra-setup/selenium-grid-deploy
     - ./stages/infra-setup/selenium-grid-deploy
 
-## Create user's apikey
-create-apikey-check:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: CLUSTER-CONNECT
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
-    - ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
+# ## Create user's apikey
+# create-apikey-check:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: CLUSTER-CONNECT
+#   dependencies:
+#     - TCID-DIR-INSTALL-ON-LOCAL-HP
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
+#     - ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
 
-## Cluster connect check
-trrc01-cluster-connect-check:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: CLUSTER-CONNECT
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
-    - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
+# ## Cluster connect check
+# trrc01-cluster-connect-check:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: CLUSTER-CONNECT
+#   dependencies:
+#     - TCID-DIR-INSTALL-ON-LOCAL-HP
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
+#     - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
 
-## Client component check
-client-components-check:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: CLUSTER-CONNECT
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
-    - ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
+# ## Client component check
+# client-components-check:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: CLUSTER-CONNECT
+#   dependencies:
+#     - TCID-DIR-INSTALL-ON-LOCAL-HP
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
+#     - ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
 
-## Self cluster connect check
-director-self-cluster-connect-check:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: CLUSTER-CONNECT
-  dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
-    - ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
+# ## Self cluster connect check
+# director-self-cluster-connect-check:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: CLUSTER-CONNECT
+#   dependencies:
+#     - TCID-DIR-INSTALL-ON-LOCAL-HP
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
+#     - ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
 
-## Cluster3 connect check
-cluster3-connect:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: CLUSTER-CONNECT
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/cluster3-connect
-    - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster3-connect
+# ## Cluster3 connect check
+# cluster3-connect:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: CLUSTER-CONNECT
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/cluster3-connect
+#     - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster3-connect
 
-client3-components-check:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: CLUSTER-CONNECT
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client3-components-check
-    - ./stages/functional-testing-with-rest/cluster-connect-checks/client3-components-check
+# client3-components-check:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: CLUSTER-CONNECT
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client3-components-check
+#     - ./stages/functional-testing-with-rest/cluster-connect-checks/client3-components-check
 
-## OpenEBS install
-TCID-DIR-OP-INSTALL-OPENEBS:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS
-    - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS
+# ## OpenEBS install
+# TCID-DIR-OP-INSTALL-OPENEBS:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS
+#     - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS
 
-TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE:
-  image: mayadataio/tools:gitlab-job-v6
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE
-    - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE
+# TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE:
+#   image: mayadataio/tools:gitlab-job-v6
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE
+#     - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-CP-ON-SPECIFIC-NODE
 
-TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE:
-  image: mayadataio/tools:gitlab-job-v6
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE
-    - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE
+# TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE:
+#   image: mayadataio/tools:gitlab-job-v6
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE
+#     - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-DP-ON-SPECIFIC-NODE
 
-TCID-DIR-OP-RE-INSTALL-OPENEBS:
-  image: mayadataio/tools:gitlab-job-v6
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS
-    - ./stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS
+# TCID-DIR-OP-RE-INSTALL-OPENEBS:
+#   image: mayadataio/tools:gitlab-job-v6
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS
+#     - ./stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS
 
-TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE:
-  image: mayadataio/tools:gitlab-job-v6
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
-    - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
+# TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE:
+#   image: mayadataio/tools:gitlab-job-v6
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
+#     - ./stages/openebs-install/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
 
-TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
-    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
+# TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
+#     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE
 
-TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR
-    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR
+# TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR
+#     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR
 
-TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE
-    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE
+# TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE
+#     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-STRIPE
 
-TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR
-    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR
+# TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR
+#     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-MIRROR
 
-TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM
-    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM
+# TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM
+#     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-NO-NDM
 
-TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME
-    - ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME
+# TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME
+#     - ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME
 
-TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ
-    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ
+# TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ
+#     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ
 
-TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ
-    - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ
+# TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ
+#     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ
 
-TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
-    - ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
+# TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
+#     - ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
 
-TCID-OPENEBS-POLICIES-CREATE:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/openebs-storage-policies
-    - ./stages/openebs-install/openebs-storage-policies
+# TCID-OPENEBS-POLICIES-CREATE:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/openebs-install/openebs-storage-policies
+#     - ./stages/openebs-install/openebs-storage-policies
 
-## OpenEBS Functional Tests
+# ## OpenEBS Functional Tests
 
-.func_test_template:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-FUNCTIONAL
-  dependencies:
-    - TCID-DIR-OP-INSTALL-OPENEBS
+# .func_test_template:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-FUNCTIONAL
+#   dependencies:
+#     - TCID-DIR-OP-INSTALL-OPENEBS
 
-TCID-JIVA-APP-TARGET-AFFINITY:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/Jiva-App-Target-Affinity/app-target-affinity
-    - ./stages/functional/Jiva-App-Target-Affinity/app-target-affinity
+# TCID-JIVA-APP-TARGET-AFFINITY:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/Jiva-App-Target-Affinity/app-target-affinity
+#     - ./stages/functional/Jiva-App-Target-Affinity/app-target-affinity
 
-TCID-JIVA-SNAPSHOT-CREATE:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/Jiva-snapshot/jiva-snapshot
-    - ./stages/functional/Jiva-snapshot/jiva-snapshot
+# TCID-JIVA-SNAPSHOT-CREATE:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/Jiva-snapshot/jiva-snapshot
+#     - ./stages/functional/Jiva-snapshot/jiva-snapshot
 
-TCID-JIVA-VOLUME-SCALEUP:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/Jiva-Volume-Scaleup/jiva-vol-scaleup
-    - ./stages/functional/Jiva-Volume-Scaleup/jiva-vol-scaleup
+# TCID-JIVA-VOLUME-SCALEUP:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/Jiva-Volume-Scaleup/jiva-vol-scaleup
+#     - ./stages/functional/Jiva-Volume-Scaleup/jiva-vol-scaleup
 
-TCID-CSTOR-SNAPSHOT-CREATE:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/cstor-csi-volume-snapshot/csi-cstor-snapshot
-    - ./stages/functional/cstor-csi-volume-snapshot/csi-cstor-snapshot
+# TCID-CSTOR-SNAPSHOT-CREATE:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/cstor-csi-volume-snapshot/csi-cstor-snapshot
+#     - ./stages/functional/cstor-csi-volume-snapshot/csi-cstor-snapshot
 
-TCID-CSTOR-CLONE-CREATE:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/cstor-csi-volume-clone/csi-cstor-clone
-    - ./stages/functional/cstor-csi-volume-clone/csi-cstor-clone
+# TCID-CSTOR-CLONE-CREATE:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/cstor-csi-volume-clone/csi-cstor-clone
+#     - ./stages/functional/cstor-csi-volume-clone/csi-cstor-clone
 
-TCID-CSTOR-VOLUME-EXT4-RESIZE:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/cstor-ext4-volume-resize/csi-volume-resize
-    - ./stages/functional/cstor-ext4-volume-resize/csi-volume-resize
+# TCID-CSTOR-VOLUME-EXT4-RESIZE:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/cstor-ext4-volume-resize/csi-volume-resize
+#     - ./stages/functional/cstor-ext4-volume-resize/csi-volume-resize
 
-TCID-CSTOR-VOLUME-XFS-RESIZE:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/cstor-xfs-volume-resize/csi-volume-resize-xfs
-    - ./stages/functional/cstor-xfs-volume-resize/csi-volume-resize-xfs
+# TCID-CSTOR-VOLUME-XFS-RESIZE:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/cstor-xfs-volume-resize/csi-volume-resize-xfs
+#     - ./stages/functional/cstor-xfs-volume-resize/csi-volume-resize-xfs
 
-TCID-LOCALPV-RANDOM-DEVICE-CREATE:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/local-pv-device/local-pv-device
-    - ./stages/functional/local-pv-device/local-pv-device
+# TCID-LOCALPV-RANDOM-DEVICE-CREATE:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/local-pv-device/local-pv-device
+#     - ./stages/functional/local-pv-device/local-pv-device
 
-TCID-LOCALPV-HOSTPATH-CREATE:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/local-pv-hostpath/local-pv-hostpath
-    - ./stages/functional/local-pv-hostpath/local-pv-hostpath
+# TCID-LOCALPV-HOSTPATH-CREATE:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/local-pv-hostpath/local-pv-hostpath
+#     - ./stages/functional/local-pv-hostpath/local-pv-hostpath
 
-# OpenEBS CHAOS Tests JOBS
+# # OpenEBS CHAOS Tests JOBS
 
-.chaos_test_template:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-CHAOS
-  dependencies:
-    - TCID-DIR-OP-INSTALL-OPENEBS
+# .chaos_test_template:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: OPENEBS-CHAOS
+#   dependencies:
+#     - TCID-DIR-OP-INSTALL-OPENEBS
 
-TCID-JIVA-BUSYBOX-KILL:
-  extends: .chaos_test_template
-  script:
-    - chmod 755 ./stages/chaos/Jiva-App-kill/jiva-app-kill
-    - ./stages/chaos/Jiva-App-kill/jiva-app-kill
+# TCID-JIVA-BUSYBOX-KILL:
+#   extends: .chaos_test_template
+#   script:
+#     - chmod 755 ./stages/chaos/Jiva-App-kill/jiva-app-kill
+#     - ./stages/chaos/Jiva-App-kill/jiva-app-kill
 
-TCID-JIVA-MULTIPLE-REPLICAS-FAILURE:
-  extends: .chaos_test_template
-  script:
-    - chmod 755 ./stages/chaos/Jiva-revision-counter/jiva-revision-counter
-    - ./stages/chaos/Jiva-revision-counter/jiva-revision-counter
+# TCID-JIVA-MULTIPLE-REPLICAS-FAILURE:
+#   extends: .chaos_test_template
+#   script:
+#     - chmod 755 ./stages/chaos/Jiva-revision-counter/jiva-revision-counter
+#     - ./stages/chaos/Jiva-revision-counter/jiva-revision-counter
 
-TCID-JIVA-REPLICA-NETWORK-DELAY:
-  extends: .chaos_test_template
-  script:
-    - chmod 755 ./stages/chaos/Jiva-Replica-Network-Delay/jiva-replica-network-delay
-    - ./stages/chaos/Jiva-Replica-Network-Delay/jiva-replica-network-delay
+# TCID-JIVA-REPLICA-NETWORK-DELAY:
+#   extends: .chaos_test_template
+#   script:
+#     - chmod 755 ./stages/chaos/Jiva-Replica-Network-Delay/jiva-replica-network-delay
+#     - ./stages/chaos/Jiva-Replica-Network-Delay/jiva-replica-network-delay
 
-TCID-JIVA-CONTROLLER-KILL:
-  extends: .chaos_test_template
-  script:
-    - chmod 755 ./stages/chaos/Jiva-Controller-kill/jiva-controller-kill
-    - ./stages/chaos/Jiva-Controller-kill/jiva-controller-kill
+# TCID-JIVA-CONTROLLER-KILL:
+#   extends: .chaos_test_template
+#   script:
+#     - chmod 755 ./stages/chaos/Jiva-Controller-kill/jiva-controller-kill
+#     - ./stages/chaos/Jiva-Controller-kill/jiva-controller-kill
 
-TCID-JIVA-CONTROLLER-NETWORK-DELAY:
-  extends: .chaos_test_template
-  script:
-    - chmod 755 ./stages/chaos/Jiva-Controller-Network-Delay/ctrl-network-delay
-    - ./stages/chaos/Jiva-Controller-Network-Delay/ctrl-network-delay
+# TCID-JIVA-CONTROLLER-NETWORK-DELAY:
+#   extends: .chaos_test_template
+#   script:
+#     - chmod 755 ./stages/chaos/Jiva-Controller-Network-Delay/ctrl-network-delay
+#     - ./stages/chaos/Jiva-Controller-Network-Delay/ctrl-network-delay
 
-TCID-JIVA-REPLICA-NODE-AFFINITY:
-  extends: .chaos_test_template
-  script:
-    - chmod 755 ./stages/chaos/Jiva-Replica-Node-Affinity/rep-node-affinity
-    - ./stages/chaos/Jiva-Replica-Node-Affinity/rep-node-affinity
+# TCID-JIVA-REPLICA-NODE-AFFINITY:
+#   extends: .chaos_test_template
+#   script:
+#     - chmod 755 ./stages/chaos/Jiva-Replica-Node-Affinity/rep-node-affinity
+#     - ./stages/chaos/Jiva-Replica-Node-Affinity/rep-node-affinity
 
-TCID-CSTOR-BUSYBOX-APP-KILL:
-  extends: .chaos_test_template
-  script:
-    - chmod 755 ./stages/chaos/cstor-App-pod-kill/app-kill
-    - ./stages/chaos/cstor-App-pod-kill/app-kill
+# TCID-CSTOR-BUSYBOX-APP-KILL:
+#   extends: .chaos_test_template
+#   script:
+#     - chmod 755 ./stages/chaos/cstor-App-pod-kill/app-kill
+#     - ./stages/chaos/cstor-App-pod-kill/app-kill
 
-TCID-CSTOR-TARGET-KILL:
-  extends: .chaos_test_template
-  script:
-    - chmod 755 ./stages/chaos/cstor-Target-kill/target-kill
-    - ./stages/chaos/cstor-Target-kill/target-kill
+# TCID-CSTOR-TARGET-KILL:
+#   extends: .chaos_test_template
+#   script:
+#     - chmod 755 ./stages/chaos/cstor-Target-kill/target-kill
+#     - ./stages/chaos/cstor-Target-kill/target-kill
 
 # ## Director metrics check
 # metrics-check:
