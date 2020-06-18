@@ -14,6 +14,10 @@ node() {
 
   echo -e "\n[ Cloning gui-automation repo ] ------------------------------------\n"
   git clone https://github.com/mayadata-io/gui-automation.git
+  cd gui-automation
+  git checkout internal-error
+  cd ..
+  
   cd gui-automation/scripts/grid
   cat selenium-grid-config.yml
 
@@ -22,6 +26,7 @@ node() {
 
   cd ../..
   # Install requirements here only
+  echo -e "\n[ Install requirement ] ------------------------------------\n"
   python3.7 -m pip install -r requirements.txt
   cd ..
 }
