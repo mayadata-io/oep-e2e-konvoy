@@ -32,17 +32,18 @@ node() {
   ##           Deploy DOP            ##
   #####################################
 
-  echo -e "\n[ Cloning director-charts-internal repo ]\n"
+  # echo -e "\n[ Cloning director-charts-internal repo ]\n"
 
-  git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/director-charts-internal.git
+  # git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/director-charts-internal.git
 
-  cd director-charts-internal
+  # cd director-charts-internal
 
-  echo -e "\n[ Get DOP release version ]-------------------------------------\n"
+  # echo -e "\n[ Get DOP release version ]-------------------------------------\n"
+  echo -e "\n[ Print DOP release version ]-------------------------------------\n"
   echo -e "Release Version: $RELEASE\n"
 
   # Get into latest release directory of helm chart
-  cd "$RELEASE"/director
+  # cd "$RELEASE"/director
 
   # Create secret having maya-init repo access
   kubectl create secret docker-registry directoronprem-registry-secret --docker-server=registry.mayadata.io --docker-username=$RELEASE_USERNAME --docker-password=$RELEASE_PASSWORD
@@ -51,19 +52,30 @@ node() {
   kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
 
   # Replace storageClass to be used to openebs-hostpath in values.yaml
-  sed 's/storageClass: standard/storageClass: openebs-hostpath/' -i values.yaml
-  sed 's|maxMemberCountInOneProject: 10|maxMemberCountInOneProject: 100|' -i values.yaml
-  cat values.yaml
+  # sed 's/storageClass: standard/storageClass: openebs-hostpath/' -i values.yaml
+  # sed 's|maxMemberCountInOneProject: 10|maxMemberCountInOneProject: 100|' -i values.yaml
+  # cat values.yaml
+
+  # Add kubera in local repository
+  helm repo add kubera https://charts.mayadata.io/
 
   # Apply helm chart
-  helm install --name dop . --set server.url=$DOP_URL
+  helm install --name kubera kubera/kubera-charts --set type.installOpenebs=false --set server.url=$DOP_URL --set server.release=$RELEASE --set server.maxMemberCountInOneProject=100
+
+  # Pass these values as well if need to run ingress as deployment:  --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
+
+  # Get the changed values from chart
+  helm get values kubera > values.yaml
+
+  echo -e "Changed values in values.yaml\n"
+  cat values.yaml
 
   # Dump Director On-Prem pods
   echo -e "\n[ Dumping Director On-Prem components ]\n"
   kubectl get pod
 
   # Go back to oep-e2e-konvoy directory
-  cd ~/oep-e2e-konvoy/
+  # cd ~/oep-e2e-konvoy/
 
   # Add manual sleep of 9min
   echo -e "\n Manual wait for director components to get deployed"
@@ -92,8 +104,6 @@ node() {
 
   #List pods
   kubectl get pods
-
-  #bash utils/e2e-cr jobname:dop-deploy jobphase:Completed 
 }
 
 if [ "$1" == "node" ];then
