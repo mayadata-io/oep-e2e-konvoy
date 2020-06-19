@@ -25,36 +25,21 @@ node() {
 
   # Setting up DOP_URL variable
 
-  DOP_URL=$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2')
+  DOP_URL=http://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2')
   echo -e "\n DOP URL: $DOP_URL"
 
   #####################################
   ##           Deploy DOP            ##
   #####################################
 
-  # echo -e "\n[ Cloning director-charts-internal repo ]\n"
-
-  # git clone https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/director-charts-internal.git
-
-  # cd director-charts-internal
-
-  # echo -e "\n[ Get DOP release version ]-------------------------------------\n"
   echo -e "\n[ Print DOP release version ]-------------------------------------\n"
   echo -e "Release Version: $RELEASE\n"
-
-  # Get into latest release directory of helm chart
-  # cd "$RELEASE"/director
 
   # Create secret having maya-init repo access
   kubectl create secret docker-registry directoronprem-registry-secret --docker-server=registry.mayadata.io --docker-username=$RELEASE_USERNAME --docker-password=$RELEASE_PASSWORD
 
   # Create clusterrolebinding
   kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
-
-  # Replace storageClass to be used to openebs-hostpath in values.yaml
-  # sed 's/storageClass: standard/storageClass: openebs-hostpath/' -i values.yaml
-  # sed 's|maxMemberCountInOneProject: 10|maxMemberCountInOneProject: 100|' -i values.yaml
-  # cat values.yaml
 
   # Add kubera in local repository
   helm repo add kubera https://charts.mayadata.io/
@@ -73,9 +58,6 @@ node() {
   # Dump Director On-Prem pods
   echo -e "\n[ Dumping Director On-Prem components ]\n"
   kubectl get pod
-
-  # Go back to oep-e2e-konvoy directory
-  # cd ~/oep-e2e-konvoy/
 
   # Add manual sleep of 9min
   echo -e "\n Manual wait for director components to get deployed"
