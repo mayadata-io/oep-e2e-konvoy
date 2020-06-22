@@ -45,6 +45,16 @@ echo -e "KubernetesVersion: $version"
 echo -e "\n************************ Cloning oep-e2e-konvoy repo *********************************\n"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone -b '$CI_COMMIT_REF_NAME' https://github.com/mayadata-io/oep-e2e-konvoy.git'
 
+crd_file="sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'ls oep-e2e-konvoy/utils | grep e2e-crd.yml | wc -l 2>&1'"
+file_count=$(eval $crd_file)
+echo -e "\nFile count: $file_count\n"
+while [ "$file_count" == "0" ]; do
+  echo "CRD yaml not present"
+  sleep 2
+  file_count=$(eval $crd_file)
+  echo -e "File count: $file_count\n"
+done
+
 echo -e "\n************************ Applying e2e-crd *********************************************\n"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c3 && kubectl apply -f oep-e2e-konvoy/utils/e2e-crd.yml'
 
