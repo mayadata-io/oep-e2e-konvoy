@@ -34,8 +34,8 @@ bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-mirror jobphas
 export KUBECONFIG=~/.kube/config_c3
 
 # Label node2 as data-plane node as it has disks attached
-echo -e "\nLabeling konvoy-c3-worker2 as data-plane node as it has disks attached\n"
-kubectl label nodes konvoy-c3-worker2 mayadata.io/data-plane=true
+echo -e "\nLabeling konvoy-c3-worker2.mayalabs.io as data-plane node as it has disks attached\n"
+kubectl label nodes konvoy-c3-worker2.mayalabs.io mayadata.io/data-plane=true
 
 kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-MIRROR/run_litmus_test.yml
 kubectl get pods -n litmus 
