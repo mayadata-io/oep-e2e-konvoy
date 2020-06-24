@@ -41,6 +41,8 @@ node() {
   # Create clusterrolebinding
   kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
 
+  helm repo update
+  
   # Add kubera in local repository
   helm repo add kubera https://charts.mayadata.io/
 
