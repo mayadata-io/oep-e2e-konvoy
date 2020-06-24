@@ -61,7 +61,7 @@ node() {
 
   # Add manual sleep of 9min
   echo -e "\n Manual wait for director components to get deployed"
-  sleep 900
+  sleep 1200
 
   #Run Components health check
   echo -e "\n************************ Running basic-sanity tests ***********************************\n"
