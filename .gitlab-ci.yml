@@ -44,7 +44,7 @@ TCID-DIR-INSTALL-ON-LOCAL-HP:
 
 ## Selenium Grid Spin up
 selenium-grid-deploy:
-  image: harshshekhar15/gitlab-job:v5
+  image: mayadataio/tools:gitlab-job-v5
   stage: INFRA-SETUP
   dependencies:
     - cluster-create
@@ -252,6 +252,7 @@ TCID-OPENEBS-POLICIES-CREATE:
 .func_test_template:
   image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-FUNCTIONAL
+  when: always
   dependencies:
     - TCID-DIR-OP-INSTALL-OPENEBS
 
@@ -314,6 +315,7 @@ TCID-LOCALPV-HOSTPATH-CREATE:
 .chaos_test_template:
   image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-CHAOS
+  when: always
   dependencies:
     - TCID-DIR-OP-INSTALL-OPENEBS
 
