@@ -41,7 +41,16 @@ then
   #####################################
 
   #adding wait here as cloning the repo is taking time.
-  sleep 10
+  prerequisite_setup_file="sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'ls oep-e2e-konvoy/stages/cluster-setup/prerequisites/ | grep prerequisite-setup.sh | wc -l 2>&1'"
+  file_count=$(eval $prerequisite_setup_file)
+  echo -e "\nFile count: $file_count\n"
+  while [ "$file_count" == "0" ]; do
+    echo "Prerequisite Setup file not present"
+    sleep 2
+    file_count=$(eval $prerequisite_setup_file)
+    echo -e "File count: $file_count\n"
+  done
+
   echo "************* Running Prerequisites *************"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && chmod 755 ./stages/cluster-setup/prerequisites/prerequisite-setup.sh && ./stages/cluster-setup/prerequisites/prerequisite-setup.sh'
 

@@ -48,9 +48,30 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone -
 echo -e "\n************************ Cloning openebs/e2e-test repo ********************************\n"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && git clone https://github.com/openebs/e2e-tests.git'
 
+hack_dir="sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'ls oep-e2e-konvoy/e2e-tests | grep hack | wc -l 2>&1'"
+file_count=$(eval $hack_dir)
+echo -e "\nFile count: $file_count\n"
+while [ "$file_count" == "0" ]; do
+  echo "hack directory not present yet"
+  sleep 2
+  file_count=$(eval $hack_dir)
+  echo -e "File count: $file_count\n"
+done
+
 echo -e "\n************************ Applying e2e-crd *********************************************\n"
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl apply -f oep-e2e-konvoy/e2e-tests/hack/crds.yaml'
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl apply -f oep-e2e-konvoy/e2e-tests/hack/rbac.yaml'
+
+crd_file="sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'ls oep-e2e-konvoy/utils | grep e2e-crd.yml | wc -l 2>&1'"
+file_count=$(eval $crd_file)
+echo -e "\nFile count: $file_count\n"
+while [ "$file_count" == "0" ]; do
+  echo "CRD yaml not present"
+  sleep 2
+  file_count=$(eval $crd_file)
+  echo -e "File count: $file_count\n"
+done
+
 sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'export KUBECONFIG=~/.kube/config_c2 && kubectl apply -f oep-e2e-konvoy/utils/e2e-crd.yml'
 
 else
