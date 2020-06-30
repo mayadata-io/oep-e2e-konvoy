@@ -2,7 +2,7 @@
 
 pod() {
   echo -e "\n************************ Deploying selenium-grid *****************************\n"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/selenium-grid-deploy node '"'$CI_PROJECT_NAME'"' '"'$CI_PIPELINE_ID'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/gui-prerequisite-install node '"'$CI_PROJECT_NAME'"' '"'$CI_PIPELINE_ID'"''
 }
 
 node() {
@@ -16,13 +16,7 @@ node() {
   git clone https://github.com/mayadata-io/gui-automation.git
   cd gui-automation
   python3.7 -m pip install -r requirements.txt
-  # cd gui-automation/scripts/grid
-  # cat selenium-grid-config.yml
-
-  # echo -e "\n[ Creating selenium stack ] ----------------------------------------\n"
-  # bash configure-grid.sh ${GUID} us-east-2
-
-  # cd ../../..
+  
   cd ..
 }
 
