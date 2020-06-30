@@ -274,13 +274,13 @@ TCID-JIVA-VOLUME-SCALEUP:
     - chmod 755 ./stages/functional/Jiva-Volume-Scaleup/jiva-vol-scaleup
     - ./stages/functional/Jiva-Volume-Scaleup/jiva-vol-scaleup
 
-TCID-CSTOR-CSI-VOLUME-SCALEUP:
+TCID-CSTOR-CSI-VOLUME-REPLICA-SCALEUP:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/cstor-csi-volume-scaleup/cstor-csi-volume-scaleup
     - ./stages/functional/cstor-csi-volume-scaleup/cstor-csi-volume-scaleup
 
-TCID-CSTOR-CSI-VOLUME-SCALEDOWN:
+TCID-CSTOR-CSI-VOLUME-REPLICA-SCALEDOWN:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/cstor-csi-volume-scaledown/cstor-csi-volume-scaledown

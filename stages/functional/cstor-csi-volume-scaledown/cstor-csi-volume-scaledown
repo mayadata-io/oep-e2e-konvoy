@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pod(){
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional/cstor-cstor-csi-volume-scaledown/cstor-cstor-csi-volume-scaledown node '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$RELEASE_TAG'"'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional/cstor-csi-volume-scaledown/cstor-csi-volume-scaledown node '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$RELEASE_TAG'"'
 }
 
 node() {
@@ -93,7 +93,7 @@ test_name=$(bash utils/generate_test_name testcase=cstor-csi-replica-scaledown m
 echo $test_name
 
 cd e2e-tests
-cp experiments/functional/cStor/cstor-cstor-csi-volume-scaledown/run_litmus_test.yml run_cstor_csi_vol_scaledown.yml
+cp experiments/functional/cStor/cstor-csi-volume-scaledown/run_litmus_test.yml run_cstor_csi_vol_scaledown.yml
 
 sed -i -e '/name: APP_PVC/{n;s/.*/            value: openebs-busybox/g}' \
 -e '/name: APP_LABEL/{n;s/.*/            value: app=busybox-sts/g}' \
