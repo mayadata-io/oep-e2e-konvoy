@@ -14,13 +14,16 @@ node() {
 
   echo -e "\n[ Cloning gui-automation repo ] ------------------------------------\n"
   git clone https://github.com/mayadata-io/gui-automation.git
-  cd gui-automation/scripts/grid
-  cat selenium-grid-config.yml
+  cd gui-automation
+  python3.7 -m pip install -r requirements.txt
+  # cd gui-automation/scripts/grid
+  # cat selenium-grid-config.yml
 
-  echo -e "\n[ Creating selenium stack ] ----------------------------------------\n"
-  bash configure-grid.sh ${GUID} us-east-2
+  # echo -e "\n[ Creating selenium stack ] ----------------------------------------\n"
+  # bash configure-grid.sh ${GUID} us-east-2
 
-  cd ../../..
+  # cd ../../..
+  cd ..
 }
 
 if [ "$1" == "node" ];then
