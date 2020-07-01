@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pod() {
-  echo -e "\n************************ Deploying selenium-grid *****************************\n"
+  echo -e "\n************************ Installing GUI prerequisite*****************************\n"
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/gui-prerequisite-install node '"'$CI_PROJECT_NAME'"' '"'$CI_PIPELINE_ID'"''
 }
 
