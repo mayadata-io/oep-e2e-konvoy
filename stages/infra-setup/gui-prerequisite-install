@@ -1,0 +1,28 @@
+#!/bin/bash
+
+pod() {
+  echo -e "\n************************ Installing GUI prerequisite*****************************\n"
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/gui-prerequisite-install node '"'$CI_PROJECT_NAME'"' '"'$CI_PIPELINE_ID'"''
+}
+
+node() {
+
+  CI_PROJECT_NAME=$(echo $1)
+  CI_PIPELINE_ID=$(echo $2)
+  GUID=grid-${CI_PROJECT_NAME}-${CI_PIPELINE_ID}
+  path=$(pwd)
+
+  echo -e "\n[ Cloning gui-automation repo ] ------------------------------------\n"
+  git clone https://github.com/mayadata-io/gui-automation.git
+  cd gui-automation
+  python3.7 -m pip install -r requirements.txt
+  
+  cd ..
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3 $4 $5 $6
+else
+  pod
+fi
+
