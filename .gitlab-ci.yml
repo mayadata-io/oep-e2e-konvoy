@@ -6,8 +6,8 @@ stages:
   - OPENEBS-SETUP
   - OPENEBS-FUNCTIONAL
   - OPENEBS-CHAOS
-  # - DIRECTOR-FUNCTIONAL
   - DIRECTOR-GUI
+  - DIRECTOR-GUI-DMAAS
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
 ## Setup kubernetes cluster using Konvoy
