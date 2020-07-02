@@ -17,6 +17,7 @@ export KUBECONFIG=~/.kube/config_c2
 
 bash utils/e2e-cr jobname:director-dmaas-sc-creation jobphase:Waiting
 bash utils/e2e-cr jobname:director-dmaas-sc-creation jobphase:Running
+bash utils/e2e-cr jobname:tcid-dir-dmaas-schd-jiva-minio-bucket jobphase:Waiting
 
 ##Cluster name
 cluster=cluster-2
