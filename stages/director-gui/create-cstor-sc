@@ -18,6 +18,10 @@ export KUBECONFIG=~/.kube/config_c2
 bash utils/e2e-cr jobname:director-dmaas-sc-creation jobphase:Waiting
 bash utils/e2e-cr jobname:director-dmaas-sc-creation jobphase:Running
 
+##Cluster name
+cluster=cluster-2
+echo -e "\nCLUSTER_NAME: $cluster\n"
+
 kubectl apply -f $path/stages/director-gui/template/create-cstor-sc.yaml
 kubectl get sc
 

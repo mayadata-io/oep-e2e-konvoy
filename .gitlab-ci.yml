@@ -574,6 +574,105 @@ TCID-DIR-GUI-OPENEBS-COMPONENTS-VERSION:
     GROUP: openebs
     THREADS: 10
 
+## GUI DMAAS TESTS
+.gui_dmaas_test_template:
+  when: always
+  image: mayadataio/tools:gitlab-job-v6
+  stage: DIRECTOR-GUI-DMAAS
+  artifacts:
+    when: always
+    paths:
+      - /builds/oep/oep-e2e-rancher/gui-automation/results
+
+DIRECTOR-DMAAS-SC-CREATION:
+  extends: .gui_dmaas_test_template 
+  variables:
+    CLUSTER: cluster2
+  script:
+    - chmod 755 ./stages/director-gui/create-cstor-sc
+    - ./stages/director-gui/create-cstor-sc
+
+TCID-DIR-DMAAS-SCHD-LOCAL-HP-AWS-BUCKET:
+  extends: .gui_dmaas_test_template
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-hostpath-aws
+    - ./stages/director-gui/gui-dmaas-hostpath-aws
+  variables:
+    GROUP: dmaasHostpathAws
+    THREADS: 10
+
+# TCID-DIR-DMAAS-SCHD-LOCAL-DEV-AWS-BUCKET:
+#   extends: .gui_dmaas_test_template
+#   script:
+#     - chmod 755 ./stages/director-gui/gui-dmaas-device-aws
+#     - ./stages/director-gui/gui-dmaas-device-aws
+#   variables:
+#     GROUP: dmaasDeviceAws
+#     THREADS: 5
+
+TCID-DIR-DMAAS-SCHD-JIVA-AWS-BUCKET:
+  extends: .gui_dmaas_test_template 
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-jiva-aws
+    - ./stages/director-gui/gui-dmaas-jiva-aws
+  variables:
+    GROUP: dmaasJivaAws
+    THREADS: 10
+
+TCID-DIR-DMAAS-SCHD-CSTOR-AWS-BUCKET:
+  extends: .gui_dmaas_test_template
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-cstor-aws
+    - ./stages/director-gui/gui-dmaas-cstor-aws
+  variables:
+    GROUP: dmaasCstorAws
+    THREADS: 10
+
+TCID-DIR-DMAAS-SCHD-LOCAL-HP-MINIO-BUCKET:
+  extends: .gui_dmaas_test_template
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-hostpath-minio
+    - ./stages/director-gui/gui-dmaas-hostpath-minio
+  variables:
+    GROUP: dmaasHostpathMinio
+    THREADS: 10
+
+# TCID-DIR-DMAAS-SCHD-LOCAL-DEV-MINIO-BUCKET:
+#   extends: .gui_dmaas_test_template
+#   script:
+#     - chmod 755 ./stages/director-gui/gui-dmaas-device-minio
+#     - ./stages/director-gui/gui-dmaas-device-minio
+#   variables:
+#     GROUP: dmaasDeviceMinio
+#     THREADS: 5
+
+TCID-DIR-DMAAS-SCHD-JIVA-MINIO-BUCKET:
+  extends: .gui_dmaas_test_template 
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-jiva-minio
+    - ./stages/director-gui/gui-dmaas-jiva-minio
+  variables:
+    GROUP: dmaasJivaMinio
+    THREADS: 10
+
+TCID-DIR-DMAAS-SCHD-CSTOR-MINIO-BUCKET:
+  extends: .gui_dmaas_test_template 
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-cstor-minio
+    - ./stages/director-gui/gui-dmaas-cstor-minio
+  variables:
+    GROUP: dmaasCstorMinio
+    THREADS: 10
+
+TCID-DIR-DMAAS-MINIO-DELETE:
+  extends: .gui_dmaas_test_template 
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-delete-minio
+    - ./stages/director-gui/gui-dmaas-delete-minio
+  variables:
+    GROUP: dmaasDelete
+    THREADS: 10
+
 ## E2E metrics stage
 e2e-metrics:
   when: always
