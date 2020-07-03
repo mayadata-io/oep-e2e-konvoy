@@ -71,10 +71,6 @@ THREADS=$(echo $5)
 AWS_CREDS=$(echo $6)
 MINIO_CREDS=$(echo $7)
 
-#copy aws and minio cred
-# mkdir -p ~/.dmaas
-# echo "$AWS_CREDS" > ~/.dmaas/aws_cred
-# echo "$MINIO_CREDS" > ~/.dmaas/minio_cred
 
 #make empty directory
 mkdir -p selenium-auto
@@ -84,8 +80,6 @@ echo -e "\n************************ Run GUI tests ******************************
 git clone https://$username:$password@github.com/mayadata-io/gui-automation.git
 cd gui-automation
 
-#creating credential file
-# cat ~/.dmaas/aws_cred ~/.dmaas/minio_cred >> cred.ini
 
 # Copy credential file
 cp ~/.dmaas/cred.ini cred.ini
@@ -94,11 +88,17 @@ bash scripts/dop-gui-stages/run-gui-tests.sh ${GROUP} ${GUID} ${URL} ${THREADS} 
 STATUS=$(echo $?)
 
 cd ../..
+
+
+
 bash utils/e2e-cr jobname:tcid-dir-dmaas-schd-jiva-minio-bucket jobphase:Completed
 
 if [ "$STATUS" != "0" ]; then
 exit 1;
 fi
+
+# Delete minio 
+kubectl delete -f $path/jiva-minio/minio-manifest/
 
 }
 
