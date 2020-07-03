@@ -130,7 +130,7 @@ cp experiments/functional/csi-volume-resize/run_litmus_test.yml csi_vol_resize_e
 sed -i -e '/name: APP_PVC/{n;s/.*/            value: percona-mysql-claim/g}' \
 -e '/name: APP_LABEL/{n;s/.*/            value: name=percona/g}' \
 -e '/name: STORAGE_CLASS/{n;s/.*/            value: zfs-sc-ext4/g}' \
--e 's/app: csi-vol-resize/app: csi-vol-resize-ext4/g' \
+-e 's/app: csi-vol-resize/app: zfs-csi-vol-resize-ext4/g' \
 -e '/name: PV_CAPACITY/{n;s/.*/            value: 5Gi/g}' \
 -e '/name: NEW_CAPACITY/{n;s/.*/            value: 10Gi/g}' \
 -e '/name: APP_NAMESPACE/{n;s/.*/            value: percona-ext4/g}' csi_vol_resize_ext4.yml
@@ -143,7 +143,7 @@ sed -i '/command:/i \
 cat csi_vol_resize_ext4.yml
 
 ## Run the Litmus job and get the details of the litmus job from litmus_job_runner utils.
-bash ../utils/litmus_job_runner label='app:csi-vol-resize-ext4' job=csi_vol_resize_ext4.yml
+bash ../utils/litmus_job_runner label='app:zfs-csi-vol-resize-ext4' job=csi_vol_resize_ext4.yml
 ## Get the cluster state Once the litmus jobs completed.
 bash ../utils/dump_cluster_state;
 cd ..
