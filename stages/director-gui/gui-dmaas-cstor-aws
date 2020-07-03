@@ -17,8 +17,8 @@ export KUBECONFIG=~/.kube/config_c2
 ####################################
 ##  Sequencing and Running test   ##
 ####################################
-bash utils/pooling jobname:tcid-dir-dmaas-schd-jiva-aws-bucket
-
+bash utils/pooling jobname:tcid-dir-dmaas-schd-local-hp-aws-bucket
+bash utils/e2e-cr jobname:tcid-dir-dmaas-schd-cstor-aws-bucket jobphase:Running
 
 kubectl get ns
 
@@ -84,6 +84,7 @@ bash scripts/dop-gui-stages/run-gui-tests.sh ${GROUP} ${GUID} ${URL} ${THREADS} 
 STATUS=$(echo $?)
 cd ../..
 
+bash utils/e2e-cr jobname:tcid-dir-dmaas-schd-cstor-aws-bucket jobphase:Completed
 if [ "$STATUS" != "0" ]; then
 exit 1;
 fi
