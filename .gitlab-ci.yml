@@ -582,7 +582,7 @@ TCID-DIR-GUI-OPENEBS-COMPONENTS-VERSION:
   artifacts:
     when: always
     paths:
-      - /builds/oep/oep-e2e-rancher/gui-automation/results
+      - /builds/oep/oep-e2e-konvoy/gui-automation/results
 
 DIRECTOR-DMAAS-SC-CREATION:
   extends: .gui_dmaas_test_template 
