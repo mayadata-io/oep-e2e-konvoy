@@ -3,7 +3,7 @@ set -x
 
 pod() {
   echo "*************Cleaning up the connected cluster*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/c2-cleanup.sh node '"'$c2_master1_name'"' '"'$c2_worker1_name'"' '"'$c2_worker2_name'"' '"'$c2_worker3_name'"' '"'$c2_worker4_name'"' '"'$c2_worker5_name'"' '"'$C2_ESX_IP'"' '"'$C2_SNAPSHOT_NAME'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/c2-cleanup.sh node '"'$c2_master1_name'"' '"'$c2_worker1_name'"' '"'$c2_worker2_name'"' '"'$c2_worker3_name'"' '"'$c2_worker4_name'"' '"'$c2_worker5_name'"' '"'$C2_ESX_IP'"' '"'$C2_SNAPSHOT_NAME'"' '"'$C2_VM_PASS'"' '"'$VM_USER'"' '"'$C2_VM1_IP'"' '"'$C2_VM2_IP'"' '"'$C2_VM3_IP'"' '"'$C2_VM4_IP'"' '"'$C2_VM5_IP'"' '"'$C2_VM6_IP'"' '"'$C2_ESX_IP'"''
 }
 
 node() {
@@ -16,6 +16,14 @@ node() {
   c2_worker5_name=$(echo $6)
   C2_ESX_IP=$(echo $7)
   C2_SNAPSHOT_NAME=$(echo $8)
+  C2_VM_PASS=$9
+  VM_USER=${10}
+  C2_VM1_IP=${11}
+  C2_VM2_IP=${12}
+  C2_VM3_IP=${13}
+  C2_VM4_IP=${14}
+  C2_VM5_IP=${15}
+  C2_VM6_IP=${16}
 
   # Make a separate dir for C2 to save from conflict during cluster revert
   mkdir c2-cleanup && cd c2-cleanup
@@ -37,12 +45,31 @@ node() {
 
   ansible-playbook e2e-tests/k8s/on-prem/openshift-installer/revert_cluster_state.yml -v
 
+  echo -e "\n[ Rebooting the VM's ]-------------------------------------------\n"
+  echo "Rebooting VM : $C2_VM1_IP"
+  sshpass -p $C2_VM_PASS ssh $VM_USER@$C2_VM1_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C2_VM2_IP"
+  sshpass -p $C2_VM_PASS ssh $VM_USER@$C2_VM2_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C2_VM3_IP"
+  sshpass -p $C2_VM_PASS ssh $VM_USER@$C2_VM3_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C2_VM4_IP"
+  sshpass -p $C2_VM_PASS ssh $VM_USER@$C2_VM4_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C2_VM5_IP"
+  sshpass -p $C2_VM_PASS ssh $VM_USER@$C2_VM5_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C2_VM6_IP"
+  sshpass -p $C2_VM_PASS ssh $VM_USER@$C2_VM6_IP 'reboot' > /dev/null 2>&1 &
+
   ## Add sleep so that the VM's are ready
   sleep 10
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5 $6 $7 $8 $9
+  node $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17}
 else
   pod
 fi

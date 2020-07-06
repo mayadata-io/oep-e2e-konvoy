@@ -3,7 +3,7 @@ set -x
 
 pod() {
   echo "*************Cleaning up the cluster*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/c1-cleanup.sh node '"'$c1_master1_name'"' '"'$c1_worker1_name'"' '"'$c1_worker2_name'"' '"'$c1_worker3_name'"' '"'$c1_worker4_name'"' '"'$c1_worker5_name'"' '"'$C1_ESX_IP'"' '"'$C1_SNAPSHOT_NAME'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/cluster-tear-down/c1-cleanup.sh node '"'$c1_master1_name'"' '"'$c1_worker1_name'"' '"'$c1_worker2_name'"' '"'$c1_worker3_name'"' '"'$c1_worker4_name'"' '"'$c1_worker5_name'"' '"'$C1_ESX_IP'"' '"'$C1_SNAPSHOT_NAME'"' '"'$C1_VM_PASS'"' '"'$VM_USER'"' '"'$C1_VM1_IP'"' '"'$C1_VM2_IP'"' '"'$C1_VM3_IP'"' '"'$C1_VM4_IP'"' '"'$C1_VM5_IP'"' '"'$C1_VM6_IP'"' '"'$C1_ESX_IP'"''
 }
 
 node() {
@@ -18,6 +18,14 @@ node() {
   c1_worker5_name=$(echo $6)
   C1_ESX_IP=$(echo $7)
   C1_SNAPSHOT_NAME=$(echo $8)
+  C1_VM_PASS=$9
+  VM_USER=${10}
+  C1_VM1_IP=${11}
+  C1_VM2_IP=${12}
+  C1_VM3_IP=${13}
+  C1_VM4_IP=${14}
+  C1_VM5_IP=${15}
+  C1_VM6_IP=${16}
 
   git clone https://github.com/mayadata-io/litmus.git
 
@@ -36,9 +44,27 @@ node() {
 
   ansible-playbook litmus/k8s/on-prem/openshift-installer/revert_cluster_state.yml -v
 
+  echo -e "\n[ Rebooting the VM's ]-------------------------------------------\n"
+  echo "Rebooting VM : $C1_VM1_IP"
+  sshpass -p $C1_VM_PASS ssh $VM_USER@$C1_VM1_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C1_VM2_IP"
+  sshpass -p $C1_VM_PASS ssh $VM_USER@$C1_VM2_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C1_VM3_IP"
+  sshpass -p $C1_VM_PASS ssh $VM_USER@$C1_VM3_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C1_VM4_IP"
+  sshpass -p $C1_VM_PASS ssh $VM_USER@$C1_VM4_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C1_VM5_IP"
+  sshpass -p $C1_VM_PASS ssh $VM_USER@$C1_VM5_IP 'reboot' > /dev/null 2>&1 &
+  sleep 5
+  echo "Rebooting VM : $C1_VM6_IP"
+  sshpass -p $C1_VM_PASS ssh $VM_USER@$C1_VM6_IP 'reboot' > /dev/null 2>&1 &
 
-  # Wait for cluster2 to revert to its latest snapshot
-  echo -e "\nWaiting for cluster2 to revert to its latest snapshot\n"
+  # Wait for cluster2 & cluster3 to revert to its latest snapshot
+  echo -e "\nWaiting for cluster2 & cluster3 to revert to its latest snapshot\n"
   sleep 120
 
   # Removing oep-e2e-konvoy repo
@@ -46,7 +72,7 @@ node() {
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5 $6 $7 $8 $9
+  node $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17}
 else
   pod
 fi
