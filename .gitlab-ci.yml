@@ -322,67 +322,67 @@ TCID-LOCALPV-HOSTPATH-CREATE:
     - chmod 755 ./stages/functional/local-pv-hostpath/local-pv-hostpath
     - ./stages/functional/local-pv-hostpath/local-pv-hostpath
 
-TCID-ZFS-LOCALPV-PROVISIONER:
+TCID-ZFS-LOCALPV-PROVISIONER-DEPLOY:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZFS-LocalPV-provisioner/ZFS-LocalPV-provisioner
     - ./stages/functional/ZFS-LocalPV-provisioner/ZFS-LocalPV-provisioner
 
-TCID-ZFSPV-CUSTOM-TOPOLOGY:
+TCID-ZFSPV-CUSTOM-TOPOLOGY-VERIFY:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZFSPV-custom-topology/ZFSPV-custom-topology
     - ./stages/functional/ZFSPV-custom-topology/ZFSPV-custom-topology
 
-TCID-ZV-PROPERTY-MODIFY:
+TCID-ZFSPV-PROPERTY-MODIFY-ZFS:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZV-property-modify/ZV-property-modify
     - ./stages/functional/ZV-property-modify/ZV-property-modify
 
-TCID-ZV-PROPERTY-MODIFY-ext4:
+TCID-ZFSPV-PROPERTY-MODIFY-EXT4:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZV-property-modify-ext4/ZV-property-modify-ext4
     - ./stages/functional/ZV-property-modify-ext4/ZV-property-modify-ext4
 
-TCID-ZV-PROPERTY-MODIFY-xfs:
+TCID-ZFSPV-PROPERTY-MODIFY-XFS:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZV-property-modify-xfs/ZV-property-modify-xfs
     - ./stages/functional/ZV-property-modify-xfs/ZV-property-modify-xfs
 
-TCID-ZFSPV-SNAPSHOT-CLONE:
+TCID-ZFSPV-SNAPSHOT-CLONE-ZFS-CREATE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZFSPV-snapshot-clone/ZFSPV-snapshot-clone
     - ./stages/functional/ZFSPV-snapshot-clone/ZFSPV-snapshot-clone
 
-TCID-ZFSPV-SNAPSHOT-CLONE-ext4:
+TCID-ZFSPV-SNAPSHOT-CLONE-EXT4-CREATE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZFSPV-snapshot-clone-ext4/ZFSPV-snapshot-clone-ext4
     - ./stages/functional/ZFSPV-snapshot-clone-ext4/ZFSPV-snapshot-clone-ext4
 
-TCID-ZFSPV-SNAPSHOT-CLONE-xfs:
+TCID-ZFSPV-SNAPSHOT-CLONE-XFS-CREATE:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZFSPV-snapshot-clone-xfs/ZFSPV-snapshot-clone-xfs
     - ./stages/functional/ZFSPV-snapshot-clone-xfs/ZFSPV-snapshot-clone-xfs
 
-TCID-ZFS-VOL-RESIZE:
+TCID-ZFS-VOL-RESIZE-ZFS:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZFS-vol-resize/ZFS-vol-resize
     - ./stages/functional/ZFS-vol-resize/ZFS-vol-resize
 
-TCID-ZFS-VOL-RESIZE-ext4:
+TCID-ZFS-VOL-RESIZE-EXT4:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZFS-vol-resize-ext4/ZFS-vol-resize-ext4
     - ./stages/functional/ZFS-vol-resize-ext4/ZFS-vol-resize-ext4
 
-TCID-ZFS-VOL-RESIZE-xfs:
+TCID-ZFS-VOL-RESIZE-XFS:
   extends: .func_test_template
   script:
     - chmod 755 ./stages/functional/ZFS-vol-resize-xfs/ZFS-vol-resize-xfs
