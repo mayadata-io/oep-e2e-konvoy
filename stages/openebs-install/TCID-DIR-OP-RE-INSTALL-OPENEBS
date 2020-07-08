@@ -18,7 +18,7 @@ current_time=$(date)
 branch_name=$CI_COMMIT_REF_NAME
 stage="OPENEBS-SETUP"
 test_desc="Install OpenEBS on a machine already OpenEBS is installed with same version using operator"
-openebs_version=$(echo "$OPENEBS_VERSION")
+openebs_version=$4
 
 export KUBECONFIG=~/.kube/config_c2
 
