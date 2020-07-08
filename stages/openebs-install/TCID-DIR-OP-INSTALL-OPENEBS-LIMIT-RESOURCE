@@ -31,6 +31,11 @@ kubectl get pods -n litmus
 
 test_name=openebs-resource-limit-installation
 echo -e "\nTest Name: $test_name\n"
+
+## E2E Test case plan link
+e2e_tc_plan_link=https://e2e.mayadata.io/docs/director/openebs-provisioning/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
+echo -e "\nTC_E2E_PLAN_LINK: $e2e_tc_plan_link\n"
+
 job_name=TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE
 
 litmus_pod=$(kubectl get po -n litmus | grep $test_name  | awk {'print $1'} | tail -n 1)
