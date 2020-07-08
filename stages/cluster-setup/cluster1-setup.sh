@@ -35,7 +35,7 @@ then
   sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port kubectl get pod --all-namespaces
 
   echo "*************Cloning oep-e2e-konvoy repo*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone -b oep-release https://github.com/mayadata-io/oep-e2e-konvoy.git'
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'git clone -b openebs-version https://github.com/mayadata-io/oep-e2e-konvoy.git'
   #####################################
   ##          Prerequisites          ##
   #####################################
