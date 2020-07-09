@@ -4,7 +4,7 @@ pod() {
 
 ## Installing OpenEBS using DOP on cluster2
 echo -e "\n************************ Installing OpenEBS *******************************************\n"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS node '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"''
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/TCID-DIR-OP-RE-INSTALL-OPENEBS node '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"' '"'$OPENEBS_VERSION'"''
 }
 
 node() {
@@ -18,6 +18,7 @@ current_time=$(date)
 branch_name=$CI_COMMIT_REF_NAME
 stage="OPENEBS-SETUP"
 test_desc="Install OpenEBS on a machine already OpenEBS is installed with same version using operator"
+openebs_version=$4
 
 export KUBECONFIG=~/.kube/config_c2
 
@@ -25,6 +26,9 @@ bash utils/pooling jobname:tcid-dir-op-install-openebs-dp-on-specific-node
 bash utils/e2e-cr jobname:tcid-dir-op-re-install-openebs jobphase:Running
 
 export KUBECONFIG=~/.kube/config_c3
+
+echo -e "\nOPENEBS_VERSION: $openebs_version\n"
+sed -i "s/1.7.0/$openebs_version/g" oep-e2e/litmus/director/TCID-DIR-OP-RE-INSTALL-OPENEBS/run_litmus_test.yml
 
 kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-RE-INSTALL-OPENEBS/run_litmus_test.yml
 kubectl get pods -n litmus
@@ -71,7 +75,7 @@ fi
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4
+  node $2 $3 $4 $5
 else
   pod
 fi
