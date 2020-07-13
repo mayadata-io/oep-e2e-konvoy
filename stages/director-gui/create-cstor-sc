@@ -26,7 +26,7 @@ echo -e "\nCLUSTER_NAME: $cluster\n"
 kubectl apply -f $path/stages/director-gui/template/create-cstor-sc.yaml
 kubectl get sc
 
-# Install minio on cluster 3
+# create sc on cluster 3
 export KUBECONFIG=~/.kube/config_c3
 kubectl apply -f $path/stages/director-gui/template/create-cstor-sc.yaml
 kubectl get sc
