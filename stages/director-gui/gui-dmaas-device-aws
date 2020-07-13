@@ -33,9 +33,6 @@ kubectl create ns ${NAMESPACE}
 mkdir -p $path/device-aws
 cp -R $path/stages/director-gui/template/minio-manifest $path/device-aws
 
-# kubectl get bd -n openebs | awk '{ if($4 == "Unclaimed"){print $2};}'
-# NODE_SELECTOR=`kubectl get bd -n openebs | awk '{ if($4 == "Unclaimed"){print $2};}' | awk 'NR==1'`
-# echo $NODE_SELECTOR
 
 # Add pv claim name, namespace and storage class name in minio-pvc.yaml
 sed 's|name: minio-pv-claim|name: '${PV_CLAIM_NAME}'|' -i $path/device-aws/minio-manifest/minio-pvc.yaml
@@ -77,10 +74,6 @@ THREADS=$(echo $5)
 AWS_CREDS=$(echo $6)
 MINIO_CREDS=$(echo $7)
 
-#copy aws and minio cred
-# mkdir -p ~/.dmaas
-# echo "$AWS_CREDS" > ~/.dmaas/aws_cred
-# echo "$MINIO_CREDS" > ~/.dmaas/minio_cred
 
 #make empty directory
 mkdir -p selenium-auto
