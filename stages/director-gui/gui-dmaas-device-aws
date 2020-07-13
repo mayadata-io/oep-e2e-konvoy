@@ -83,8 +83,6 @@ cd selenium-auto
 git clone https://$username:$password@github.com/mayadata-io/gui-automation.git
 cd gui-automation
 
-#creating credential file
-# cat ~/.dmaas/aws_cred ~/.dmaas/minio_cred >> cred.ini
 
 # Copy credential file
 cp ~/.dmaas/cred.ini cred.ini
