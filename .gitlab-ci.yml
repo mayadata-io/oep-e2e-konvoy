@@ -8,6 +8,7 @@ stages:
   - OPENEBS-CHAOS
   - DIRECTOR-GUI
   - DIRECTOR-GUI-DMAAS
+  - OPENEBS-UPGRADE
   - CLUSTER-TEAR-DOWN ## This stage is fixed and should not be changed
 
 ## Setup kubernetes cluster using Konvoy
@@ -211,6 +212,52 @@ TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME:
     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME
     - ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-NO-VOLUME
 
+TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
+    - ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
+
+
+TCID-DIR-OP-DELETE-CSPC-WITH-VOLUME:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install-check/TCID-DIR-OP-DELETE-CSPC-WITH-VOLUME
+    - ./stages/openebs-install-check/TCID-DIR-OP-DELETE-CSPC-WITH-VOLUME
+
+TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install-check/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME
+    - ./stages/openebs-install-check/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME
+
+TCID-DIR-OP-DELETE-SPC-WITH-VOLUME:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install-check/TCID-DIR-OP-DELETE-SPC-WITH-VOLUME
+    - ./stages/openebs-install-check/TCID-DIR-OP-DELETE-SPC-WITH-VOLUME
+
+TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-SETUP
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-install-check/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME
+    - ./stages/openebs-install-check/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME
+
 TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ:
   image: mayadataio/tools:gitlab-job-v5
   stage: OPENEBS-SETUP
@@ -228,15 +275,6 @@ TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ:
   script:
     - chmod 755 ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ
     - ./stages/openebs-install/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-RAIDZ
-
-TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
-    - ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-NO-VOLUME
 
 TCID-OPENEBS-POLICIES-CREATE:
   image: mayadataio/tools:gitlab-job-v5
@@ -691,6 +729,15 @@ TCID-DIR-DMAAS-MYSQL:
     GROUP: dmaasJivaMysql
     THREADS: 10
 
+## OPENEBS-UPGRADE stage
+TCID-DIR-OP-OPENEBS-UPGRADE-CP:
+  image: mayadataio/tools:gitlab-job-v5
+  stage: OPENEBS-UPGRADES
+  dependencies:
+    - cluster-create
+  script:
+    - chmod 755 ./stages/openebs-upgrade/TCID-DIR-OP-OPENEBS-UPGRADE-CP
+    - ./stages/openebs-upgrade/TCID-DIR-OP-OPENEBS-UPGRADE-CP
 
 ## E2E metrics stage
 e2e-metrics:
