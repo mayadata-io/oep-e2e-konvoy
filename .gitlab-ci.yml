@@ -732,7 +732,7 @@ TCID-DIR-DMAAS-MYSQL:
 ## OPENEBS-UPGRADE stage
 TCID-DIR-OP-OPENEBS-UPGRADE-CP:
   image: mayadataio/tools:gitlab-job-v5
-  stage: OPENEBS-UPGRADES
+  stage: OPENEBS-UPGRADE
   dependencies:
     - cluster-create
   script:
