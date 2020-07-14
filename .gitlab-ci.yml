@@ -639,14 +639,14 @@ TCID-DIR-DMAAS-SCHD-LOCAL-HP-AWS-BUCKET:
     GROUP: dmaasHostpathAws
     THREADS: 10
 
-# TCID-DIR-DMAAS-SCHD-LOCAL-DEV-AWS-BUCKET:
-#   extends: .gui_dmaas_test_template
-#   script:
-#     - chmod 755 ./stages/director-gui/gui-dmaas-device-aws
-#     - ./stages/director-gui/gui-dmaas-device-aws
-#   variables:
-#     GROUP: dmaasDeviceAws
-#     THREADS: 5
+TCID-DIR-DMAAS-SCHD-LOCAL-DEV-AWS-BUCKET:
+  extends: .gui_dmaas_test_template
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-device-aws
+    - ./stages/director-gui/gui-dmaas-device-aws
+  variables:
+    GROUP: dmaasDeviceAws
+    THREADS: 10
 
 TCID-DIR-DMAAS-SCHD-JIVA-AWS-BUCKET:
   extends: .gui_dmaas_test_template 
@@ -675,14 +675,14 @@ TCID-DIR-DMAAS-SCHD-LOCAL-HP-MINIO-BUCKET:
     GROUP: dmaasHostpathMinio
     THREADS: 10
 
-# TCID-DIR-DMAAS-SCHD-LOCAL-DEV-MINIO-BUCKET:
-#   extends: .gui_dmaas_test_template
-#   script:
-#     - chmod 755 ./stages/director-gui/gui-dmaas-device-minio
-#     - ./stages/director-gui/gui-dmaas-device-minio
-#   variables:
-#     GROUP: dmaasDeviceMinio
-#     THREADS: 5
+TCID-DIR-DMAAS-SCHD-LOCAL-DEV-MINIO-BUCKET:
+  extends: .gui_dmaas_test_template
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-device-minio
+    - ./stages/director-gui/gui-dmaas-device-minio
+  variables:
+    GROUP: dmaasDeviceMinio
+    THREADS: 10
 
 TCID-DIR-DMAAS-SCHD-JIVA-MINIO-BUCKET:
   extends: .gui_dmaas_test_template 
@@ -709,6 +709,24 @@ TCID-DIR-DMAAS-MINIO-DELETE:
     - ./stages/director-gui/gui-dmaas-delete-minio
   variables:
     GROUP: dmaasDelete
+    THREADS: 10
+
+TCID-DIR-DMAAS-CSTOR-NON-RESTIC:
+  extends: .gui_dmaas_test_template 
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-cstor-non-restic
+    - ./stages/director-gui/gui-dmaas-cstor-non-restic
+  variables:
+    GROUP: dmaasCstorNonRestic
+    THREADS: 10
+
+TCID-DIR-DMAAS-MYSQL:
+  extends: .gui_dmaas_test_template 
+  script:
+    - chmod 755 ./stages/director-gui/gui-dmaas-jiva-mysql
+    - ./stages/director-gui/gui-dmaas-jiva-mysql
+  variables:
+    GROUP: dmaasJivaMysql
     THREADS: 10
 
 ## OPENEBS-UPGRADE stage
