@@ -34,6 +34,17 @@ bash utils/e2e-cr jobname:tcid-dir-op-openebs-upgrade-cp jobphase:Running
 
 export KUBECONFIG=~/.kube/config_c3
 
+kubectl get ns --no-headers=true | awk '/minio|aws|delete-cspc-external|delete-spc|jiva-mysql/{print $1}' | xargs  kubectl delete ns
+sleep 10
+kubectl delete cspc --all -n openebs
+kubectl delete cspi --all -n openebs
+kubectl delete cstorclusterconfig --all -n openebs
+kubectl delete spc --all
+sleep 15
+kubectl delete bdc --all -n openebs
+sleep 10
+kubectl delete bd --all -n openebs
+
 kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-OPENEBS-UPGRADE-CP/run_litmus_test.yml
 kubectl get pods -n litmus 
 
