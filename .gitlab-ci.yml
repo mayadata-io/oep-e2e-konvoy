@@ -228,8 +228,8 @@ TCID-DIR-OP-DELETE-CSPC-WITH-VOLUME:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/openebs-install-check/TCID-DIR-OP-DELETE-CSPC-WITH-VOLUME
-    - ./stages/openebs-install-check/TCID-DIR-OP-DELETE-CSPC-WITH-VOLUME
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-VOLUME
+    - ./stages/openebs-install/TCID-DIR-OP-DELETE-CSPC-WITH-VOLUME
 
 TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME:
   image: mayadataio/tools:gitlab-job-v5
@@ -237,8 +237,8 @@ TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/openebs-install-check/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME
-    - ./stages/openebs-install-check/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME
+    - ./stages/openebs-install/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-NO-VOLUME
 
 TCID-DIR-OP-DELETE-SPC-WITH-VOLUME:
   image: mayadataio/tools:gitlab-job-v5
@@ -246,8 +246,8 @@ TCID-DIR-OP-DELETE-SPC-WITH-VOLUME:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/openebs-install-check/TCID-DIR-OP-DELETE-SPC-WITH-VOLUME
-    - ./stages/openebs-install-check/TCID-DIR-OP-DELETE-SPC-WITH-VOLUME
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-VOLUME
+    - ./stages/openebs-install/TCID-DIR-OP-DELETE-SPC-WITH-VOLUME
 
 TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME:
   image: mayadataio/tools:gitlab-job-v5
@@ -255,8 +255,8 @@ TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME:
   dependencies:
     - cluster-create
   script:
-    - chmod 755 ./stages/openebs-install-check/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME
-    - ./stages/openebs-install-check/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME
+    - chmod 755 ./stages/openebs-install/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME
+    - ./stages/openebs-install/TCID-DIR-OP-DELETE-EXTERNAL-CSPC-WITH-VOLUME
 
 TCID-DIR-OP-CSTOR-POOL-RECOMMEND-LIST-RAIDZ:
   image: mayadataio/tools:gitlab-job-v5
