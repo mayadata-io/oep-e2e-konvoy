@@ -354,6 +354,13 @@ TCID-LOCALPV-RANDOM-DEVICE-CREATE:
     - chmod 755 ./stages/functional/local-pv-device/local-pv-device
     - ./stages/functional/local-pv-device/local-pv-device
 
+TCID-LOCALPV-SELECTED-DEVICE-CREATE:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/localpv-provisioning-selected-device/localpv-provisioning-selected-device
+    - ./stages/functional/localpv-provisioning-selected-device/localpv-provisioning-selected-device
+    
+
 TCID-LOCALPV-HOSTPATH-CREATE:
   extends: .func_test_template
   script:
