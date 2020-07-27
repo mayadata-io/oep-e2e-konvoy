@@ -4,7 +4,7 @@ pod() {
 
 ## Running "TCID-DIR-OP-OPENEBS-UPGRADE-CP"
 echo -e "\n*************** Running TCID-DIR-OP-OPENEBS-UPGRADE-CP ****************\n"
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-install/TCID-DIR-OP-OPENEBS-UPGRADE-CP node '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"''
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/openebs-upgrade/TCID-DIR-OP-OPENEBS-UPGRADE-CP node '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"''
 }
 
 node() {
