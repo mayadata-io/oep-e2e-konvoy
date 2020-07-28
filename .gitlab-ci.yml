@@ -402,11 +402,11 @@ TCID-ZFSPV-SNAPSHOT-CLONE-EXT4-CREATE:
     - chmod 755 ./stages/functional/ZFSPV-snapshot-clone-ext4/ZFSPV-snapshot-clone-ext4
     - ./stages/functional/ZFSPV-snapshot-clone-ext4/ZFSPV-snapshot-clone-ext4
 
-TCID-ZFSPV-SNAPSHOT-CLONE-XFS-CREATE:
-  extends: .func_test_template
-  script:
-    - chmod 755 ./stages/functional/ZFSPV-snapshot-clone-xfs/ZFSPV-snapshot-clone-xfs
-    - ./stages/functional/ZFSPV-snapshot-clone-xfs/ZFSPV-snapshot-clone-xfs
+# TCID-ZFSPV-SNAPSHOT-CLONE-XFS-CREATE:
+#   extends: .func_test_template
+#   script:
+#     - chmod 755 ./stages/functional/ZFSPV-snapshot-clone-xfs/ZFSPV-snapshot-clone-xfs
+#     - ./stages/functional/ZFSPV-snapshot-clone-xfs/ZFSPV-snapshot-clone-xfs
 
 TCID-ZFS-VOL-RESIZE-ZFS:
   extends: .func_test_template
