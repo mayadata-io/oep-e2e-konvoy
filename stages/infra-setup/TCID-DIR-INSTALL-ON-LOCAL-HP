@@ -91,7 +91,7 @@ node() {
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5 $6
+  node $2 $3 $4 $5 $6 $7 $8 $9
 else
   pod
 fi
