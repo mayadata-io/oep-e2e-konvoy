@@ -2,7 +2,7 @@
 
 pod() {
   echo "*************Deploying Director On-Prem*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"' '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"'' '"'$WAIT'"'
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"' '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"''
 }
 
 node() {
@@ -14,7 +14,6 @@ node() {
   CI_JOB_ID=$6
   GITHUB_TOKEN=$7
   CI_COMMIT_REF_NAME=$8
-  WAIT=$9
 
   job_id=$(echo $CI_JOB_ID)
   gittoken=$(echo "$GITHUB_TOKEN")
@@ -63,8 +62,8 @@ node() {
   kubectl get pod
 
   # Add manual sleep of 9min
-  echo -e "\n Manual wait of $WAIT seconds for  director components to get deployed"
-  sleep $WAIT
+  echo -e "\n Manual wait for director components to get deployed"
+  sleep 600
 
   #Run Components health check
   echo -e "\n************************ Running basic-sanity tests ***********************************\n"
@@ -92,7 +91,7 @@ node() {
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5 $6 $7 $8 $9 ${10}
+  node $2 $3 $4 $5 $6 $7 $8 $9
 else
   pod
 fi
