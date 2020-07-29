@@ -40,6 +40,11 @@ sed -i -e '/name: OPERATOR_NS/{n;s/.*/            value: openebs/g}' \
 -e '/name: PVC/{n;s/.*/            value: localpv-selected-device-pvc/g}' \
 -e '/name: TEST_CASE_TYPE/{n;s/.*/            value: positive/g}' localpv_selected_device_positive.yml
 
+sed -i '/command:/i \
+          - name: RUN_ID\
+            value: '"$run_id"'\
+' localpv_selected_device_positive.yml
+
 cat localpv_selected_device_positive.yml
 
 bash ../utils/litmus_job_runner label='app:localpv-selected-device-positive' job=localpv_selected_device_positive.yml
@@ -68,6 +73,11 @@ sed -i -e '/name: OPERATOR_NS/{n;s/.*/            value: openebs/g}' \
 -e '/name: PVC/{n;s/.*/            value: localpv-selected-device-pvc/g}' \
 -e '/name: TEST_CASE_TYPE/{n;s/.*/            value: negative/g}' localpv_selected_device_negative.yml
 
+sed -i '/command:/i \
+          - name: RUN_ID\
+            value: '"$run_id"'\
+' localpv_selected_device_negative.yml
+
 cat localpv_selected_device_negative.yml
 
 bash ../utils/litmus_job_runner label='app:localpv-selected-device-negative' job=localpv_selected_device_negative.yml
@@ -76,11 +86,11 @@ bash utils/dump_cluster_state;
 bash utils/event_updater jobname:localpv-provisioning-selected-device $test_name jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id"
 
 if [ "$?" != "0" ]; then
-bash utils/e2e-cr-new jobname:local-pv-device jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Fail
+bash utils/e2e-cr-new jobname:localpv-provisioning-selected-device jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Fail
 exit 1;
 fi
 
-bash utils/e2e-cr-new jobname:local-pv-device jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Pass
+bash utils/e2e-cr-new jobname:localpv-provisioning-selected-device jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Pass
 
 if [ "$?" != "0" ]; then
 exit 1;
