@@ -359,6 +359,12 @@ TCID-LOCALPV-SELECTED-DEVICE-CREATE:
   script:
     - chmod 755 ./stages/functional/localpv-provisioning-selected-device/localpv-provisioning-selected-device
     - ./stages/functional/localpv-provisioning-selected-device/localpv-provisioning-selected-device
+
+TCID-LOCALPV-SELECTED-DEVICE-RECONCILE:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/localpv-provisioning-selected-device-reconcile/localpv-provisioning-selected-device-reconcile
+    - ./stages/functional/localpv-provisioning-selected-device-reconcile/localpv-provisioning-selected-device-reconcile
     
 TCID-LOCALPV-HOSTPATH-CREATE:
   extends: .func_test_template

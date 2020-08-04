@@ -1,0 +1,72 @@
+#!/bin/bash
+
+pod() {
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional/localpv-provisioning-selected-device-reconcile/localpv-provisioning-selected-device-reconcile node '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$RELEASE_TAG'"'
+}
+
+node() {
+
+export KUBECONFIG=~/.kube/config_c2
+
+job_id=$(echo $1)
+pipeline_id=$(echo $2)
+commit_id=$(echo $3)
+releaseTag=$(echo $4)
+
+time="date"
+current_time=$(eval $time)
+
+present_dir=$(pwd)
+echo $present_dir
+
+bash utils/pooling jobname:localpv-provisioning-selected-device
+bash utils/e2e-cr-new jobname:localpv-provisioning-selected-device-reconcile jobphase:Running init_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag"
+
+##########################
+#  reconcile test case    #
+##########################
+
+echo "*******LocalPV-provisioning on selected device reconcile test-case********"
+
+run_id="reconcile";test_name=$(bash utils/generate_test_name testcase=localpv-selected-device metadata=${run_id})
+echo $test_name
+
+cd e2e-tests
+cp experiments/functional/localpv/localpv-provisioning-selected-device/run_litmus_test.yml localpv_selected_device_reconcile.yml
+
+sed -i -e '/name: OPERATOR_NS/{n;s/.*/            value: openebs/g}' \
+-e 's/app: localpv-selected-device/app: localpv-selected-device-reconcile/g' \
+-e '/name: APP_NAMESPACE/{n;s/.*/            value: localpv-selected-device-reconcile/g}' \
+-e '/name: PVC/{n;s/.*/            value: localpv-selected-device-pvc/g}' \
+-e '/name: TEST_CASE_TYPE/{n;s/.*/            value: negative/g}' localpv_selected_device_reconcile.yml
+
+sed -i '/command:/i \
+          - name: RUN_ID\
+            value: '"$run_id"'\
+' localpv_selected_device_reconcile.yml
+
+cat localpv_selected_device_reconcile.yml
+
+bash ../utils/litmus_job_runner label='app:localpv-selected-device-reconcile' job=localpv_selected_device_reconcile.yml
+cd ..
+bash utils/dump_cluster_state;
+bash utils/event_updater jobname:localpv-provisioning-selected-device-reconcile $test_name jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id"
+
+if [ "$?" != "0" ]; then
+bash utils/e2e-cr-new jobname:localpv-provisioning-selected-device-reconcile jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Fail
+exit 1;
+fi
+
+bash utils/e2e-cr-new jobname:localpv-provisioning-selected-device-reconcile jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" openebs_version:"$releaseTag" test_result:Pass
+
+if [ "$?" != "0" ]; then
+exit 1;
+fi
+
+}
+
+if [ "$1" == "node" ];then
+  node $2 $3 $4 $5
+else
+  pod
+fi
