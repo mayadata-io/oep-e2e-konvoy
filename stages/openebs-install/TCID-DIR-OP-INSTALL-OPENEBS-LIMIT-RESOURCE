@@ -24,7 +24,6 @@ export KUBECONFIG=~/.kube/config_c2
 bash utils/pooling jobname:tcid-dir-op-re-install-openebs
 bash utils/e2e-cr jobname:tcid-dir-op-install-openebs-limit-resource jobphase:Running
 
-export KUBECONFIG=~/.kube/config_c3
 
 kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE/run_litmus_test.yml
 kubectl get pods -n litmus
@@ -60,11 +59,9 @@ fi
 
 if [ "$testResult" != Pass ]
 then
-  export KUBECONFIG=~/.kube/config_c2
   bash utils/e2e-cr jobname:tcid-dir-op-install-openebs-limit-resource jobphase:Completed
   exit 1;
 else
-  export KUBECONFIG=~/.kube/config_c2 
   bash utils/e2e-cr jobname:tcid-dir-op-install-openebs-limit-resource jobphase:Completed
 fi 
 
