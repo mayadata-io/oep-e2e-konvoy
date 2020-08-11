@@ -15,9 +15,8 @@ node() {
   # Verify current context
   kubectl config current-context
 
-  bash utils/e2e-cr jobname:tcid-dir-op-install-openebs jobphase:Waiting
+  bash utils/pooling jobname:tcid-dir-op-install-openebs-limit-resource
   bash utils/e2e-cr jobname:tcid-dir-op-install-openebs jobphase:Running
-  bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Waiting
 
   export KUBECONFIG=~/.kube/config_c3
 

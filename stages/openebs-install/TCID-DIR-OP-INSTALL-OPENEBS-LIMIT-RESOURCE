@@ -21,7 +21,7 @@ test_desc="Install OpenEBS using custom resource limits"
 
 export KUBECONFIG=~/.kube/config_c2
 
-bash utils/pooling jobname:tcid-dir-op-re-install-openebs
+bash utils/pooling jobname:tcid-dir-op-install-openebs-dp-on-specific-node
 bash utils/e2e-cr jobname:tcid-dir-op-install-openebs-limit-resource jobphase:Running
 
 
