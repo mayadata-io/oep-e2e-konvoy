@@ -15,7 +15,7 @@ node() {
   # Verify current context
   kubectl config current-context
 
-  bash utils/pooling jobname:tcid-dir-op-install-openebs
+  bash utils/pooling jobname:tcid-dir-op-install-openebs-limit-resource
   bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-stripe jobphase:Running
 
   kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-CSTOR-POOL-RECOMMEND-CREATE-STRIPE/run_litmus_test.yml

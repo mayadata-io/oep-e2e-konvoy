@@ -28,7 +28,7 @@ echo -e "\nTC_E2E_PLAN_LINK: $e2e_tc_plan_link\n"
 # Use cluster2 kube config
 export KUBECONFIG=~/.kube/config_c2
 
-bash utils/pooling jobname:tcid-dir-op-install-openebs-limit-resource
+bash utils/pooling jobname:tcid-dir-op-install-openebs
 bash utils/e2e-cr jobname:tcid-dir-op-cstor-pool-recommend-create-mirror jobphase:Running
 
 export KUBECONFIG=~/.kube/config_c3
