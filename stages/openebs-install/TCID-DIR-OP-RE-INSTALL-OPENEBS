@@ -22,8 +22,10 @@ openebs_version=$4
 
 export KUBECONFIG=~/.kube/config_c2
 
-bash utils/pooling jobname:tcid-dir-op-install-openebs-dp-on-specific-node
+
+bash utils/e2e-cr jobname:tcid-dir-op-re-install-openebs jobphase:Waiting
 bash utils/e2e-cr jobname:tcid-dir-op-re-install-openebs jobphase:Running
+bash utils/e2e-cr jobname:tcid-dir-op-install-openebs-cp-on-specific-node jobphase:Waiting
 
 export KUBECONFIG=~/.kube/config_c3
 
