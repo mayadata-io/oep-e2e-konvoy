@@ -24,6 +24,9 @@ export KUBECONFIG=~/.kube/config_c2
 bash utils/pooling jobname:tcid-dir-op-install-openebs-dp-on-specific-node
 bash utils/e2e-cr jobname:tcid-dir-op-install-openebs-limit-resource jobphase:Running
 
+platform=KONVOY
+sed -i "s/platform_name/$platform/g" oep-e2e/litmus/director/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE/run_litmus_test.yml
+cat oep-e2e/litmus/director/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE/run_litmus_test.yml
 
 kubectl create -f oep-e2e/litmus/director/TCID-DIR-OP-INSTALL-OPENEBS-LIMIT-RESOURCE/run_litmus_test.yml
 kubectl get pods -n litmus
