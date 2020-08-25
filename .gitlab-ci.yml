@@ -438,6 +438,18 @@ TCID-ZFS-VOL-RESIZE-XFS:
     - chmod 755 ./stages/functional/ZFS-vol-resize-xfs/ZFS-vol-resize-xfs
     - ./stages/functional/ZFS-vol-resize-xfs/ZFS-vol-resize-xfs
 
+TCID-CSPC-POOL-CREATION-WITH-CLAIMED-BLOCKDEVICE:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/block-pool-creation-with-claimed-bd/block-pool-creation-with-claimed-bd
+    - ./stages/functional/block-pool-creation-with-claimed-bd/block-pool-creation-with-claimed-bd
+
+TCID-CSPC-POOL-DELETION-WITH-VOLUME:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/block-pool-deletion-with-volume/block-pool-deletion-with-volume
+    - ./stages/functional/block-pool-deletion-with-volume/block-pool-deletion-with-volume
+
 # OpenEBS CHAOS Tests JOBS
 
 .chaos_test_template:
