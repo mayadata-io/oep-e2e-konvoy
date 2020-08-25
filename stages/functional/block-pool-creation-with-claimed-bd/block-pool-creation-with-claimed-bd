@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pod(){
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'oep-e2e-konvoy && bash stages/functional/block-pool-creation-with-claimed-bd/block-pool-creation-with-claimed-bd node '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$RELEASE_TAG'"'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/functional/block-pool-creation-with-claimed-bd/block-pool-creation-with-claimed-bd node '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$RELEASE_TAG'"'
 }
 
 node() {
