@@ -64,9 +64,8 @@ then
   sed 's|maxMemberCountInOneProject: .*|maxMemberCountInOneProject: 100|' -i ./values.yaml
   # Enable openebs RC builds deployment
   sed 's|openebsRCEnable: .*|openebsRCEnable: true|' -i ./values.yaml
-  # Disable nginx-ingress deployment as it is predeployed in Rancher
-  ## Sed command to replace the third line next to "nginx-ingress:"
-  sed '/nginx-ingress:/!b;n;n;n;c\  enabled: false' -i ./values.yaml
+  # set install openebs false in values.yaml
+  sed 's|installOpenebs: true|installOpenebs: false|' -i ./values.yaml
   echo -e "\nInstalling Kubera using kubera-charts/values.yaml"
   helm install --name kubera .
 
@@ -80,7 +79,7 @@ else
   # Add kubera in local repository
   helm repo add kubera https://charts.mayadata.io/
   # Apply helm chart
-  helm install --name kubera kubera/kubera-charts --set server.url=$DOP_URL --set server.release=$RELEASE --set server.maxMemberCountInOneProject=100 --set nginx-ingress.enabled=false --set server.openebsRCEnable=true
+  helm install --name kubera kubera/kubera-charts --set server.url=$DOP_URL --set server.release=$RELEASE --set server.maxMemberCountInOneProject=100 --set type.installOpenebs=false --set server.openebsRCEnable=true
   # Pass these values as well if need to run ingress as deployment:  --set nginx-ingress.cosed 's|url:.*|url: '$DOP_URL'|' -i ./kubera-charts/values.yamlntroller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
   # Get the changed values from chart
   helm get values kubera > values.yaml
