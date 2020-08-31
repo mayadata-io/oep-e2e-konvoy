@@ -2,7 +2,7 @@
 
 pod() {
   echo "*************Deploying Director On-Prem*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"' '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"' '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"' '"'$USE_KUBERA_REPO'"' '"'$KUBERA_BRANCH'"''
 }
 
 node() {
@@ -14,6 +14,8 @@ node() {
   CI_JOB_ID=$6
   GITHUB_TOKEN=$7
   CI_COMMIT_REF_NAME=$8
+  USE_KUBERA_REPO=$9
+  KUBERA_BRANCH=${10}
 
   job_id=$(echo $CI_JOB_ID)
   gittoken=$(echo "$GITHUB_TOKEN")
@@ -41,22 +43,51 @@ node() {
   # Create clusterrolebinding
   kubectl create clusterrolebinding kube-admin --clusterrole cluster-admin --serviceaccount=kube-system:default
 
+
+  # Deploy Kubera using either kubera-charts repo or Kubera official charts
+
+if [ "$USE_KUBERA_REPO" == "true" ]
+then
+
+  # Deploy Kubera from kubera-charts repo
+  echo -e "\nDeploying Kubera using kubera-charts repo\n"
+  echo -e "\nCloning $KUBERA_BRANCH branch of kubera-charts repo\n"
+  git clone -b $KUBERA_BRANCH https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/mayadata-io/kubera-charts.git
+  cd kubera-charts
+
+  echo -e "\nUpdating values in kubera-charts/values.yaml\n"
+  # Update release version
+  sed 's|release: .*|release: '$RELEASE'|' -i ./values.yaml
+  # Update URL for accessing Kubera
+  sed 's|url: .*|url: '$DOP_URL'|' -i ./values.yaml
+  # Update max member count in a project to 100
+  sed 's|maxMemberCountInOneProject: .*|maxMemberCountInOneProject: 100|' -i ./values.yaml
+  # Enable openebs RC builds deployment
+  sed 's|openebsRCEnable: .*|openebsRCEnable: true|' -i ./values.yaml
+  # Disable nginx-ingress deployment as it is predeployed in Rancher
+  ## Sed command to replace the third line next to "nginx-ingress:"
+  sed '/nginx-ingress:/!b;n;n;n;c\  enabled: false' -i ./values.yaml
+  echo -e "\nInstalling Kubera using kubera-charts/values.yaml"
+  helm install --name kubera .
+
+  cd ..
+
+else
+
+  # Deploy Kubera using official Kubera charts
+  echo -e "\nDeploying Kubera using official Kubera charts\n"
   helm repo update
-  
   # Add kubera in local repository
   helm repo add kubera https://charts.mayadata.io/
-
   # Apply helm chart
-  helm install --name kubera kubera/kubera-charts --set type.installOpenebs=false --set server.url=$DOP_URL --set server.release=$RELEASE --set server.maxMemberCountInOneProject=100
-
-  # Pass these values as well if need to run ingress as deployment:  --set nginx-ingress.controller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
-
+  helm install --name kubera kubera/kubera-charts --set server.url=$DOP_URL --set server.release=$RELEASE --set server.maxMemberCountInOneProject=100 --set nginx-ingress.enabled=false --set server.openebsRCEnable=true
+  # Pass these values as well if need to run ingress as deployment:  --set nginx-ingress.cosed 's|url:.*|url: '$DOP_URL'|' -i ./kubera-charts/values.yamlntroller.kind=Deployment --set nginx-ingress.controller.service.enabled=true
   # Get the changed values from chart
   helm get values kubera > values.yaml
-
   echo -e "Changed values in values.yaml\n"
   cat values.yaml
-
+fi
+  
   # Dump Director On-Prem pods
   echo -e "\n[ Dumping Director On-Prem components ]\n"
   kubectl get pod
@@ -91,7 +122,7 @@ node() {
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5 $6 $7 $8 $9
+  node $2 $3 $4 $5 $6 $7 $8 $9 ${10}
 else
   pod
 fi
