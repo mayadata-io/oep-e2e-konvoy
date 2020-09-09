@@ -56,7 +56,7 @@ then
 
 else
   echo "All nodes are not ready"
-  echo -e "Number of nodes in ready state: $ready_nodes"
+  echo -e "N.umber of nodes in ready state: $ready_nodes"
   echo -e "\nCluster State: Not Healthy\n"
   exit 1;
-fi
+fi 
