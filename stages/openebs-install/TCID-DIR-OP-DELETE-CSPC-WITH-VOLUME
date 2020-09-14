@@ -64,9 +64,9 @@ done
 
 ## Cleanup
 kubectl delete -f $path/stages/openebs-install/template/minio-manifest/
+kubectl delete cstorclusterconfig rec-create-raidz -n openebs
 kubectl delete ns delete-cspc
 kubectl delete -f $path/stages/openebs-install/template/cstor-sc.yml
-kubectl delete cstorclusterconfig rec-create-raidz -n openebs
 
 kubectl logs -f $litmus_pod -n litmus
 testResult=$(kubectl get litmusresult ${test_name} --no-headers -o custom-columns=:spec.testStatus.result)
