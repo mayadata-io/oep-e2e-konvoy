@@ -2,7 +2,7 @@
 
 pod() {
   echo "*************Deploying Director On-Prem*************"
-  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"' '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"' '"'$USE_KUBERA_REPO'"' '"'$KUBERA_BRANCH'"''
+  sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port 'cd oep-e2e-konvoy && bash stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP node '"'$GITHUB_USERNAME'"' '"'$GITHUB_PASSWORD'"' '"'$RELEASE_USERNAME'"' '"'$RELEASE_PASSWORD'"' '"'$RELEASE'"' '"'$CI_JOB_ID'"' '"'$GITHUB_TOKEN'"' '"'$CI_COMMIT_REF_NAME'"' '"'$USE_KUBERA_REPO'"' '"'$KUBERA_BRANCH'"' '"'$WAIT'"''
 }
 
 node() {
@@ -16,6 +16,7 @@ node() {
   CI_COMMIT_REF_NAME=$8
   USE_KUBERA_REPO=$9
   KUBERA_BRANCH=${10}
+  WAIT=${11}
 
   job_id=$(echo $CI_JOB_ID)
   gittoken=$(echo "$GITHUB_TOKEN")
@@ -92,8 +93,8 @@ fi
   kubectl get pod
 
   # Add manual sleep of 9min
-  echo -e "\n Manual wait for director components to get deployed"
-  sleep 600
+  echo -e "\n Waiting for $WAIT seconds for kubera components to get deployed"
+  sleep $WAIT
 
   #Run Components health check
   echo -e "\n************************ Running basic-sanity tests ***********************************\n"
@@ -121,7 +122,7 @@ fi
 }
 
 if [ "$1" == "node" ];then
-  node $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
+  node $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12}
 else
   pod
 fi
