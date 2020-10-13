@@ -438,6 +438,60 @@ TCID-ZFS-VOL-RESIZE-XFS:
     - chmod 755 ./stages/functional/ZFS-vol-resize-xfs/ZFS-vol-resize-xfs
     - ./stages/functional/ZFS-vol-resize-xfs/ZFS-vol-resize-xfs
 
+TCID-ZFSPV-BACKUP-RESTORE-DIFF-NS-EXT4:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/ext4-backup-restore-diff-ns
+    - ./stages/functional/ext4-backup-restore-diff-ns
+
+TCID-ZFSPV-BACKUP-RESTORE-DIFF-NS-ZFS:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/zfs-backup-restore-diff-ns
+    - ./stages/functional/zfs-backup-restore-diff-ns
+
+TCID-ZFSPV-BACKUP-RESTORE-DIFF-NS-XFS:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/xfs-backup-restore-diff-ns
+    - ./stages/functional/xfs-backup-restore-diff-ns
+
+TCID-ZFSPV-BACKUP-RESTORE-SAME-NS-EXT4:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/ext4-backup-restore-same-ns
+    - ./stages/functional/ext4-backup-restore-same-ns
+
+TCID-ZFSPV-BACKUP-RESTORE-SAME-NS-ZFS:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/zfs-backup-restore-same-ns
+    - ./stages/functional/zfs-backup-restore-same-ns
+
+TCID-ZFSPV-BACKUP-RESTORE-SAME-NS-XFS:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/xfs-backup-restore-same-ns
+    - ./stages/functional/xfs-backup-restore-same-ns
+
+TCID-ZFSPV-SHARED-MOUNT-VOLUME-EXT4:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/zfspv-shared-mount-volume-ext4
+    - ./stages/functional/zfspv-shared-mount-volume-ext4
+
+TCID-ZFSPV-SHARED-MOUNT-VOLUME-XFS:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/zfspv-shared-mount-volume-xfs
+    - ./stages/functional/zfspv-shared-mount-volume-xfs
+
+TCID-ZFSPV-SHARED-MOUNT-VOLUME-ZFS:
+  extends: .func_test_template
+  script:
+    - chmod 755 ./stages/functional/zfspv-shared-mount-volume-zfs
+    - ./stages/functional/zfspv-shared-mount-volume-zfs
+
 TCID-CSPC-POOL-CREATION-WITH-CLAIMED-BLOCKDEVICE:
   extends: .func_test_template
   script:
