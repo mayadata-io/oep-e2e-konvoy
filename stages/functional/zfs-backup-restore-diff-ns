@@ -7,7 +7,7 @@ zfs_backup_diff_ns_rc_val=1
 
 ## SSH into the cluster to run the kubernetes jobs for the experiments
 connect_cluster() {
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port -o LogLevel=ERROR 'cd oep-e2e-konvoy && bash stages/functional/3F18-zfs-backup-restore-diff-ns run_job '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$VELERO_PLUGIN_NAME'"' '"'$VELERO_VERSION'"'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port -o LogLevel=ERROR 'cd oep-e2e-konvoy && bash stages/functional/zfs-backup-restore-diff-ns run_job '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"' '"'$VELERO_PLUGIN_NAME'"' '"'$VELERO_VERSION'"'
 
 }
 
@@ -232,12 +232,10 @@ if [ "$zfs_restore_diff_ns_rc_val" -eq "0" ] &&
 
 ## Update the e2e-result-custom-resources for the job
 bash utils/e2e-cr-new jobname:zfs-backup-restore-diff-ns jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" test_result:Pass
-python3 openebs-nativek8s/utils/result/result_update.py $job_id 3F18 3-functional "create backup of zfs volume and restore in different namespace" Pass $pipeline_id "$current_time" $commit_id $gittoken
 
 else
 ## Update the e2e-result-custom-resources for the job
 bash utils/e2e-cr-new jobname:zfs-backup-restore-diff-ns jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" test_result:Fail
-python3 openebs-nativek8s/utils/result/result_update.py $job_id 3F18 3-functional "create backup of zfs volume and restore in different namespace" Fail $pipeline_id "$current_time" $commit_id $gittoken
 exit 1;
 fi
 
