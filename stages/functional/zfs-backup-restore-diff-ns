@@ -17,6 +17,8 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port -o LogLevel=
 
 app_deploy() {
 
+export KUBECONFIG=~/.kube/config_c2
+
 job_id=$(echo $1)
 pipeline_id=$(echo $2)
 commit_id=$(echo $3)

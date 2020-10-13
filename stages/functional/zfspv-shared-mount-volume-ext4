@@ -9,7 +9,7 @@ zfspv_shared_mount_snapshot_ext4_deprovision_rc_val=1
 
 ## SSH into the cluster to run the kubernetes jobs for the experiments
 connect_cluster() {
-sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port -o LogLevel=ERROR 'cd oep-e2e-konvoy && bash stages/functional/3F15-zfspv-shared-mount-volume-ext4 run_job '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"'
+sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port -o LogLevel=ERROR 'cd oep-e2e-konvoy && bash stages/functional/zfspv-shared-mount-volume-ext4 run_job '"'$CI_JOB_ID'"'' '"'$CI_PIPELINE_ID'"' '"'$CI_COMMIT_SHA'"'
 
 }
 
@@ -18,6 +18,8 @@ sshpass -p $pass ssh -o StrictHostKeyChecking=no $user@$ip -p $port -o LogLevel=
 #######################################################
 
 zfspv_shared_mount_ext4() {
+
+export KUBECONFIG=~/.kube/config_c2
 
 job_id=$(echo $1)
 pipeline_id=$(echo $2)
@@ -326,12 +328,10 @@ if [ "$zfspv_shared_mount_ext4_deprovision_rc_val" -eq "0" ] &&
 
 ## Update the e2e-result-custom-resources for the job
 bash utils/e2e-cr-new jobname:zfspv-shared-mount-volume-ext4 jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" test_result:Pass
-python3 openebs-nativek8s/utils/result/result_update.py $job_id 3F15 3-functional "zfspv shared mount volume support when fstype is ext4" Pass $pipeline_id "$current_time" $commit_id $gittoken
 
 else
 ## Update the e2e-result-custom-resources for the job
 bash utils/e2e-cr-new jobname:zfspv-shared-mount-volume-ext4 jobphase:Completed end_time:"$current_time" jobid:"$job_id" pipelineid:"$pipeline_id" testcaseid:"$case_id" test_result:Fail
-python3 openebs-nativek8s/utils/result/result_update.py $job_id 3F15 3-functional "zfspv shared mount volume support when fstype is ext4" Fail $pipeline_id "$current_time" $commit_id $gittoken
 exit 1;
 fi
 
