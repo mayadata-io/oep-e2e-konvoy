@@ -47,7 +47,8 @@ echo -e "\n************* Top Node Output *************"
 kubectl top node
 
 echo -e "\n************* Setting up Director URL configmap *************"
-director_url=http://$(kubectl get node -o wide | awk {'print $6'} | head -n 4 | tail -n 1)
+# director_url=http://$(kubectl get node -o wide | awk {'print $6'} | head -n 4 | tail -n 1)
+director_url=https://director.mayadatastaging.io
 echo $director_url
 
 # Create configmap for director URL
