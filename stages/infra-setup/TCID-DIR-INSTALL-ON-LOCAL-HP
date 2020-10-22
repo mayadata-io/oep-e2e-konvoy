@@ -28,7 +28,8 @@ node() {
 
   # Setting up DOP_URL variable
 
-  DOP_URL=http://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2')
+  # DOP_URL=http://$(kubectl get nodes -o wide --no-headers | awk {'print $6'} | awk 'NR==2')
+  DOP_URL=https://director.mayadatastaging.io
   echo -e "\n DOP URL: $DOP_URL"
 
   #####################################
