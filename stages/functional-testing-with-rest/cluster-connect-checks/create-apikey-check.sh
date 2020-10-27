@@ -52,7 +52,8 @@ node() {
   NEW_UUID=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 4 | head -n 1)
   echo -e "random string '$NEW_UUID'"
 
-  sed -i -e 's/value: oep.user@mayadata.ios/value: oep.user"'$NEW_UUID'"@mayadata.io/g' oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
+  # sed -i -e 's/value: oep.user@mayadata.ios/value: oep.user"'$NEW_UUID'"@mayadata.io/g' oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
+  sed 's|value: oep.user@mayadata.io|value: oep.user'${NEW_UUID}'@mayadata.io|' -i oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
   cat oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
   echo "Create new api key for new user account in director c1 ------------------------"
   kubectl create -f oep-e2e/litmus/director/create-apikey/run_litmus_test.yml
