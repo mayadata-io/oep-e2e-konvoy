@@ -34,14 +34,14 @@ cluster3-create:
     - ./stages/cluster-setup/cluster3-setup
 
 ## Deploy Director On-Prem
-TCID-DIR-INSTALL-ON-LOCAL-HP:
-  image: mayadataio/tools:gitlab-job-v5
-  stage: INFRA-SETUP
-  dependencies:
-    - cluster-create
-  script:
-    - chmod 755 ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
-    - ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
+# TCID-DIR-INSTALL-ON-LOCAL-HP:
+#   image: mayadataio/tools:gitlab-job-v5
+#   stage: INFRA-SETUP
+#   dependencies:
+#     - cluster-create
+#   script:
+#     - chmod 755 ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
+#     - ./stages/infra-setup/TCID-DIR-INSTALL-ON-LOCAL-HP
 
 ## Selenium Grid Spin up
 gui-prerequisite-install:
@@ -58,7 +58,7 @@ create-apikey-check:
   image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
+    - gui-prerequisite-install
   script:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/create-apikey-check.sh
@@ -68,7 +68,7 @@ trrc01-cluster-connect-check:
   image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
+    - gui-prerequisite-install
   script:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/cluster-connect-check.sh
@@ -78,7 +78,7 @@ client-components-check:
   image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
+    - gui-prerequisite-install
   script:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/client-components-check.sh
@@ -88,7 +88,7 @@ director-self-cluster-connect-check:
   image: mayadataio/tools:gitlab-job-v5
   stage: CLUSTER-CONNECT
   dependencies:
-    - TCID-DIR-INSTALL-ON-LOCAL-HP
+    - gui-prerequisite-install
   script:
     - chmod 755 ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
     - ./stages/functional-testing-with-rest/cluster-connect-checks/self-connect-cluster-check.sh
