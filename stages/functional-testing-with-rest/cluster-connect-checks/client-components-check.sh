@@ -20,7 +20,7 @@ node() {
   echo -e "\nManual wait for 3mins"
   sleep 180
   # TODO : make changes of fluend and aggregator remove changes in /oep-e2e/ project 
-  echo "remove fluentd"
+  echo -e "remove fluentd"
   sed -i '.bak' "s/'fluentd-aggregator','fluentd-forwarder',/ /g "  oep-e2e/litmus/director/cluster-connect-check/run_litmus_test.yml
   cat oep-e2e/litmus/director/cluster-connect-check/run_litmus_test.yml
   echo "Check cluster client components-------------------------------------------------"
